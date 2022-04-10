@@ -11,6 +11,7 @@ import UIKit
 class ProfileHeaderView: UIView {
     
     var superFrameWidht: CGFloat = 0
+    private var statusText: String = ""
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -50,7 +51,7 @@ class ProfileHeaderView: UIView {
         print(superFrameWidht)
         
          let statusButton = UIButton(frame: .init(x: 16,
-                                                 y: avatarImageView.frame.maxY + 16,
+                                                 y: avatarImageView.frame.maxY + 16 + 40,
                                                   width: 390 - 32,
                                                  height: 50))
         statusButton.backgroundColor = .blue
@@ -64,12 +65,12 @@ class ProfileHeaderView: UIView {
         statusButton.layer.shadowOpacity = 0.7
         statusButton.layer.shadowRadius = 4
         statusButton.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
-        //statusButton.translatesAutoresizingMaskIntoConstraints = false
+        
 
         self.addSubview(statusButton)
         
         let statusLabel = UILabel(frame: CGRect(x: nameLabel.frame.minX,
-                                                y: statusButton.frame.minY - 34 - 30,
+                                                y: statusButton.frame.minY - 34 - 30 - 40,
                                                 width: 200,
                                                 height: 30))
         statusLabel.text = "Waiting for something..."
@@ -77,6 +78,20 @@ class ProfileHeaderView: UIView {
         statusLabel.font = .systemFont(ofSize: 14.0)
         self.addSubview(statusLabel)
         
+        let statusTextField = UITextField(frame: .init(x: statusLabel.frame.minX,
+                                                       y: statusLabel.frame.maxY + 10,
+                                                       width: 390 - 32 - 116,
+                                                       height: 40))
+        statusTextField.font = .systemFont(ofSize: 15)
+        statusTextField.backgroundColor = .white
+        statusTextField.layer.cornerRadius = 12
+        statusTextField.clipsToBounds = true
+        statusTextField.layer.borderColor = UIColor.black.cgColor // цвет рамки
+        statusTextField.layer.borderWidth = 1
+        statusTextField.layer.masksToBounds = true
+        statusTextField.addTarget(self, action: #selector(statusTextChanged), for: .editingChanged)
+        
+        self.addSubview(statusTextField)
     }
     
     
@@ -84,9 +99,17 @@ class ProfileHeaderView: UIView {
         let labels = self.subviews.compactMap { $0 as? UILabel }
         for label in labels {
             if label.textColor == .gray {
-                print(label.text ?? "")
+                let textViews = self.subviews.compactMap {$0 as? UITextField}
+                if let firstTextView = textViews.first {
+                    label.text = firstTextView.text ?? "no text"
+                }
             }
         }
+    }
+    
+    @objc func statusTextChanged(_ textField: UITextField) {
+        statusText = textField.text ?? "nil"
+        
     }
     
     
