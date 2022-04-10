@@ -18,8 +18,6 @@ class ProfileViewController: UIViewController {
         profileHeaderView.superFrameWidht = self.view.safeAreaLayoutGuide.layoutFrame.width
         self.view.addSubview(profileHeaderView)
         self.title = "Profile"
-        
-        
     }
     
     override func viewWillLayoutSubviews() {

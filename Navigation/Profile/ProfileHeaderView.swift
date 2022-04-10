@@ -10,7 +10,6 @@ import UIKit
 
 class ProfileHeaderView: UIView {
     
-    var superFrameWidht: CGFloat = 0
     private var statusText: String = ""
     
     override init(frame: CGRect) {
@@ -48,9 +47,7 @@ class ProfileHeaderView: UIView {
         nameLabel.font = nameLabelFont
         self.addSubview(nameLabel)
         
-        print(superFrameWidht)
-        
-         let statusButton = UIButton(frame: .init(x: 16,
+        let statusButton = UIButton(frame: .init(x: 16,
                                                  y: avatarImageView.frame.maxY + 16 + 40,
                                                   width: 390 - 32,
                                                  height: 50))
@@ -86,7 +83,7 @@ class ProfileHeaderView: UIView {
         statusTextField.backgroundColor = .white
         statusTextField.layer.cornerRadius = 12
         statusTextField.clipsToBounds = true
-        statusTextField.layer.borderColor = UIColor.black.cgColor // цвет рамки
+        statusTextField.layer.borderColor = UIColor.black.cgColor
         statusTextField.layer.borderWidth = 1
         statusTextField.layer.masksToBounds = true
         statusTextField.addTarget(self, action: #selector(statusTextChanged), for: .editingChanged)
