@@ -15,7 +15,7 @@ class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .lightGray
-        profileHeaderView.superFrameWidht = self.view.safeAreaLayoutGuide.layoutFrame.width
+        profileHeaderView.frame = self.view.safeAreaLayoutGuide.layoutFrame
         self.view.addSubview(profileHeaderView)
         self.title = "Profile"
     }
