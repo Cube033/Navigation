@@ -62,12 +62,12 @@
 		0A88007027DE2C3000C09A5C /* Navigation */ = {
 			isa = PBXGroup;
 			children = (
+				0AF1E7852816DE7C004636DD /* Feed */,
 				0A92408827EFEB0C008E7D38 /* Profile */,
 				0A88007127DE2C3000C09A5C /* AppDelegate.swift */,
 				0A88007A27DE2C3300C09A5C /* Assets.xcassets */,
 				0A88007C27DE2C3300C09A5C /* LaunchScreen.storyboard */,
 				0A88007F27DE2C3300C09A5C /* Info.plist */,
-				0A88008527E7384800C09A5C /* FeedNavigationController.swift */,
 				0A88008927E75A3600C09A5C /* PostViewController.swift */,
 				0A88008D27E8BBC600C09A5C /* InfoViewController.swift */,
 				0A88008B27E8AD8900C09A5C /* Post.swift */,
@@ -82,6 +82,14 @@
 				0A92408B27EFEB74008E7D38 /* ProfileViewController.swift */,
 			);
 			path = Profile;
+			sourceTree = "<group>";
+		};
+		0AF1E7852816DE7C004636DD /* Feed */ = {
+			isa = PBXGroup;
+			children = (
+				0A88008527E7384800C09A5C /* FeedNavigationController.swift */,
+			);
+			path = Feed;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
