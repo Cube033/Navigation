@@ -24,73 +24,22 @@ class ProfileHeaderView: UIView {
     
     
     private func setupView() {
-        
         let avatarImage = UIImage(named: "myAvatarImage")
         let avatarImageView = UIImageView(image: avatarImage)
-        
-        avatarImageView.frame = .init(x: 16, y: 16, width: 100, height: 100)
-        avatarImageView.layer.cornerRadius = 50
-        avatarImageView.clipsToBounds = true
-        avatarImageView.layer.borderColor = UIColor.white.cgColor // цвет рамки
-        avatarImageView.layer.borderWidth = 3
-        avatarImageView.layer.masksToBounds = true
-        self.addSubview(avatarImageView)
+        setAvatarImageView(view: avatarImageView)
         
         let nameLabel = UILabel()
-        nameLabel.text = "Hipster Cat"
-        nameLabel.frame = .init(x: avatarImageView.frame.maxX + 16,
-                                y: 27,
-                                width: 200,
-                                height: 33)
-        let nameLabelFont = UIFont(name:"HelveticaNeue-Bold", size: 18.0)
-        nameLabel.textColor = .black
-        nameLabel.font = nameLabelFont
-        self.addSubview(nameLabel)
+        setNameLabel(view: nameLabel, Anch: avatarImageView.trailingAnchor)
         
-        let statusButton = UIButton(frame: .init(x: 16,
-                                                 y: avatarImageView.frame.maxY + 16 + 40,
-                                                  width: 390 - 32,
-                                                 height: 50))
-        statusButton.backgroundColor = .blue
-        statusButton.layer.cornerRadius = 4.0
-        statusButton.setTitle("Show status", for: .normal)
-        statusButton.setTitleColor(.white, for: .normal)
-        statusButton.titleLabel?.font = UIFont.systemFont(ofSize: 14)
+        let statusButton = UIButton()
+        setstatusButton(view: statusButton, leadingAnchor: avatarImageView.leadingAnchor, topAnchor: avatarImageView.bottomAnchor, trailingAnchor: nameLabel.trailingAnchor)
         
-        statusButton.layer.shadowColor = UIColor.black.cgColor
-        statusButton.layer.shadowOffset = .init(width: 4, height: 4)
-        statusButton.layer.shadowOpacity = 0.7
-        statusButton.layer.shadowRadius = 4
-        statusButton.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
+        let statusTextField = UITextField()
+        setStatusTextField(statusTextField: statusTextField, leadingAnchor: nameLabel.leadingAnchor, bottomAnchor: statusButton.topAnchor, trailingAnchor: nameLabel.trailingAnchor)
         
-
-        self.addSubview(statusButton)
-        
-        let statusLabel = UILabel(frame: CGRect(x: nameLabel.frame.minX,
-                                                y: statusButton.frame.minY - 34 - 30 - 40,
-                                                width: 200,
-                                                height: 30))
-        statusLabel.text = "Waiting for something..."
-        statusLabel.textColor = .gray
-        statusLabel.font = .systemFont(ofSize: 14.0)
-        self.addSubview(statusLabel)
-        
-        let statusTextField = UITextField(frame: .init(x: statusLabel.frame.minX,
-                                                       y: statusLabel.frame.maxY + 10,
-                                                       width: 390 - 32 - 116,
-                                                       height: 40))
-        statusTextField.font = .systemFont(ofSize: 15)
-        statusTextField.backgroundColor = .white
-        statusTextField.layer.cornerRadius = 12
-        statusTextField.clipsToBounds = true
-        statusTextField.layer.borderColor = UIColor.black.cgColor
-        statusTextField.layer.borderWidth = 1
-        statusTextField.layer.masksToBounds = true
-        statusTextField.addTarget(self, action: #selector(statusTextChanged), for: .editingChanged)
-        
-        self.addSubview(statusTextField)
+        let statusLabel = UILabel()
+        setStatusLabel(statusLabel: statusLabel, leadingAnchor: nameLabel.leadingAnchor, bottomAnchor: statusTextField.topAnchor, trailingAnchor: nameLabel.trailingAnchor)
     }
-    
     
     @objc private func buttonAction() {
         let labels = self.subviews.compactMap { $0 as? UILabel }
@@ -109,7 +58,108 @@ class ProfileHeaderView: UIView {
         
     }
     
+    private func setAvatarImageView(view: UIImageView){
+        view.layer.cornerRadius = 50
+        view.clipsToBounds = true
+        view.layer.borderColor = UIColor.white.cgColor // цвет рамки
+        view.layer.borderWidth = 3
+        view.layer.masksToBounds = true
+        
+        view.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(view)
+        [
+            view.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
+            view.topAnchor.constraint(equalTo: self.topAnchor, constant: 16),
+            view.widthAnchor.constraint(equalToConstant: 100),
+            view.heightAnchor.constraint(equalToConstant: 100)
+        ]
+        .forEach({$0.isActive = true})
+    }
     
+    private func setNameLabel(view: UILabel, Anch: NSLayoutAnchor<NSLayoutXAxisAnchor>){
+        view.text = "Hipster Cat"
+        let nameLabelFont = UIFont(name:"HelveticaNeue-Bold", size: 18.0)
+        view.textColor = .black
+        view.font = nameLabelFont
+        self.addSubview(view)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        [
+            view.leadingAnchor.constraint(equalTo: Anch, constant: 16),
+            view.topAnchor.constraint(equalTo: self.topAnchor),
+            view.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
+            //nameLabel.widthAnchor.constraint(equalToConstant: 200),
+            view.heightAnchor.constraint(equalToConstant: 33)
+        ]
+        .forEach({$0.isActive = true})
+    }
+    
+    private func setstatusButton(view: UIButton,
+                                 leadingAnchor: NSLayoutAnchor<NSLayoutXAxisAnchor>,
+                                 topAnchor: NSLayoutAnchor<NSLayoutYAxisAnchor>,
+                                 trailingAnchor: NSLayoutAnchor<NSLayoutXAxisAnchor>){
+        view.backgroundColor = .blue
+        view.layer.cornerRadius = 4.0
+        view.setTitle("Show status", for: .normal)
+        view.setTitleColor(.white, for: .normal)
+        view.titleLabel?.font = UIFont.systemFont(ofSize: 14)
+        
+        view.layer.shadowColor = UIColor.black.cgColor
+        view.layer.shadowOffset = .init(width: 4, height: 4)
+        view.layer.shadowOpacity = 0.7
+        view.layer.shadowRadius = 4
+        view.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
+        
+        self.addSubview(view)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        [
+            view.leadingAnchor.constraint(equalTo: leadingAnchor),
+            view.topAnchor.constraint(equalTo: topAnchor, constant: 16),
+            view.trailingAnchor.constraint(equalTo: trailingAnchor),
+            view.heightAnchor.constraint(equalToConstant: 50)
+        ]
+        .forEach({$0.isActive = true})
+    }
+    
+    private func setStatusTextField(statusTextField: UITextField,
+                                    leadingAnchor: NSLayoutAnchor<NSLayoutXAxisAnchor>,
+                                    bottomAnchor: NSLayoutAnchor<NSLayoutYAxisAnchor>,
+                                    trailingAnchor: NSLayoutAnchor<NSLayoutXAxisAnchor>){
+        statusTextField.font = .systemFont(ofSize: 15)
+        statusTextField.backgroundColor = .white
+        statusTextField.layer.cornerRadius = 12
+        statusTextField.clipsToBounds = true
+        statusTextField.layer.borderColor = UIColor.black.cgColor
+        statusTextField.layer.borderWidth = 1
+        statusTextField.layer.masksToBounds = true
+        statusTextField.addTarget(self, action: #selector(statusTextChanged), for: .editingChanged)
+        
+        self.addSubview(statusTextField)
+        statusTextField.translatesAutoresizingMaskIntoConstraints = false
+        [
+            statusTextField.leadingAnchor.constraint(equalTo: leadingAnchor),
+            statusTextField.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16),
+            statusTextField.trailingAnchor.constraint(equalTo: trailingAnchor),
+            statusTextField.heightAnchor.constraint(equalToConstant: 40)
+        ]
+        .forEach({$0.isActive = true})
+    }
+    
+    private func setStatusLabel(statusLabel: UILabel,
+                                leadingAnchor: NSLayoutAnchor<NSLayoutXAxisAnchor>,
+                                bottomAnchor: NSLayoutAnchor<NSLayoutYAxisAnchor>,
+                                trailingAnchor: NSLayoutAnchor<NSLayoutXAxisAnchor>){
+        statusLabel.text = "Waiting for something..."
+        statusLabel.textColor = .gray
+        statusLabel.font = .systemFont(ofSize: 14.0)
+        self.addSubview(statusLabel)
+        statusLabel.translatesAutoresizingMaskIntoConstraints = false
+        [
+            statusLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
+            statusLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16),
+            statusLabel.trailingAnchor.constraint(equalTo: trailingAnchor)
+        ]
+        .forEach({$0.isActive = true})
+    }
 }
 
 
