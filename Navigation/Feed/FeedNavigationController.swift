@@ -14,19 +14,7 @@ class FeedNavigationController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        feedButtonStackView.axis  = NSLayoutConstraint.Axis.vertical
-        feedButtonStackView.spacing   = 10.0
-        feedButtonStackView.translatesAutoresizingMaskIntoConstraints = false
-        feedButtonStackView.alignment = .center
-        view.backgroundColor = .lightText
-        self.view.addSubview(feedButtonStackView)
-        feedButtonStackView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor).isActive = true
-        feedButtonStackView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor).isActive = true
-        feedButtonStackView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor).isActive = true
-
-        feedButtonStackView.addArrangedSubview(getNewFeedButton())
-        feedButtonStackView.addArrangedSubview(getNewFeedButton())
+        setupView()
     }
     
     private func getNewFeedButton()->UIButton{
@@ -47,5 +35,19 @@ class FeedNavigationController: UIViewController {
             postViewController.titlePost = post.title
             self.navigationController?.pushViewController(postViewController, animated: true)
         }
+    private func setupView() {
+        feedButtonStackView.axis  = NSLayoutConstraint.Axis.vertical
+        feedButtonStackView.spacing   = 10.0
+        feedButtonStackView.translatesAutoresizingMaskIntoConstraints = false
+        feedButtonStackView.alignment = .center
+        view.backgroundColor = .lightText
+        self.view.addSubview(feedButtonStackView)
+        feedButtonStackView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor).isActive = true
+        feedButtonStackView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor).isActive = true
+        feedButtonStackView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor).isActive = true
+
+        feedButtonStackView.addArrangedSubview(getNewFeedButton())
+        feedButtonStackView.addArrangedSubview(getNewFeedButton())
+    }
 
 }
