@@ -41,14 +41,12 @@ class LogInViewController: UIViewController {
         if let kbdSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             scrollView.contentInset.bottom = kbdSize.height
             scrollView.verticalScrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: kbdSize.height, right: 0)
-            print("kbdShow")
         }
     }
     
     @objc private func kbdHide(){
         scrollView.contentInset.bottom = .zero
         scrollView.verticalScrollIndicatorInsets = .zero
-        print("kbdHide")
     }
     
     private func setView(){
@@ -169,7 +167,6 @@ class LogInViewController: UIViewController {
     
     @objc private func buttonAction(){
         let profileViewController = ProfileViewController()
-
         self.navigationController?.pushViewController(profileViewController, animated: true)
     }
 }
