@@ -13,13 +13,85 @@ class LogInViewController: UIViewController {
     let colorSet = UIColor(red: 0.28, green: 0.52, blue: 0.80, alpha: 1.00)
     let scrollView = UIScrollView()
     let contentView = UIView()
-    let logoImageView = UIImageView()
-    lazy var logInTextField = UITextField()
-    lazy var passwordTextField = UITextField()
-    var logInButton = UIButton()
-    var logInStackView = UIStackView()
+    let logoImageView: UIImageView = {
+        let logoImageView = UIImageView()
+        let logoImage = UIImage(named: "vkLogo")
+        logoImageView.image = logoImage
+        logoImageView.clipsToBounds = true
+        logoImageView.layer.masksToBounds = true
+        logoImageView.translatesAutoresizingMaskIntoConstraints = false
+        return logoImageView
+    }()
+    lazy var logInTextField: UITextField = {
+        let logInTextField = UITextField()
+        logInTextField.font = .systemFont(ofSize: 16)
+        logInTextField.tintColor = UIColor.tintColor
+        logInTextField.autocapitalizationType = .none
+        logInTextField.backgroundColor = .systemGray6
+        logInTextField.layer.cornerRadius = 10
+        logInTextField.layer.borderColor = UIColor.lightGray.cgColor
+        logInTextField.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        logInTextField.layer.borderColor = UIColor.lightGray.cgColor
+        logInTextField.layer.borderWidth = 0.5
+        logInTextField.translatesAutoresizingMaskIntoConstraints = false
+        logInTextField.placeholder = "Email or phone"
+        logInTextField.leftView = .init(frame: .init(x: 0, y: 0, width: 5, height: logInTextField.frame.height))
+        logInTextField.leftViewMode = .always
+        logInTextField.delegate = self
+        return logInTextField
+    }()
+    lazy var passwordTextField: UITextField = {
+        let passwordTextField = UITextField()
+        passwordTextField.font = .systemFont(ofSize: 15)
+        passwordTextField.autocapitalizationType = .none
+        passwordTextField.backgroundColor = .systemGray6
+        passwordTextField.layer.cornerRadius = 10
+        passwordTextField.layer.borderColor = UIColor.lightGray.cgColor
+        passwordTextField.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+        passwordTextField.layer.borderColor = UIColor.lightGray.cgColor
+        passwordTextField.layer.borderWidth = 0.5
+        passwordTextField.translatesAutoresizingMaskIntoConstraints = false
+        passwordTextField.placeholder = "Password"
+        passwordTextField.isSecureTextEntry = true
+        passwordTextField.leftView = .init(frame: .init(x: 0, y: 0, width: 5, height: passwordTextField.frame.height))
+        passwordTextField.leftViewMode = .always
+        passwordTextField.delegate = self
+        return passwordTextField
+    }()
     private let nc = NotificationCenter.default
-   
+    var logInButton: UIButton = {
+        let logInButton = UIButton()
+        var buttonConfiguration = UIButton.Configuration.filled()
+        buttonConfiguration.baseBackgroundColor = UIColor(patternImage: UIImage(named: "blue_pixel")!)
+        buttonConfiguration.title = "Log in"
+        buttonConfiguration.titleTextAttributesTransformer =
+        UIConfigurationTextAttributesTransformer { incoming in
+            var outgoing = incoming
+            outgoing.foregroundColor = UIColor.white
+            outgoing.font = UIFont.systemFont(ofSize: 14)
+            return outgoing
+          }
+        logInButton.layer.cornerRadius = 10.0
+        logInButton.translatesAutoresizingMaskIntoConstraints = false
+        logInButton.configuration = buttonConfiguration
+        logInButton.configurationUpdateHandler =  {logInButton in
+            switch logInButton.state {
+            case .normal:
+                logInButton.alpha = 1
+            case .selected:
+                logInButton.alpha = 0.8
+            case .highlighted:
+                logInButton.alpha = 0.8
+            case .disabled:
+                logInButton.alpha = 0.8
+            default:
+                logInButton.alpha = 1
+            }
+        }
+        return logInButton
+    }()
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setView()
@@ -59,11 +131,11 @@ class LogInViewController: UIViewController {
         view.backgroundColor = .white
         self.navigationController?.isNavigationBarHidden = true
         view.clipsToBounds = true
-        
-        setLogoImageView()
-        setLogInTextField()
-        setPasswordTextField()
-        setLogInButton()
+        logInButton.addAction(
+          UIAction { _ in
+            self.navigationController?.pushViewController(ProfileViewController(), animated: true)
+          }, for: .touchDown
+        )
     }
     
     private func addElements(){
@@ -111,63 +183,6 @@ class LogInViewController: UIViewController {
             logInButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             logInButton.heightAnchor.constraint(equalToConstant: 50)
             ])
-    }
-    
-    private func setLogoImageView() {
-        let logoImage = UIImage(named: "vkLogo")
-        logoImageView.image = logoImage
-        logoImageView.clipsToBounds = true
-        logoImageView.layer.masksToBounds = true
-        logoImageView.translatesAutoresizingMaskIntoConstraints = false
-    }
-    
-    private func setLogInTextField() {
-        logInTextField.font = .systemFont(ofSize: 16)
-        logInTextField.tintColor = UIColor.tintColor
-        logInTextField.autocapitalizationType = .none
-        logInTextField.backgroundColor = .systemGray6
-        logInTextField.layer.cornerRadius = 10
-        logInTextField.layer.borderColor = UIColor.lightGray.cgColor
-        logInTextField.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        logInTextField.layer.borderColor = UIColor.lightGray.cgColor
-        logInTextField.layer.borderWidth = 0.5
-        logInTextField.translatesAutoresizingMaskIntoConstraints = false
-        logInTextField.placeholder = "Email or phone"
-        logInTextField.leftView = .init(frame: .init(x: 0, y: 0, width: 5, height: logInTextField.frame.height))
-        logInTextField.leftViewMode = .always
-        logInTextField.delegate = self
-    }
-    
-    private func setPasswordTextField() {
-        passwordTextField.font = .systemFont(ofSize: 15)
-        passwordTextField.autocapitalizationType = .none
-        passwordTextField.backgroundColor = .systemGray6
-        passwordTextField.layer.cornerRadius = 10
-        passwordTextField.layer.borderColor = UIColor.lightGray.cgColor
-        passwordTextField.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
-        passwordTextField.layer.borderColor = UIColor.lightGray.cgColor
-        passwordTextField.layer.borderWidth = 0.5
-        passwordTextField.translatesAutoresizingMaskIntoConstraints = false
-        passwordTextField.placeholder = "Password"
-        passwordTextField.isSecureTextEntry = true
-        passwordTextField.leftView = .init(frame: .init(x: 0, y: 0, width: 5, height: passwordTextField.frame.height))
-        passwordTextField.leftViewMode = .always
-        passwordTextField.delegate = self
-    }
-    
-    private func setLogInButton() {
-        logInButton.layer.cornerRadius = 10.0
-        logInButton.setTitle("Log in", for: .normal)
-        logInButton.setTitleColor(.white, for: .normal)
-        logInButton.titleLabel?.font = UIFont.systemFont(ofSize: 14)
-        logInButton.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
-        logInButton.translatesAutoresizingMaskIntoConstraints = false
-        logInButton.backgroundColor = UIColor(patternImage: UIImage(named: "blue_pixel")!)
-    }
-    
-    @objc private func buttonAction(){
-        let profileViewController = ProfileViewController()
-        self.navigationController?.pushViewController(profileViewController, animated: true)
     }
 }
 

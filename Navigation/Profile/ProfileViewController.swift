@@ -41,7 +41,11 @@ class ProfileViewController: UIViewController {
             button.layer.shadowOffset = .init(width: 4, height: 4)
             button.layer.shadowOpacity = 0.7
             button.layer.shadowRadius = 4
-            button.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
+            button.addAction(
+              UIAction { _ in
+                  self.title = "new title"
+              }, for: .touchDown
+            )
             button.translatesAutoresizingMaskIntoConstraints = false
             return button
         }()
@@ -61,9 +65,5 @@ class ProfileViewController: UIViewController {
             changeTitleButton.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
             changeTitleButton.heightAnchor.constraint(equalToConstant: 25)
         ])
-    }
-    
-    @objc private func buttonAction() {
-        self.title = "new title"
     }
 }

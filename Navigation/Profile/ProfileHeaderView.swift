@@ -79,18 +79,6 @@ class ProfileHeaderView: UIView {
         ])
     }
     
-    @objc private func buttonAction() {
-        let labels = self.subviews.compactMap { $0 as? UILabel }
-        for label in labels {
-            if label.textColor == .gray {
-                let textViews = self.subviews.compactMap {$0 as? UITextField}
-                if let firstTextView = textViews.first {
-                    label.text = firstTextView.text ?? "no text"
-                }
-            }
-        }
-    }
-    
     @objc func statusTextChanged(_ textField: UITextField) {
         statusText = textField.text ?? "nil"
     }
@@ -137,7 +125,19 @@ class ProfileHeaderView: UIView {
             button.layer.shadowOffset = .init(width: 4, height: 4)
             button.layer.shadowOpacity = 0.7
             button.layer.shadowRadius = 4
-            button.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
+            button.addAction(
+              UIAction { _ in
+                  let labels = self.subviews.compactMap { $0 as? UILabel }
+                  for label in labels {
+                      if label.textColor == .gray {
+                          let textViews = self.subviews.compactMap {$0 as? UITextField}
+                          if let firstTextView = textViews.first {
+                              label.text = firstTextView.text ?? "no text"
+                          }
+                      }
+                  }
+              }, for: .touchDown
+            )
             button.translatesAutoresizingMaskIntoConstraints = false
             return button
         }()

@@ -24,17 +24,18 @@ class FeedNavigationController: UIViewController {
         button.setTitle("Перейти на пост", for: .normal)
         button.setTitleColor(.lightGray, for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 24)
-        button.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
+        button.addAction(
+          UIAction { _ in
+              let postViewController = PostViewController()
+              postViewController.titlePost = self.post.title
+              self.navigationController?.pushViewController(postViewController, animated: true)
+          }, for: .touchDown
+        )
         button.translatesAutoresizingMaskIntoConstraints = false
         button.heightAnchor.constraint(equalToConstant: 50).isActive = true
         return button
     }
     
-    @objc private func buttonAction() {
-            let postViewController = PostViewController()
-            postViewController.titlePost = post.title
-            self.navigationController?.pushViewController(postViewController, animated: true)
-        }
     private func setupView() {
         feedButtonStackView.axis  = NSLayoutConstraint.Axis.vertical
         feedButtonStackView.spacing   = 10.0
