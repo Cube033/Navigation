@@ -9,7 +9,7 @@ import UIKit
 
 class FeedNavigationController: UIViewController {
 
-    let post = Post(title: "Моя статья")
+    let post = Post(title: "Моя статья", image: "")
     let feedButtonStackView = UIStackView()
     
     override func viewDidLoad() {

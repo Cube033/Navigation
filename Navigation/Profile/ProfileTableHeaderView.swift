@@ -87,6 +87,7 @@ class ProfileHeaderView: UIView {
         let avatarImage = UIImage(named: "myAvatarImage")
         let avatarImageView: UIImageView = {
             let imageView = UIImageView()
+            imageView.contentMode = .scaleAspectFill
             imageView.image = avatarImage
             imageView.layer.cornerRadius = 50
             imageView.clipsToBounds = true
