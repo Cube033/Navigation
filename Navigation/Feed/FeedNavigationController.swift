@@ -9,7 +9,7 @@ import UIKit
 
 class FeedNavigationController: UIViewController {
 
-    let post = Post(title: "Моя статья")
+    let post = Post(title: "Моя статья", description: "", image: "")
     let feedButtonStackView = UIStackView()
     
     override func viewDidLoad() {
@@ -46,7 +46,6 @@ class FeedNavigationController: UIViewController {
         feedButtonStackView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor).isActive = true
         feedButtonStackView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor).isActive = true
         feedButtonStackView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor).isActive = true
-
         feedButtonStackView.addArrangedSubview(getNewFeedButton())
         feedButtonStackView.addArrangedSubview(getNewFeedButton())
     }

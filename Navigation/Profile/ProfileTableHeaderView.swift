@@ -87,6 +87,7 @@ class ProfileHeaderView: UIView {
         let avatarImage = UIImage(named: "myAvatarImage")
         let avatarImageView: UIImageView = {
             let imageView = UIImageView()
+            imageView.contentMode = .scaleAspectFill
             imageView.image = avatarImage
             imageView.layer.cornerRadius = 50
             imageView.clipsToBounds = true
@@ -102,7 +103,7 @@ class ProfileHeaderView: UIView {
     private func setNameLabel() -> UILabel{
         let nameLabel: UILabel = {
             let label = UILabel()
-            label.text = "Hipster Cat"
+            label.text = "Dmitry Fedotov"
             let nameLabelFont = UIFont(name:"HelveticaNeue-Bold", size: 18.0)
             label.textColor = .black
             label.font = nameLabelFont

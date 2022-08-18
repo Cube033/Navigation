@@ -13,10 +13,12 @@
 		0A88007E27DE2C3300C09A5C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A88007C27DE2C3300C09A5C /* LaunchScreen.storyboard */; };
 		0A88008627E7384800C09A5C /* FeedNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A88008527E7384800C09A5C /* FeedNavigationController.swift */; };
 		0A88008A27E75A3700C09A5C /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A88008927E75A3600C09A5C /* PostViewController.swift */; };
-		0A88008C27E8AD8A00C09A5C /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A88008B27E8AD8900C09A5C /* Post.swift */; };
 		0A88008E27E8BBC600C09A5C /* InfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A88008D27E8BBC600C09A5C /* InfoViewController.swift */; };
-		0A92408A27EFEB38008E7D38 /* ProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A92408927EFEB38008E7D38 /* ProfileHeaderView.swift */; };
+		0A92408A27EFEB38008E7D38 /* ProfileTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A92408927EFEB38008E7D38 /* ProfileTableHeaderView.swift */; };
 		0A92408C27EFEB74008E7D38 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A92408B27EFEB74008E7D38 /* ProfileViewController.swift */; };
+		0AA9197228AA16CE0010930E /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA9197128AA16CE0010930E /* Post.swift */; };
+		0AA9197428AA17600010930E /* PostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA9197328AA17600010930E /* PostTableViewCell.swift */; };
+		0AA9197628AA33E40010930E /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA9197528AA33E40010930E /* UIView+Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,10 +30,12 @@
 		0A88007F27DE2C3300C09A5C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0A88008527E7384800C09A5C /* FeedNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedNavigationController.swift; sourceTree = "<group>"; };
 		0A88008927E75A3600C09A5C /* PostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
-		0A88008B27E8AD8900C09A5C /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		0A88008D27E8BBC600C09A5C /* InfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
-		0A92408927EFEB38008E7D38 /* ProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderView.swift; sourceTree = "<group>"; };
+		0A92408927EFEB38008E7D38 /* ProfileTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTableHeaderView.swift; sourceTree = "<group>"; };
 		0A92408B27EFEB74008E7D38 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		0AA9197128AA16CE0010930E /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
+		0AA9197328AA17600010930E /* PostTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostTableViewCell.swift; sourceTree = "<group>"; };
+		0AA9197528AA33E40010930E /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +68,7 @@
 		0A88007027DE2C3000C09A5C /* Navigation */ = {
 			isa = PBXGroup;
 			children = (
+				0AA9197028AA16B60010930E /* Post */,
 				0AF1E7852816DE7C004636DD /* Feed */,
 				0A92408827EFEB0C008E7D38 /* Profile */,
 				0A88007127DE2C3000C09A5C /* AppDelegate.swift */,
@@ -72,7 +77,7 @@
 				0A88007F27DE2C3300C09A5C /* Info.plist */,
 				0A88008927E75A3600C09A5C /* PostViewController.swift */,
 				0A88008D27E8BBC600C09A5C /* InfoViewController.swift */,
-				0A88008B27E8AD8900C09A5C /* Post.swift */,
+				0AA9197528AA33E40010930E /* UIView+Extension.swift */,
 			);
 			path = Navigation;
 			sourceTree = "<group>";
@@ -80,11 +85,20 @@
 		0A92408827EFEB0C008E7D38 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
-				0A92408927EFEB38008E7D38 /* ProfileHeaderView.swift */,
+				0A92408927EFEB38008E7D38 /* ProfileTableHeaderView.swift */,
 				0A92408B27EFEB74008E7D38 /* ProfileViewController.swift */,
 				0A1498B62828BF6F0090BB87 /* LogInViewController.swift */,
 			);
 			path = Profile;
+			sourceTree = "<group>";
+		};
+		0AA9197028AA16B60010930E /* Post */ = {
+			isa = PBXGroup;
+			children = (
+				0AA9197328AA17600010930E /* PostTableViewCell.swift */,
+				0AA9197128AA16CE0010930E /* Post.swift */,
+			);
+			path = Post;
 			sourceTree = "<group>";
 		};
 		0AF1E7852816DE7C004636DD /* Feed */ = {
@@ -168,11 +182,13 @@
 				0A88008A27E75A3700C09A5C /* PostViewController.swift in Sources */,
 				0A88007227DE2C3000C09A5C /* AppDelegate.swift in Sources */,
 				0A88008627E7384800C09A5C /* FeedNavigationController.swift in Sources */,
-				0A92408A27EFEB38008E7D38 /* ProfileHeaderView.swift in Sources */,
+				0AA9197228AA16CE0010930E /* Post.swift in Sources */,
+				0A92408A27EFEB38008E7D38 /* ProfileTableHeaderView.swift in Sources */,
 				0A1498B72828BF6F0090BB87 /* LogInViewController.swift in Sources */,
 				0A88008E27E8BBC600C09A5C /* InfoViewController.swift in Sources */,
 				0A92408C27EFEB74008E7D38 /* ProfileViewController.swift in Sources */,
-				0A88008C27E8AD8A00C09A5C /* Post.swift in Sources */,
+				0AA9197628AA33E40010930E /* UIView+Extension.swift in Sources */,
+				0AA9197428AA17600010930E /* PostTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
