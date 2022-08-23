@@ -41,7 +41,6 @@ class ProfileViewController: UIViewController {
                 profileTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
                 profileTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
                 profileTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                profileTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
                 profileTableView.widthAnchor.constraint(equalTo: view.widthAnchor),
                 profileTableView.heightAnchor.constraint(equalTo: view.heightAnchor)
             ])
