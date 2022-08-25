@@ -24,13 +24,13 @@ class FeedNavigationController: UIViewController {
         button.setTitle("Перейти на пост", for: .normal)
         button.setTitleColor(.lightGray, for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 24)
-        button.addAction(
-          UIAction { _ in
-              let postViewController = PostViewController()
-              postViewController.titlePost = self.post.title
-              self.navigationController?.pushViewController(postViewController, animated: true)
-          }, for: .touchDown
-        )
+//        button.addAction(
+//          UIAction { _ in
+//              let postViewController = PostViewController()
+//              postViewController.titlePost = self.post.title
+//              self.navigationController?.pushViewController(postViewController, animated: true)
+//          }, for: .touchDown
+//        )
         button.translatesAutoresizingMaskIntoConstraints = false
         button.heightAnchor.constraint(equalToConstant: 50).isActive = true
         return button
