@@ -10,27 +10,27 @@ import UIKit
 class PostTableViewCell: UITableViewCell {
     
     private let postContentView: UIView = {
-            let view = UIView()
-            view.translatesAutoresizingMaskIntoConstraints = false
-            return view
-        }()
-        
-        private let postImageView: UIImageView = {
-            let imageView = UIImageView()
-            imageView.translatesAutoresizingMaskIntoConstraints = false
-            imageView.contentMode = .scaleAspectFit
-            imageView.backgroundColor = .black
-            imageView.clipsToBounds = true
-            return imageView
-        }()
-        
-        private let postTitleLabel: UILabel = {
-            let label = UILabel()
-            label.translatesAutoresizingMaskIntoConstraints = false
-            label.font = .systemFont(ofSize: 20, weight: .bold)
-            label.numberOfLines = 2
-            return label
-        }()
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    private let postImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFit
+        imageView.backgroundColor = .black
+        imageView.clipsToBounds = true
+        return imageView
+    }()
+    
+    private let postTitleLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = .systemFont(ofSize: 20, weight: .bold)
+        label.numberOfLines = 2
+        return label
+    }()
     
     private let postDescriptionLabel: UILabel = {
         let label = UILabel()

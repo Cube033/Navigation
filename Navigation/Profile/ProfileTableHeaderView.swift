@@ -18,6 +18,25 @@ class ProfileHeaderView: UIView {
     var statusTextField = UITextField()
     var statusLabel = UILabel()
     
+    let coverView: UIView = {
+        let view = UIView()
+        view.alpha = 0
+        view.backgroundColor = .black
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    lazy var closeCoverButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "xmark.circle"), for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.alpha = 0
+        return button
+    }()
+    
+    var coverViewWidthConstraint = NSLayoutConstraint()
+    var coverViewHeightConstraint = NSLayoutConstraint()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.setupView()
@@ -27,7 +46,6 @@ class ProfileHeaderView: UIView {
         super.init(coder: coder)
         self.setupView()
     }
-    
     
     private func setupView() {
         setElements()
@@ -44,14 +62,17 @@ class ProfileHeaderView: UIView {
     }
     
     private func addElements(){
-        self.addSubview(avatarImageView)
+        
         self.addSubview(nameLabel)
         self.addSubview(statusButton)
         self.addSubview(statusTextField)
         self.addSubview(statusLabel)
+        self.addSubview(coverView)
+        self.addSubview(avatarImageView)
     }
     
     private func setConstraits(){
+        
         NSLayoutConstraint.activate([
             avatarImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
             avatarImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 16),
@@ -75,7 +96,12 @@ class ProfileHeaderView: UIView {
             
             statusLabel.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor),
             statusLabel.bottomAnchor.constraint(equalTo: statusTextField.topAnchor, constant: -16),
-            statusLabel.trailingAnchor.constraint(equalTo: nameLabel.trailingAnchor)
+            statusLabel.trailingAnchor.constraint(equalTo: nameLabel.trailingAnchor),
+            
+            coverView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            coverView.topAnchor.constraint(equalTo: self.topAnchor),
+            coverView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width),
+            coverView.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height),
         ])
     }
     
@@ -87,6 +113,7 @@ class ProfileHeaderView: UIView {
         let avatarImage = UIImage(named: "myAvatarImage")
         let avatarImageView: UIImageView = {
             let imageView = UIImageView()
+            imageView.isUserInteractionEnabled = true
             imageView.contentMode = .scaleAspectFill
             imageView.image = avatarImage
             imageView.layer.cornerRadius = 50
@@ -121,23 +148,23 @@ class ProfileHeaderView: UIView {
             button.setTitle("Show status", for: .normal)
             button.setTitleColor(.white, for: .normal)
             button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
-        
+            
             button.layer.shadowColor = UIColor.black.cgColor
             button.layer.shadowOffset = .init(width: 4, height: 4)
             button.layer.shadowOpacity = 0.7
             button.layer.shadowRadius = 4
             button.addAction(
-              UIAction { _ in
-                  let labels = self.subviews.compactMap { $0 as? UILabel }
-                  for label in labels {
-                      if label.textColor == .gray {
-                          let textViews = self.subviews.compactMap {$0 as? UITextField}
-                          if let firstTextView = textViews.first {
-                              label.text = firstTextView.text ?? "no text"
-                          }
-                      }
-                  }
-              }, for: .touchDown
+                UIAction { _ in
+                    let labels = self.subviews.compactMap { $0 as? UILabel }
+                    for label in labels {
+                        if label.textColor == .gray {
+                            let textViews = self.subviews.compactMap {$0 as? UITextField}
+                            if let firstTextView = textViews.first {
+                                label.text = firstTextView.text ?? "no text"
+                            }
+                        }
+                    }
+                }, for: .touchDown
             )
             button.translatesAutoresizingMaskIntoConstraints = false
             return button

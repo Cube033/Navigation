@@ -42,7 +42,7 @@ class PhotosTableViewCell: UITableViewCell {
     
     private let goToGalleryImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "RightArrow")
+        imageView.image = UIImage(systemName: "arrow.right")
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
