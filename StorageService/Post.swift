@@ -8,14 +8,14 @@
 import Foundation
 
 public struct Post {
-    var title: String
-    var author: String = ""
-    var description: String
-    var image: String
-    var likes: Int = 0
-    var views: Int = 0
+    public var title: String
+    public var author: String = ""
+    public var description: String
+    public var image: String
+    public var likes: Int = 0
+    public var views: Int = 0
     
-    static func getPostArray() -> [Post] {
+    public static func getPostArray() -> [Post] {
         var postArray = [Post]()
         postArray.append(Post(title: "Сидухи Astra J OPC",
                               description: "Ребят кому сидухи? От Atra J OPC. Перед и Зад. 150.000р",
@@ -30,5 +30,11 @@ public struct Post {
                               description: "Всем салам .Решил в свободный денёчек снять фары и помыть их изнутри, уж больно хотелось чтобы были в идеале.После полировки фар пол года назад, заметил, что как будто плохо отполировали, но нет, там была грязь внутри стекла, и вот в жаркий летний день +32 в тени и 1000 на солнце, снимал я фары.",
                               image: "post4"))
         return postArray
+    }
+    
+    public init(title: String, description: String, image: String){
+        self.title = title
+        self.description = description
+        self.image = image
     }
 }
