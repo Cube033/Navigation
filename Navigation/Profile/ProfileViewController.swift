@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import StorageService
 
 class ProfileViewController: UIViewController {
     
@@ -39,7 +40,12 @@ class ProfileViewController: UIViewController {
     }
     
     private func setView() {
-        view.backgroundColor = .white
+        #if DEBUG
+            view.backgroundColor = .yellow
+        #else
+            view.backgroundColor = .white
+        #endif
+        
         navigationController?.isNavigationBarHidden = true
         view.clipsToBounds = true
         view.addSubview(profileTableView)
