@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import SnapKit
 
 class ProfileHeaderView: UIView {
     
@@ -73,36 +74,46 @@ class ProfileHeaderView: UIView {
     
     private func setConstraits(){
         
-        NSLayoutConstraint.activate([
-            avatarImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
-            avatarImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 16),
-            avatarImageView.widthAnchor.constraint(equalToConstant: 100),
-            avatarImageView.heightAnchor.constraint(equalToConstant: 100),
-            
-            nameLabel.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 16),
-            nameLabel.topAnchor.constraint(equalTo: self.topAnchor),
-            nameLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
-            nameLabel.heightAnchor.constraint(equalToConstant: 33),
-            
-            statusButton.leadingAnchor.constraint(equalTo: avatarImageView.leadingAnchor),
-            statusButton.topAnchor.constraint(equalTo: avatarImageView.bottomAnchor, constant: 16),
-            statusButton.trailingAnchor.constraint(equalTo: nameLabel.trailingAnchor),
-            statusButton.heightAnchor.constraint(equalToConstant: 50),
-            
-            statusTextField.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor),
-            statusTextField.bottomAnchor.constraint(equalTo: statusButton.topAnchor, constant: -16),
-            statusTextField.trailingAnchor.constraint(equalTo: nameLabel.trailingAnchor),
-            statusTextField.heightAnchor.constraint(equalToConstant: 40),
-            
-            statusLabel.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor),
-            statusLabel.bottomAnchor.constraint(equalTo: statusTextField.topAnchor, constant: -16),
-            statusLabel.trailingAnchor.constraint(equalTo: nameLabel.trailingAnchor),
-            
-            coverView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            coverView.topAnchor.constraint(equalTo: self.topAnchor),
-            coverView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width),
-            coverView.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height),
-        ])
+        avatarImageView.snp.makeConstraints { make in
+            make.top.equalTo(self).offset(16)
+            make.leading.equalTo(self).offset(15)
+            make.width.equalTo(100)
+            make.height.equalTo(100)
+        }
+        
+        nameLabel.snp.makeConstraints { make in
+            make.leading.equalTo(avatarImageView.snp.trailing).offset(16)
+            make.top.equalTo(self)
+            make.trailing.equalTo(self).offset(-16)
+            make.height.equalTo(33)
+        }
+        
+        statusButton.snp.makeConstraints { make in
+            make.leading.equalTo(avatarImageView)
+            make.top.equalTo(avatarImageView.snp.bottom).offset(16)
+            make.trailing.equalTo(nameLabel)
+            make.height.equalTo(50)
+        }
+        
+        statusTextField.snp.makeConstraints { make in
+            make.leading.equalTo(nameLabel)
+            make.bottom.equalTo(statusButton.snp.top).offset(-16)
+            make.trailing.equalTo(nameLabel)
+            make.height.equalTo(40)
+        }
+        
+        statusLabel.snp.makeConstraints { make in
+            make.leading.equalTo(nameLabel)
+            make.bottom.equalTo(statusTextField.snp.top).offset(-16)
+            make.trailing.equalTo(nameLabel)
+        }
+        
+        coverView.snp.makeConstraints { make in
+            make.leading.equalTo(self)
+            make.top.equalTo(self)
+            make.width.equalTo(UIScreen.main.bounds.width)
+            make.height.equalTo(UIScreen.main.bounds.height)
+        }
     }
     
     @objc func statusTextChanged(_ textField: UITextField) {
