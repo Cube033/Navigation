@@ -132,9 +132,25 @@ class LogInViewController: UIViewController {
         self.navigationController?.isNavigationBarHidden = true
         view.clipsToBounds = true
         logInButton.addAction(
-          UIAction { _ in
-            self.navigationController?.pushViewController(ProfileViewController(), animated: true)
-          }, for: .touchDown
+            UIAction { _ in
+                var successLogIn = false
+                let currentUser: User?
+                #if DEBUG
+                let userSevice = TestUserService()
+                #else
+                let userSevice = CurrentUserService()
+                #endif
+                currentUser = userSevice.getUserByLogin(login: self.logInTextField.text ?? "")
+                if let user = currentUser {
+                    if user.password == self.passwordTextField.text ?? "" {
+                        successLogIn = true
+                        self.navigationController?.pushViewController(ProfileViewController(user: user), animated: true)
+                    }
+                }
+                if !successLogIn {
+                    self.setAlert()
+                }
+            }, for: .touchDown
         )
     }
     
@@ -183,6 +199,15 @@ class LogInViewController: UIViewController {
             logInButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             logInButton.heightAnchor.constraint(equalToConstant: 50)
             ])
+    }
+    
+    private func setAlert() {
+        let alert = UIAlertController(title: "Ошибка", message: "Указаны неверный логин или пароль", preferredStyle: .alert)
+        let actionDismiss = UIAlertAction(title: "Закрыть", style: .default) { (_) -> Void in
+            self.dismiss(animated: true, completion: nil)
+        }
+        alert.addAction(actionDismiss)
+        self.present(alert, animated: true, completion: nil)
     }
 }
 

@@ -12,6 +12,16 @@ import StorageService
 class ProfileViewController: UIViewController {
     
     let postArray = Post.getPostArray()
+    private let user: User
+    
+    init (user: User) {
+        self.user = user
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     private lazy var profileTableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
@@ -45,7 +55,7 @@ class ProfileViewController: UIViewController {
         #else
             view.backgroundColor = .white
         #endif
-        
+        tableHeader.setUserInfo(user: user)
         navigationController?.isNavigationBarHidden = true
         view.clipsToBounds = true
         view.addSubview(profileTableView)
