@@ -91,6 +91,7 @@ class LogInViewController: UIViewController {
         return logInButton
     }()
     
+    let loginDelegate: LoginViewControllerDelegate = LoginInspector()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -132,9 +133,13 @@ class LogInViewController: UIViewController {
         self.navigationController?.isNavigationBarHidden = true
         view.clipsToBounds = true
         logInButton.addAction(
-          UIAction { _ in
-            self.navigationController?.pushViewController(ProfileViewController(), animated: true)
-          }, for: .touchDown
+            UIAction { _ in
+                if self.loginDelegate.check(login: self.logInTextField.text!, password: self.passwordTextField.text!) {
+                    self.navigationController?.pushViewController(ProfileViewController(), animated: true)
+                } else {
+                    
+                }
+            }, for: .touchDown
         )
     }
     
@@ -192,5 +197,4 @@ extension LogInViewController: UITextFieldDelegate {
         return true
     }
 }
-
 
