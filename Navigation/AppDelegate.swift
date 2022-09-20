@@ -20,7 +20,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let feedNavigationController = UINavigationController(rootViewController: FeedNavigationController())
         let tabBarItemFeed = UITabBarItem()
         let tabBarItemProfile = UITabBarItem()
-        let profileNavigationController = UINavigationController(rootViewController: LogInViewController())
+        let logInController = LogInViewController()
+        logInController.loginDelegate = LoginInspector as! LoginViewControllerDelegate
+        let profileNavigationController = UINavigationController(rootViewController: logInController)
         
         feedNavigationController.tabBarItem = tabBarItemFeed
         profileNavigationController.tabBarItem = tabBarItemProfile
