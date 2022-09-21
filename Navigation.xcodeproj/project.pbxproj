@@ -112,8 +112,7 @@
 				0A65CE2D28DA13E0001A3EC4 /* LoginInspector.swift */,
 				0A65CE2E28DA13E0001A3EC4 /* LoginViewControllerDelegate.swift */,
 			);
-			name = Access;
-			path = ../../Access;
+			path = Access;
 			sourceTree = "<group>";
 		};
 		0A67B1E428D85BE8006D4694 /* User */ = {
