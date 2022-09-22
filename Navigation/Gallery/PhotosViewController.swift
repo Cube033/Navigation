@@ -7,16 +7,16 @@
 
 import Foundation
 import UIKit
+import iOSIntPackage
 
 class PhotosViewController: UIViewController {
     
-    private var photoArray: [String] = {
-        var array = [String]()
-        for element in 0...19 {
-            array.append("gallery\(element)")
-        }
-        return array
-    }()
+    private var elementNumber = 0
+    
+    private var photoArray: [UIImage] = {
+           var array = [UIImage]()
+           return array
+       }()
     
     private lazy var photosColletionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -30,6 +30,8 @@ class PhotosViewController: UIViewController {
         return collectionView
     }()
     
+    let imagePublisherFacade = ImagePublisherFacade()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -37,6 +39,21 @@ class PhotosViewController: UIViewController {
         view.backgroundColor = .white
         
         layout()
+        
+        let photoArrayForObserver: [UIImage] = {
+            var array = [UIImage]()
+            for element in 0...19 {
+                array.append(UIImage(named: "gallery\(element)")!)
+            }
+            return array
+        }()
+        
+        imagePublisherFacade.subscribe(self)
+        imagePublisherFacade.addImagesWithTimer(time: 0.5, repeat: 20, userImages: photoArrayForObserver)
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        imagePublisherFacade.removeSubscription(for: self)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -61,7 +78,6 @@ class PhotosViewController: UIViewController {
             photosColletionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             ])
     }
-    
 }
 
 extension PhotosViewController: UICollectionViewDataSource {
@@ -71,7 +87,7 @@ extension PhotosViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let photoCell = photosColletionView.dequeueReusableCell(withReuseIdentifier: "PhotosCollectionViewCell", for: indexPath) as! PhotosCollectionViewCell
-        photoCell.setupCell(photoName: photoArray[indexPath.row])
+        photoCell.setupCell(photoImage: photoArray[indexPath.row])
         return photoCell
     }
     
@@ -101,4 +117,12 @@ extension PhotosViewController: UICollectionViewDelegateFlowLayout {
         UIEdgeInsets(top: sideInset, left: sideInset, bottom: sideInset, right: sideInset)
     }
     
+}
+
+extension PhotosViewController: ImageLibrarySubscriber {
+    
+    func receive(images: [UIImage]) {
+        photoArray.append(images.last!)
+        photosColletionView.reloadData()
+    }
 }

@@ -136,24 +136,11 @@ class LogInViewController: UIViewController {
             UIAction { _ in
                 var successLogIn = false
                 let currentUser: User?
-//                #if DEBUG
-//                let userSevice = TestUserService()
-//                #else
                 let userSevice = CurrentUserService()
-//                #endif
-                
-                //Не понятна задумка - как с точки зрения задачи пересекаются ДЗ№3 и ДЗ №4
-                // нельзя просто игнорировать функциональность из ДЗ№3, так как user влияет на заполнения данных
-                //делаю костыль, где user получается хардкодом - но не понимаю задумку
                 currentUser = userSevice.getUserByLogin(login: "cube033")
-//                currentUser = userSevice.getUserByLogin(login: self.logInTextField.text ?? "")
-//                if let user = currentUser {
-//                    if user.password == self.passwordTextField.text ?? "" {
-//                        successLogIn = true
-                //                        self.navigationController?.pushViewController(ProfileViewController(user: user), animated: true)
-                //                    }
-                //                }
-                
+#if DEBUG
+                self.navigationController?.pushViewController(ProfileViewController(user: currentUser!), animated: true)
+#else
                 if let loginDelegateExist = self.loginDelegate {
                     if loginDelegateExist.check(login: self.logInTextField.text!, password: self.passwordTextField.text!) {
                         successLogIn = true
@@ -163,6 +150,7 @@ class LogInViewController: UIViewController {
                 if !successLogIn {
                     self.setAlert()
                 }
+#endif
             }, for: .touchDown
         )
     }

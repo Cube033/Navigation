@@ -34,8 +34,8 @@ class PhotosCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setupCell(photoName: String) {
-        photoImageView.image = UIImage(named: photoName)
+    func setupCell(photoImage: UIImage) {
+        photoImageView.image = photoImage
     }
     
     private func layout() {
