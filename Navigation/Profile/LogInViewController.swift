@@ -10,6 +10,7 @@ import UIKit
 
 class LogInViewController: UIViewController {
     
+    var loginDelegate: LoginViewControllerDelegate?
     let colorSet = UIColor(red: 0.28, green: 0.52, blue: 0.80, alpha: 1.00)
     let scrollView = UIScrollView()
     let contentView = UIView()
@@ -135,16 +136,28 @@ class LogInViewController: UIViewController {
             UIAction { _ in
                 var successLogIn = false
                 let currentUser: User?
-                #if DEBUG
-                let userSevice = TestUserService()
-                #else
+//                #if DEBUG
+//                let userSevice = TestUserService()
+//                #else
                 let userSevice = CurrentUserService()
-                #endif
-                currentUser = userSevice.getUserByLogin(login: self.logInTextField.text ?? "")
-                if let user = currentUser {
-                    if user.password == self.passwordTextField.text ?? "" {
+//                #endif
+                
+                //Не понятна задумка - как с точки зрения задачи пересекаются ДЗ№3 и ДЗ №4
+                // нельзя просто игнорировать функциональность из ДЗ№3, так как user влияет на заполнения данных
+                //делаю костыль, где user получается хардкодом - но не понимаю задумку
+                currentUser = userSevice.getUserByLogin(login: "cube033")
+//                currentUser = userSevice.getUserByLogin(login: self.logInTextField.text ?? "")
+//                if let user = currentUser {
+//                    if user.password == self.passwordTextField.text ?? "" {
+//                        successLogIn = true
+                //                        self.navigationController?.pushViewController(ProfileViewController(user: user), animated: true)
+                //                    }
+                //                }
+                
+                if let loginDelegateExist = self.loginDelegate {
+                    if loginDelegateExist.check(login: self.logInTextField.text!, password: self.passwordTextField.text!) {
                         successLogIn = true
-                        self.navigationController?.pushViewController(ProfileViewController(user: user), animated: true)
+                        self.navigationController?.pushViewController(ProfileViewController(user: currentUser!), animated: true)
                     }
                 }
                 if !successLogIn {
