@@ -60,38 +60,10 @@ class LogInViewController: UIViewController {
         return passwordTextField
     }()
     private let nc = NotificationCenter.default
-    var logInButton: UIButton = {
-        let logInButton = UIButton()
-        var buttonConfiguration = UIButton.Configuration.filled()
-        buttonConfiguration.baseBackgroundColor = UIColor(patternImage: UIImage(named: "blue_pixel")!)
-        buttonConfiguration.title = "Log in"
-        buttonConfiguration.titleTextAttributesTransformer =
-        UIConfigurationTextAttributesTransformer { incoming in
-            var outgoing = incoming
-            outgoing.foregroundColor = UIColor.white
-            outgoing.font = UIFont.systemFont(ofSize: 14)
-            return outgoing
-          }
-        logInButton.layer.cornerRadius = 10.0
-        logInButton.translatesAutoresizingMaskIntoConstraints = false
-        logInButton.configuration = buttonConfiguration
-        logInButton.configurationUpdateHandler =  {logInButton in
-            switch logInButton.state {
-            case .normal:
-                logInButton.alpha = 1
-            case .selected:
-                logInButton.alpha = 0.8
-            case .highlighted:
-                logInButton.alpha = 0.8
-            case .disabled:
-                logInButton.alpha = 0.8
-            default:
-                logInButton.alpha = 1
-            }
-        }
-        return logInButton
-    }()
-    
+   
+    lazy var logInButton = CustomButton(title: "Log in",
+                                        backgroundColor: nil,
+                                        tapAction: {self.logIn()})
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -122,6 +94,26 @@ class LogInViewController: UIViewController {
         scrollView.verticalScrollIndicatorInsets = .zero
     }
     
+    private func logIn(){
+        var successLogIn = false
+        let currentUser: User?
+        let userSevice = CurrentUserService()
+        currentUser = userSevice.getUserByLogin(login: "cube033")
+#if DEBUG
+        self.navigationController?.pushViewController(ProfileViewController(user: currentUser!), animated: true)
+#else
+        if let loginDelegateExist = self.loginDelegate {
+            if loginDelegateExist.check(login: self.logInTextField.text!, password: self.passwordTextField.text!) {
+                successLogIn = true
+                self.navigationController?.pushViewController(ProfileViewController(user: currentUser!), animated: true)
+            }
+        }
+        if !successLogIn {
+            self.setAlert()
+        }
+#endif
+    }
+    
     private func setView(){
         setElements()
         addElements()
@@ -132,27 +124,6 @@ class LogInViewController: UIViewController {
         view.backgroundColor = .white
         self.navigationController?.isNavigationBarHidden = true
         view.clipsToBounds = true
-        logInButton.addAction(
-            UIAction { _ in
-                var successLogIn = false
-                let currentUser: User?
-                let userSevice = CurrentUserService()
-                currentUser = userSevice.getUserByLogin(login: "cube033")
-#if DEBUG
-                self.navigationController?.pushViewController(ProfileViewController(user: currentUser!), animated: true)
-#else
-                if let loginDelegateExist = self.loginDelegate {
-                    if loginDelegateExist.check(login: self.logInTextField.text!, password: self.passwordTextField.text!) {
-                        successLogIn = true
-                        self.navigationController?.pushViewController(ProfileViewController(user: currentUser!), animated: true)
-                    }
-                }
-                if !successLogIn {
-                    self.setAlert()
-                }
-#endif
-            }, for: .touchDown
-        )
     }
     
     private func addElements(){
@@ -199,7 +170,7 @@ class LogInViewController: UIViewController {
             logInButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             logInButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             logInButton.heightAnchor.constraint(equalToConstant: 50)
-            ])
+        ])
     }
     
     private func setAlert() {
@@ -218,5 +189,3 @@ extension LogInViewController: UITextFieldDelegate {
         return true
     }
 }
-
-

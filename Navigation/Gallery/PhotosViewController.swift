@@ -13,10 +13,7 @@ class PhotosViewController: UIViewController {
     
     private var elementNumber = 0
     
-    private var photoArray: [UIImage] = {
-           var array = [UIImage]()
-           return array
-       }()
+    private var photoArray = [UIImage]()
     
     private lazy var photosColletionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
