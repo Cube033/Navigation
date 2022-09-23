@@ -138,35 +138,19 @@ class ProfileHeaderView: UIView {
     }
     
     private func setStatusButton() -> UIButton{
-        let statusButton: UIButton = {
-            let button = UIButton()
-            button.backgroundColor = .blue
-            button.layer.cornerRadius = 4.0
-            button.setTitle("Show status", for: .normal)
-            button.setTitleColor(.white, for: .normal)
-            button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
-            
-            button.layer.shadowColor = UIColor.black.cgColor
-            button.layer.shadowOffset = .init(width: 4, height: 4)
-            button.layer.shadowOpacity = 0.7
-            button.layer.shadowRadius = 4
-            button.addAction(
-                UIAction { _ in
-                    let labels = self.subviews.compactMap { $0 as? UILabel }
-                    for label in labels {
-                        if label.textColor == .gray {
-                            let textViews = self.subviews.compactMap {$0 as? UITextField}
-                            if let firstTextView = textViews.first {
-                                label.text = firstTextView.text ?? "no text"
-                            }
-                        }
+        return CustomButton(title: "Show status",
+                                  backgroundColor: nil,
+                                  tapAction: {
+            let labels = self.subviews.compactMap { $0 as? UILabel }
+            for label in labels {
+                if label.textColor == .gray {
+                    let textViews = self.subviews.compactMap {$0 as? UITextField}
+                    if let firstTextView = textViews.first {
+                        label.text = firstTextView.text ?? "no text"
                     }
-                }, for: .touchDown
-            )
-            button.translatesAutoresizingMaskIntoConstraints = false
-            return button
-        }()
-        return statusButton
+                }
+            }
+        })
     }
     
     private func setStatusTextField() -> UITextField{
