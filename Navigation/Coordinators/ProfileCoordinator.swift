@@ -23,7 +23,8 @@ class ProfileCoordinator: CoordinatorProtocol {
     
     func getStartViewController() -> UIViewController {
         let user = UserInfo.shared.user!
-        let viewController = ProfileViewController(user: user, profileCoordinator: self)
+        let profileViewModel = ProfileViewModel(coordinator: self, user: user)
+        let viewController = ProfileViewController(viewModel: profileViewModel)
         return viewController
     }
     
@@ -33,7 +34,8 @@ class ProfileCoordinator: CoordinatorProtocol {
         case .profile:
             // искуственная конструкция, оправдывающая применение координатора в таком маленьком модуле
             let user = UserInfo.shared.user!
-            let viewController = ProfileViewController(user: user, profileCoordinator: self)
+            let profileViewModel = ProfileViewModel(coordinator: self, user: user)
+            let viewController = ProfileViewController(viewModel: profileViewModel)
             navigationController.pushViewController(viewController, animated: true)
         case .gallery:
             let postViewController = PhotosViewController()
