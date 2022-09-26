@@ -13,9 +13,11 @@ class ProfileViewController: UIViewController {
     
     let postArray = Post.getPostArray()
     private let user: User
+    let profileCoordinator: ProfileCoordinator
     
-    init (user: User) {
+    init (user: User, profileCoordinator: ProfileCoordinator) {
         self.user = user
+        self.profileCoordinator = profileCoordinator
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -213,7 +215,7 @@ extension ProfileViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         if indexPath.section == 0 {
-            navigationController?.pushViewController(PhotosViewController(), animated: true)
+            profileCoordinator.handleAction(actionType: ProfileActionType.gallery)
         }
     }
 }

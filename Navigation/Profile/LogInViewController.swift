@@ -60,10 +60,20 @@ class LogInViewController: UIViewController {
         return passwordTextField
     }()
     private let nc = NotificationCenter.default
+    let mainCoordinator: MainCoordinator
    
     lazy var logInButton = CustomButton(title: "Log in",
                                         backgroundColor: nil,
                                         tapAction: {self.logIn()})
+    
+    init (mainCoordinator:MainCoordinator) {
+        self.mainCoordinator = mainCoordinator
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -100,18 +110,20 @@ class LogInViewController: UIViewController {
         let userSevice = CurrentUserService()
         currentUser = userSevice.getUserByLogin(login: "cube033")
 #if DEBUG
-        self.navigationController?.pushViewController(ProfileViewController(user: currentUser!), animated: true)
+        successLogIn = true
 #else
         if let loginDelegateExist = self.loginDelegate {
             if loginDelegateExist.check(login: self.logInTextField.text!, password: self.passwordTextField.text!) {
                 successLogIn = true
-                self.navigationController?.pushViewController(ProfileViewController(user: currentUser!), animated: true)
             }
         }
-        if !successLogIn {
+#endif
+        if successLogIn {
+            UserInfo.shared.setUser(user: currentUser!)
+            mainCoordinator.startApplication()
+        } else {
             self.setAlert()
         }
-#endif
     }
     
     private func setView(){
