@@ -7,15 +7,13 @@
 
 import Foundation
 import UIKit
-import StorageService
 
 class ProfileViewController: UIViewController {
     
-    let postArray = Post.getPostArray()
-    private let user: User
+    private let viewModel: ProfileViewModel
     
-    init (user: User) {
-        self.user = user
+    init (viewModel: ProfileViewModel) {
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -46,8 +44,26 @@ class ProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setView()
+        bindViewModel()
+        viewModel.changeState(action: .viewReady)
     }
+    
+    private func bindViewModel() {
+            viewModel.stateChanged = { [weak self] state in
+                switch state {
+                case .initial:
+                    ()
+                case .loading:
+                    ()
+                case .loaded:
+                    self!.setView()
+                case .error:
+                    ()
+                case .idle:
+                    ()
+                }
+            }
+        }
     
     private func setView() {
         #if DEBUG
@@ -55,7 +71,7 @@ class ProfileViewController: UIViewController {
         #else
             view.backgroundColor = .white
         #endif
-        tableHeader.setUserInfo(user: user)
+        tableHeader.setUserInfo(user: viewModel.user)
         navigationController?.isNavigationBarHidden = true
         view.clipsToBounds = true
         view.addSubview(profileTableView)
@@ -64,6 +80,8 @@ class ProfileViewController: UIViewController {
         alphaCloseButtonAnimation.delegate = self
         alphaCoverViewAnimation.delegate = self
         groupAnimation.delegate = self
+        
+        viewModel.changeState(action: .getIdle)
     }
     
     private func setConstraints() {
@@ -213,7 +231,7 @@ extension ProfileViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         if indexPath.section == 0 {
-            navigationController?.pushViewController(PhotosViewController(), animated: true)
+            viewModel.changeState(action: .cellDidTap)
         }
     }
 }
@@ -223,7 +241,7 @@ extension ProfileViewController: UITableViewDataSource {
         if section == 0 {
             return 1
         } else {
-            return postArray.count
+            return viewModel.postArray.count
         }
     }
     
@@ -239,7 +257,7 @@ extension ProfileViewController: UITableViewDataSource {
             return photoCell
         } else {
             let postCell = tableView.dequeueReusableCell(withIdentifier: "PostTableViewCell", for: indexPath) as! PostTableViewCell
-            postCell.setupCell(model: postArray[indexPath.row])
+            postCell.setupCell(model: viewModel.postArray[indexPath.row])
             return postCell
         }
     }

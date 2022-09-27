@@ -11,7 +11,16 @@ class PostViewController: UIViewController {
     
     var titlePost: String = "Заголовок статьи"
     
+    let feedCoordinator: FeedCoordinator
     
+    init(feedCoordinator: FeedCoordinator) {
+        self.feedCoordinator = feedCoordinator
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,9 +33,7 @@ class PostViewController: UIViewController {
     }
     
     @objc private func barButtonTapped() {
-        let infoViewController = InfoViewController()
-        infoViewController.modalPresentationStyle = .automatic
-        present(infoViewController, animated: true, completion: nil)
+        feedCoordinator.handleAction(actionType: FeedActionType.alert)
     }
     
 }

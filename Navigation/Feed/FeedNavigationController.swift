@@ -9,6 +9,8 @@ import UIKit
 import StorageService
 
 class FeedNavigationController: UIViewController {
+    
+    let feedCoordinator: FeedCoordinator
 
     let post = Post(title: "Моя статья", description: "", image: "")
     lazy var checkGuessTextField: UITextField = {
@@ -40,6 +42,15 @@ class FeedNavigationController: UIViewController {
         return label
     }()
     private let nc = NotificationCenter.default
+    
+    init(feedCoordinator: FeedCoordinator) {
+        self.feedCoordinator = feedCoordinator
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -78,9 +89,7 @@ class FeedNavigationController: UIViewController {
         return CustomButton(title: "Перейти на пост",
                                   backgroundColor: .blue,
                                   tapAction: {
-            let postViewController = PostViewController()
-            postViewController.titlePost = self.post.title
-            self.navigationController?.pushViewController(postViewController, animated: true)
+            self.feedCoordinator.handleAction(actionType: FeedActionType.post)
         })
     }
     
