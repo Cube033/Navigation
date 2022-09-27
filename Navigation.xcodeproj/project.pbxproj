@@ -35,6 +35,7 @@
 		0AB49BA628DF624600D6BF4A /* CoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB49BA528DF624600D6BF4A /* CoordinatorProtocol.swift */; };
 		0AB49BA828E17BCA00D6BF4A /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB49BA728E17BCA00D6BF4A /* ProfileViewModel.swift */; };
 		0AB49BAC28E1B2ED00D6BF4A /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB49BAB28E1B2ED00D6BF4A /* UserInfo.swift */; };
+		0AB49BB028E3065D00D6BF4A /* GalleryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB49BAF28E3065D00D6BF4A /* GalleryModel.swift */; };
 		0AD5D56F28DC5A9C0075DDC1 /* iOSIntPackage in Frameworks */ = {isa = PBXBuildFile; productRef = 0AD5D56E28DC5A9C0075DDC1 /* iOSIntPackage */; };
 		0AE9C16A28D48A690034C6AA /* StorageService.h in Headers */ = {isa = PBXBuildFile; fileRef = 0AE9C16928D48A690034C6AA /* StorageService.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0AE9C16D28D48A690034C6AA /* StorageService.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AE9C16728D48A690034C6AA /* StorageService.framework */; };
@@ -100,6 +101,7 @@
 		0AB49BA528DF624600D6BF4A /* CoordinatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatorProtocol.swift; sourceTree = "<group>"; };
 		0AB49BA728E17BCA00D6BF4A /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		0AB49BAB28E1B2ED00D6BF4A /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
+		0AB49BAF28E3065D00D6BF4A /* GalleryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryModel.swift; sourceTree = "<group>"; };
 		0AE9C16728D48A690034C6AA /* StorageService.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = StorageService.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0AE9C16928D48A690034C6AA /* StorageService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StorageService.h; sourceTree = "<group>"; };
 		0AF62D6828B462530083AD9B /* PhotosViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotosViewController.swift; sourceTree = "<group>"; };
@@ -213,6 +215,7 @@
 			children = (
 				0AF62D6928B462540083AD9B /* PhotosCollectionViewCell.swift */,
 				0AF62D6828B462530083AD9B /* PhotosViewController.swift */,
+				0AB49BAF28E3065D00D6BF4A /* GalleryModel.swift */,
 			);
 			path = Gallery;
 			sourceTree = "<group>";
@@ -403,6 +406,7 @@
 				0AB49BA228DF61E500D6BF4A /* FeedCoordinator.swift in Sources */,
 				0AF62D6B28B462540083AD9B /* PhotosCollectionViewCell.swift in Sources */,
 				0AB49B9B28DF410900D6BF4A /* ScreenFlow.swift in Sources */,
+				0AB49BB028E3065D00D6BF4A /* GalleryModel.swift in Sources */,
 				0AB49BA628DF624600D6BF4A /* CoordinatorProtocol.swift in Sources */,
 				0AF62D6A28B462540083AD9B /* PhotosViewController.swift in Sources */,
 				0AA9197628AA33E40010930E /* UIView+Extension.swift in Sources */,
