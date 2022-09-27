@@ -65,6 +65,15 @@ class LogInViewController: UIViewController {
     lazy var logInButton = CustomButton(title: "Log in",
                                         backgroundColor: nil,
                                         tapAction: {self.logIn()})
+    lazy var bruteForceButton = CustomButton(title: "Подобрать пароль",
+                                             backgroundColor: nil,
+                                             tapAction: {self.bruteForce()})
+    
+    private let activityIndicator = UIActivityIndicatorView(style: .medium)
+    
+    private let queue = DispatchQueue(label: "com.Navigation.brute-force", qos:.default)
+    
+    private var hackerModeOn = false
     
     init (mainCoordinator:MainCoordinator) {
         self.mainCoordinator = mainCoordinator
@@ -104,6 +113,29 @@ class LogInViewController: UIViewController {
         scrollView.verticalScrollIndicatorInsets = .zero
     }
     
+    private func bruteForce(){
+        self.activityIndicator.startAnimating()
+        let bruteForce = BruteForce()
+        let randomPassword = bruteForce.getRandomPassword(lenght: 3)
+#if DEBUG
+        print(randomPassword)
+#endif
+        queue.async {
+            let stolenPassword = bruteForce.bruteForce(passwordToUnlock: randomPassword)
+            DispatchQueue.main.async {
+                self.succesHacking(stolenPassword: stolenPassword)
+            }
+        }
+        
+    }
+    
+    private func succesHacking(stolenPassword: String){
+        self.activityIndicator.stopAnimating()
+        self.passwordTextField.text = stolenPassword
+        self.passwordTextField.isSecureTextEntry = false
+        self.hackerModeOn = true
+    }
+    
     private func logIn(){
         var successLogIn = false
         let currentUser: User?
@@ -118,7 +150,7 @@ class LogInViewController: UIViewController {
             }
         }
 #endif
-        if successLogIn {
+        if successLogIn || hackerModeOn {
             UserInfo.shared.setUser(user: currentUser!)
             mainCoordinator.startApplication()
         } else {
@@ -136,6 +168,8 @@ class LogInViewController: UIViewController {
         view.backgroundColor = .white
         self.navigationController?.isNavigationBarHidden = true
         view.clipsToBounds = true
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.color = .blue
     }
     
     private func addElements(){
@@ -145,11 +179,15 @@ class LogInViewController: UIViewController {
         contentView.addSubview(logInTextField)
         contentView.addSubview(passwordTextField)
         contentView.addSubview(logInButton)
+        contentView.addSubview(bruteForceButton)
+        contentView.addSubview(activityIndicator)
     }
     
     private func setConstraints(){
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         contentView.translatesAutoresizingMaskIntoConstraints = false
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        
         NSLayoutConstraint.activate([
             scrollView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
             scrollView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
@@ -181,7 +219,16 @@ class LogInViewController: UIViewController {
             logInButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 16),
             logInButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             logInButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            logInButton.heightAnchor.constraint(equalToConstant: 50)
+            logInButton.heightAnchor.constraint(equalToConstant: 50),
+            
+            bruteForceButton.topAnchor.constraint(equalTo: logInButton.bottomAnchor, constant: 16),
+            bruteForceButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            bruteForceButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            bruteForceButton.heightAnchor.constraint(equalToConstant: 50),
+            
+            activityIndicator.topAnchor.constraint(equalTo: bruteForceButton.bottomAnchor, constant: 16),
+            activityIndicator.centerXAnchor.constraint(equalTo: bruteForceButton.centerXAnchor),
+            activityIndicator.heightAnchor.constraint(equalToConstant: 30),
         ])
     }
     
