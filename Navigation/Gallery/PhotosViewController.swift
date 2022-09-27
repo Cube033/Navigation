@@ -36,21 +36,11 @@ class PhotosViewController: UIViewController {
         view.backgroundColor = .white
         
         layout()
-        
-        let photoArrayForObserver: [UIImage] = {
-            var array = [UIImage]()
-            for element in 0...19 {
-                array.append(UIImage(named: "gallery\(element)")!)
-            }
-            return array
-        }()
-        
-        imagePublisherFacade.subscribe(self)
-        imagePublisherFacade.addImagesWithTimer(time: 0.5, repeat: 20, userImages: photoArrayForObserver)
+        addImages()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
-        imagePublisherFacade.removeSubscription(for: self)
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -63,6 +53,43 @@ class PhotosViewController: UIViewController {
         super.viewWillDisappear(animated)
         navigationController?.isNavigationBarHidden = true
         
+    }
+    
+    private func addImages() {
+        
+        processAndAddImages(filter: .colorInvert, qos: .userInteractive, numberOfPhotos: 15) //time interval 4.461292208055966
+        processAndAddImages(filter: .chrome, qos: .userInitiated, numberOfPhotos: 13) //time interval 4.501476333010942
+        processAndAddImages(filter: .gaussianBlur(radius: 10), qos: .default, numberOfPhotos: 10) //time interval 3.184501750045456
+        processAndAddImages(filter: .monochrome(color: .blue, intensity: 5), qos: .utility, numberOfPhotos: 4) //time interval 1.2014757079305127
+        processAndAddImages(filter: .noir, qos: .background, numberOfPhotos: 19) //time interval 6.409920625039376
+    }
+    
+    private func processAndAddImages(filter: ColorFilter, qos: QualityOfService, numberOfPhotos: Int){
+        var end = DispatchTime.now()
+        
+        let photoArrayForProcessor = GalleryModel.getPartOfArray(numberOfElements: numberOfPhotos)
+        let imageProcessor = iOSIntPackage.ImageProcessor()
+        let start = DispatchTime.now()
+        imageProcessor.processImagesOnThread(sourceImages: photoArrayForProcessor,
+                                             filter: filter,
+                                             qos: qos,
+                                             completion: {photoArrayFromProcessor in
+            photoArrayFromProcessor.forEach {
+                if let processedPhoto = $0 {
+                    self.photoArray.append(UIImage(cgImage: processedPhoto))
+                }
+            }
+            end = DispatchTime.now()
+            let nanoTimeEnd = Double(end.uptimeNanoseconds) / 1_000_000_000
+            let nanoTimeStart = Double(start.uptimeNanoseconds) / 1_000_000_000
+            let timeInterval =  nanoTimeEnd - nanoTimeStart// Technically could overflow for long running tests
+#if DEBUG
+            print("filter type: \(filter).time interval \(timeInterval)")
+#endif
+            DispatchQueue.main.async {
+                self.photosColletionView.reloadData()
+            }
+        })
     }
     
     private func layout() {
@@ -116,10 +143,3 @@ extension PhotosViewController: UICollectionViewDelegateFlowLayout {
     
 }
 
-extension PhotosViewController: ImageLibrarySubscriber {
-    
-    func receive(images: [UIImage]) {
-        photoArray.append(images.last!)
-        photosColletionView.reloadData()
-    }
-}
