@@ -148,16 +148,22 @@ class LogInViewController: UIViewController {
         successLogIn = true
 #else
         if let loginDelegateExist = self.loginDelegate {
-            if loginDelegateExist.check(login: self.logInTextField.text!, password: self.passwordTextField.text!) {
-                successLogIn = true
+            do{
+                successLogIn = try loginDelegateExist.check(login: self.logInTextField.text!, password: self.passwordTextField.text!)
+            } catch LoginError.emptyLoginField {
+                self.setAlert(errorMessage: "Не заполнен логин!")
+            } catch LoginError.emptyPasswordField {
+                self.setAlert(errorMessage: "Не заполнен пароль!")
+            } catch LoginError.loginFailed {
+                self.setAlert(errorMessage: "Не правильно указаны логин или пароль!")
+            } catch {
+                
             }
         }
 #endif
         if successLogIn || hackerModeOn {
             UserInfo.shared.setUser(user: currentUser!)
             mainCoordinator.startApplication()
-        } else {
-            self.setAlert()
         }
     }
     
@@ -165,11 +171,10 @@ class LogInViewController: UIViewController {
         setElements()
         addElements()
         setConstraints()
-        loginReminderTimer = Timer.scheduledTimer(withTimeInterval: 10, repeats: true, block: {
+        loginReminderTimer = Timer.scheduledTimer(withTimeInterval: 30, repeats: true, block: {
             timer in
             self.setReminderAlert(timer: timer)
         })
-        loginReminderTimer!.fire()
     }
     
     private func setElements(){
@@ -229,8 +234,8 @@ class LogInViewController: UIViewController {
         ])
     }
     
-    private func setAlert() {
-        let alert = UIAlertController(title: "Ошибка", message: "Указаны неверный логин или пароль", preferredStyle: .alert)
+    private func setAlert(errorMessage: String) {
+        let alert = UIAlertController(title: "Ошибка", message: errorMessage, preferredStyle: .alert)
         let actionDismiss = UIAlertAction(title: "Закрыть", style: .default) { (_) -> Void in
             self.dismiss(animated: true, completion: nil)
         }

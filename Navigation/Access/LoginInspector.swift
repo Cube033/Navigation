@@ -9,8 +9,14 @@ import Foundation
 
 struct LoginInspector: LoginViewControllerDelegate {
     
-    func check(login: String, password: String) -> Bool {
+    func check(login: String, password: String) throws -> Bool {
         let checker = Checker.shared
-        return checker.check(login: login, password: password)
+        let chekResult: Result<Bool, LoginError> = checker.check(login: login, password: password)
+        switch chekResult {
+        case .success(let checkIsSuccess):
+            return checkIsSuccess
+        case .failure(let loginError):
+            throw loginError
+        }
     }
 }

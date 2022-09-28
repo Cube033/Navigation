@@ -10,6 +10,10 @@ import UIKit
 
 class ProfileHeaderView: UIView {
     
+    enum StatusError: Error {
+        case emptyStatusText
+    }
+    
     private var statusText: String = ""
     
     var avatarImageView = UIImageView()
@@ -141,17 +145,12 @@ class ProfileHeaderView: UIView {
         return CustomButton(title: "Show status",
                                   backgroundColor: nil,
                                   tapAction: {
-            let labels = self.subviews.compactMap { $0 as? UILabel }
-            for label in labels {
-                if label.textColor == .gray {
-                    let textViews = self.subviews.compactMap {$0 as? UITextField}
-                    if let firstTextView = textViews.first {
-                        label.text = firstTextView.text ?? "no text"
-                    }
-                }
+            guard ((try? self.changeStatus()) != nil) else {
+                preconditionFailure("Text status must be filled")
             }
         })
     }
+    
     
     private func setStatusTextField() -> UITextField{
         let statusTextField: UITextField = {
@@ -185,6 +184,21 @@ class ProfileHeaderView: UIView {
         nameLabel.text = user.fullName
         avatarImageView.image = user.avatar
         statusLabel.text = user.status
+    }
+    
+    private func changeStatus() throws {
+        let labels = self.subviews.compactMap { $0 as? UILabel }
+        for label in labels {
+            if label.textColor == .gray {
+                let textViews = self.subviews.compactMap {$0 as? UITextField}
+                if let firstTextView = textViews.first {
+                    if firstTextView.text! == "" {
+                        throw StatusError.emptyStatusText
+                    }
+                    label.text = firstTextView.text ?? "no text"
+                }
+            }
+        }
     }
 }
 
