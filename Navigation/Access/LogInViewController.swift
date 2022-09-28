@@ -75,6 +75,8 @@ class LogInViewController: UIViewController {
     
     private var hackerModeOn = false
     
+    var loginReminderTimer: Timer?
+    
     init (mainCoordinator:MainCoordinator) {
         self.mainCoordinator = mainCoordinator
         super.init(nibName: nil, bundle: nil)
@@ -99,6 +101,7 @@ class LogInViewController: UIViewController {
         super.viewDidDisappear(animated)
         nc.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
         nc.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+        loginReminderTimer = nil
     }
     
     @objc private func kbdShow(notification: NSNotification){
@@ -123,6 +126,7 @@ class LogInViewController: UIViewController {
         queue.async {
             let stolenPassword = bruteForce.bruteForce(passwordToUnlock: randomPassword)
             DispatchQueue.main.async {
+                self.activityIndicator.stopAnimating()
                 self.succesHacking(stolenPassword: stolenPassword)
             }
         }
@@ -130,7 +134,6 @@ class LogInViewController: UIViewController {
     }
     
     private func succesHacking(stolenPassword: String){
-        self.activityIndicator.stopAnimating()
         self.passwordTextField.text = stolenPassword
         self.passwordTextField.isSecureTextEntry = false
         self.hackerModeOn = true
@@ -162,6 +165,11 @@ class LogInViewController: UIViewController {
         setElements()
         addElements()
         setConstraints()
+        loginReminderTimer = Timer.scheduledTimer(withTimeInterval: 10, repeats: true, block: {
+            timer in
+            self.setReminderAlert(timer: timer)
+        })
+        loginReminderTimer!.fire()
     }
     
     private func setElements(){
@@ -179,8 +187,6 @@ class LogInViewController: UIViewController {
         contentView.addSubview(logInTextField)
         contentView.addSubview(passwordTextField)
         contentView.addSubview(logInButton)
-        contentView.addSubview(bruteForceButton)
-        contentView.addSubview(activityIndicator)
     }
     
     private func setConstraints(){
@@ -220,15 +226,6 @@ class LogInViewController: UIViewController {
             logInButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             logInButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             logInButton.heightAnchor.constraint(equalToConstant: 50),
-            
-            bruteForceButton.topAnchor.constraint(equalTo: logInButton.bottomAnchor, constant: 16),
-            bruteForceButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            bruteForceButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            bruteForceButton.heightAnchor.constraint(equalToConstant: 50),
-            
-            activityIndicator.topAnchor.constraint(equalTo: bruteForceButton.bottomAnchor, constant: 16),
-            activityIndicator.centerXAnchor.constraint(equalTo: bruteForceButton.centerXAnchor),
-            activityIndicator.heightAnchor.constraint(equalToConstant: 30),
         ])
     }
     
@@ -239,6 +236,37 @@ class LogInViewController: UIViewController {
         }
         alert.addAction(actionDismiss)
         self.present(alert, animated: true, completion: nil)
+    }
+    
+    private func setReminderAlert(timer: Timer) {
+        //timer.invalidate() // если оставить это включенным, то Алерт не сработает ни разу
+        //Здесь была задумка - остановить таймер и запустить его снова, по нажатию кнопки "Ещё чуть-чуть..."
+        let alert = UIAlertController(title: "Забыли пароль?", message: "Не беда! Давайте взломаем приложение", preferredStyle: .alert)
+        let startHacking = UIAlertAction(title: "Хорошо, ломаем", style: .default) { (_) -> Void in
+            self.startHacking()
+            timer.invalidate()
+        }
+        let actionDismiss = UIAlertAction(title: "Ещё чуть-чуть и сам(а) вспомню", style: .default) { (_) -> Void in
+            
+        }
+        alert.addAction(startHacking)
+        alert.addAction(actionDismiss)
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    private func startHacking(){
+        contentView.addSubview(bruteForceButton)
+        contentView.addSubview(activityIndicator)
+        
+        NSLayoutConstraint.activate([
+        bruteForceButton.topAnchor.constraint(equalTo: self.logInButton.bottomAnchor, constant: 16),
+        bruteForceButton.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 16),
+        bruteForceButton.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -16),
+        bruteForceButton.heightAnchor.constraint(equalToConstant: 50),
+        
+        activityIndicator.centerYAnchor.constraint(equalTo: self.passwordTextField.centerYAnchor),
+        activityIndicator.trailingAnchor.constraint(equalTo: self.passwordTextField.trailingAnchor, constant: -16),
+        ])
     }
 }
 
