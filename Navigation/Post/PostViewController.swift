@@ -25,10 +25,10 @@ class PostViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .magenta
+        view.backgroundColor = .orange
         self.navigationItem.title = titlePost
         
-        let barButtonItem = UIBarButtonItem(title: "Alert", style: .plain, target: self, action: #selector(barButtonTapped))
+        let barButtonItem = UIBarButtonItem(title: "Player", style: .plain, target: self, action: #selector(barButtonTapped))
         self.navigationItem.rightBarButtonItem = barButtonItem
     }
     

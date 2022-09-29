@@ -43,6 +43,10 @@ class FeedNavigationController: UIViewController {
     }()
     private let nc = NotificationCenter.default
     
+    private lazy var playerButton = CustomButton(title: "Player", backgroundColor: nil, tapAction: {self.feedCoordinator.handleAction(actionType: FeedActionType.alert)})
+    
+    private lazy var videoPlayerButton = CustomButton(title: "Video Player", backgroundColor: .red , tapAction: {self.feedCoordinator.handleAction(actionType: FeedActionType.videoPlayer)})
+    
     init(feedCoordinator: FeedCoordinator) {
         self.feedCoordinator = feedCoordinator
         super.init(nibName: nil, bundle: nil)
@@ -104,6 +108,8 @@ class FeedNavigationController: UIViewController {
         self.view.addSubview(checkGuessTextField)
         self.view.addSubview(checkGuessButton)
         self.view.addSubview(checkLabel)
+        self.view.addSubview(playerButton)
+        self.view.addSubview(videoPlayerButton)
         
         NSLayoutConstraint.activate([
             button1.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
@@ -129,6 +135,16 @@ class FeedNavigationController: UIViewController {
             checkLabel.leadingAnchor.constraint(equalTo: checkGuessButton.leadingAnchor),
             checkLabel.trailingAnchor.constraint(equalTo: checkGuessButton.trailingAnchor),
             checkLabel.heightAnchor.constraint(equalToConstant: 30),
+            
+            playerButton.topAnchor.constraint(equalTo: checkLabel.bottomAnchor, constant: 16),
+            playerButton.leadingAnchor.constraint(equalTo: checkGuessButton.leadingAnchor),
+            playerButton.trailingAnchor.constraint(equalTo: checkGuessButton.trailingAnchor),
+            playerButton.heightAnchor.constraint(equalToConstant: 30),
+            
+            videoPlayerButton.topAnchor.constraint(equalTo: playerButton.bottomAnchor, constant: 16),
+            videoPlayerButton.leadingAnchor.constraint(equalTo: checkGuessButton.leadingAnchor),
+            videoPlayerButton.trailingAnchor.constraint(equalTo: checkGuessButton.trailingAnchor),
+            videoPlayerButton.heightAnchor.constraint(equalToConstant: 30),
         ])
     }
     

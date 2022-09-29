@@ -15,6 +15,13 @@
 		0A67B1E628D85DE4006D4694 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A67B1E528D85DE4006D4694 /* User.swift */; };
 		0A67B1E828D861B4006D4694 /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A67B1E728D861B4006D4694 /* UserService.swift */; };
 		0A7C346328E4BD5E00463E03 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7C346228E4BD5E00463E03 /* Errors.swift */; };
+		0A7C346828E5EBE600463E03 /* Queen.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 0A7C346728E5EBE600463E03 /* Queen.mp3 */; };
+		0A7C347128E5F48100463E03 /* futurama.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 0A7C346D28E5F48100463E03 /* futurama.mp3 */; };
+		0A7C347228E5F48100463E03 /* Rammstein - Feuer Frei.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 0A7C346E28E5F48100463E03 /* Rammstein - Feuer Frei.mp3 */; };
+		0A7C347328E5F48100463E03 /* Мультфильмы - За нами следят.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 0A7C346F28E5F48100463E03 /* Мультфильмы - За нами следят.mp3 */; };
+		0A7C347428E5F48100463E03 /* Кино - Невеселая песня.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 0A7C347028E5F48100463E03 /* Кино - Невеселая песня.mp3 */; };
+		0A7C347628E602F500463E03 /* CustomLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7C347528E602F500463E03 /* CustomLabel.swift */; };
+		0A7C347828E6182E00463E03 /* VideoPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7C347728E6182E00463E03 /* VideoPlayerViewController.swift */; };
 		0A88007227DE2C3000C09A5C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A88007127DE2C3000C09A5C /* AppDelegate.swift */; };
 		0A88007B27DE2C3300C09A5C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A88007A27DE2C3300C09A5C /* Assets.xcassets */; };
 		0A88007E27DE2C3300C09A5C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A88007C27DE2C3300C09A5C /* LaunchScreen.storyboard */; };
@@ -80,6 +87,13 @@
 		0A67B1E528D85DE4006D4694 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		0A67B1E728D861B4006D4694 /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		0A7C346228E4BD5E00463E03 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
+		0A7C346728E5EBE600463E03 /* Queen.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Queen.mp3; sourceTree = "<group>"; };
+		0A7C346D28E5F48100463E03 /* futurama.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = futurama.mp3; sourceTree = "<group>"; };
+		0A7C346E28E5F48100463E03 /* Rammstein - Feuer Frei.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Rammstein - Feuer Frei.mp3"; sourceTree = "<group>"; };
+		0A7C346F28E5F48100463E03 /* Мультфильмы - За нами следят.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Мультфильмы - За нами следят.mp3"; sourceTree = "<group>"; };
+		0A7C347028E5F48100463E03 /* Кино - Невеселая песня.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Кино - Невеселая песня.mp3"; sourceTree = "<group>"; };
+		0A7C347528E602F500463E03 /* CustomLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLabel.swift; sourceTree = "<group>"; };
+		0A7C347728E6182E00463E03 /* VideoPlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerViewController.swift; sourceTree = "<group>"; };
 		0A88006E27DE2C3000C09A5C /* Navigation.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Navigation.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A88007127DE2C3000C09A5C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0A88007A27DE2C3300C09A5C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -155,6 +169,35 @@
 			path = User;
 			sourceTree = "<group>";
 		};
+		0A7C346428E5E5CA00463E03 /* Media */ = {
+			isa = PBXGroup;
+			children = (
+				0A88008D27E8BBC600C09A5C /* InfoViewController.swift */,
+				0A7C347728E6182E00463E03 /* VideoPlayerViewController.swift */,
+			);
+			path = Media;
+			sourceTree = "<group>";
+		};
+		0A7C346528E5E5EE00463E03 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				0A7C346628E5E5FC00463E03 /* Music */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		0A7C346628E5E5FC00463E03 /* Music */ = {
+			isa = PBXGroup;
+			children = (
+				0A7C347028E5F48100463E03 /* Кино - Невеселая песня.mp3 */,
+				0A7C346F28E5F48100463E03 /* Мультфильмы - За нами следят.mp3 */,
+				0A7C346D28E5F48100463E03 /* futurama.mp3 */,
+				0A7C346E28E5F48100463E03 /* Rammstein - Feuer Frei.mp3 */,
+				0A7C346728E5EBE600463E03 /* Queen.mp3 */,
+			);
+			path = Music;
+			sourceTree = "<group>";
+		};
 		0A88006527DE2C2F00C09A5C = {
 			isa = PBXGroup;
 			children = (
@@ -176,6 +219,8 @@
 		0A88007027DE2C3000C09A5C /* Navigation */ = {
 			isa = PBXGroup;
 			children = (
+				0A7C346528E5E5EE00463E03 /* Sources */,
+				0A7C346428E5E5CA00463E03 /* Media */,
 				0AB49B9C28DF418900D6BF4A /* Coordinators */,
 				0AB49B9728DCFCC300D6BF4A /* Model */,
 				0AB49B9428DCC06800D6BF4A /* Factory */,
@@ -189,7 +234,6 @@
 				0A88007A27DE2C3300C09A5C /* Assets.xcassets */,
 				0A88007C27DE2C3300C09A5C /* LaunchScreen.storyboard */,
 				0A88007F27DE2C3300C09A5C /* Info.plist */,
-				0A88008D27E8BBC600C09A5C /* InfoViewController.swift */,
 				0AA9197528AA33E40010930E /* UIView+Extension.swift */,
 			);
 			path = Navigation;
@@ -231,6 +275,7 @@
 				0AB49B9528DCC0A200D6BF4A /* CustomButton.swift */,
 				0AB49B9A28DF410900D6BF4A /* ScreenFlow.swift */,
 				0AB49B9F28DF476400D6BF4A /* MainTabBarViewController.swift */,
+				0A7C347528E602F500463E03 /* CustomLabel.swift */,
 			);
 			path = Factory;
 			sourceTree = "<group>";
@@ -371,8 +416,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0A7C347328E5F48100463E03 /* Мультфильмы - За нами следят.mp3 in Resources */,
+				0A7C346828E5EBE600463E03 /* Queen.mp3 in Resources */,
 				0A88007E27DE2C3300C09A5C /* LaunchScreen.storyboard in Resources */,
 				0A88007B27DE2C3300C09A5C /* Assets.xcassets in Resources */,
+				0A7C347428E5F48100463E03 /* Кино - Невеселая песня.mp3 in Resources */,
+				0A7C347228E5F48100463E03 /* Rammstein - Feuer Frei.mp3 in Resources */,
+				0A7C347128E5F48100463E03 /* futurama.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -397,6 +447,7 @@
 				0AB49BA428DF620A00D6BF4A /* ProfileCoordinator.swift in Sources */,
 				0A67B1E628D85DE4006D4694 /* User.swift in Sources */,
 				0A88008A27E75A3700C09A5C /* PostViewController.swift in Sources */,
+				0A7C347628E602F500463E03 /* CustomLabel.swift in Sources */,
 				0AB49B9E28DF41D700D6BF4A /* MainCoordinator.swift in Sources */,
 				0A88007227DE2C3000C09A5C /* AppDelegate.swift in Sources */,
 				0A88008627E7384800C09A5C /* FeedNavigationController.swift in Sources */,
@@ -407,6 +458,7 @@
 				0AB423BE28AE205600E8A648 /* PhotosTableViewCell.swift in Sources */,
 				0A92408A27EFEB38008E7D38 /* ProfileTableHeaderView.swift in Sources */,
 				0A65CE3128DA13E0001A3EC4 /* LoginViewControllerDelegate.swift in Sources */,
+				0A7C347828E6182E00463E03 /* VideoPlayerViewController.swift in Sources */,
 				0A1498B72828BF6F0090BB87 /* LogInViewController.swift in Sources */,
 				0A88008E27E8BBC600C09A5C /* InfoViewController.swift in Sources */,
 				0A92408C27EFEB74008E7D38 /* ProfileViewController.swift in Sources */,
