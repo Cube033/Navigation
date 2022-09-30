@@ -7,16 +7,13 @@
 
 import Foundation
 import UIKit
+import iOSIntPackage
 
 class PhotosViewController: UIViewController {
     
-    private var photoArray: [String] = {
-        var array = [String]()
-        for element in 0...19 {
-            array.append("gallery\(element)")
-        }
-        return array
-    }()
+    private var elementNumber = 0
+    
+    private var photoArray = [UIImage]()
     
     private lazy var photosColletionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -30,6 +27,8 @@ class PhotosViewController: UIViewController {
         return collectionView
     }()
     
+    let imagePublisherFacade = ImagePublisherFacade()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -37,6 +36,11 @@ class PhotosViewController: UIViewController {
         view.backgroundColor = .white
         
         layout()
+        addImages()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -51,6 +55,43 @@ class PhotosViewController: UIViewController {
         
     }
     
+    private func addImages() {
+        
+        processAndAddImages(filter: .colorInvert, qos: .userInteractive, numberOfPhotos: 15) //time interval 4.461292208055966
+        processAndAddImages(filter: .chrome, qos: .userInitiated, numberOfPhotos: 13) //time interval 4.501476333010942
+        processAndAddImages(filter: .gaussianBlur(radius: 10), qos: .default, numberOfPhotos: 10) //time interval 3.184501750045456
+        processAndAddImages(filter: .monochrome(color: .blue, intensity: 5), qos: .utility, numberOfPhotos: 4) //time interval 1.2014757079305127
+        processAndAddImages(filter: .noir, qos: .background, numberOfPhotos: 19) //time interval 6.409920625039376
+    }
+    
+    private func processAndAddImages(filter: ColorFilter, qos: QualityOfService, numberOfPhotos: Int){
+        var end = DispatchTime.now()
+        
+        let photoArrayForProcessor = GalleryModel.getPartOfArray(numberOfElements: numberOfPhotos)
+        let imageProcessor = iOSIntPackage.ImageProcessor()
+        let start = DispatchTime.now()
+        imageProcessor.processImagesOnThread(sourceImages: photoArrayForProcessor,
+                                             filter: filter,
+                                             qos: qos,
+                                             completion: {photoArrayFromProcessor in
+            photoArrayFromProcessor.forEach {
+                if let processedPhoto = $0 {
+                    self.photoArray.append(UIImage(cgImage: processedPhoto))
+                }
+            }
+            end = DispatchTime.now()
+            let nanoTimeEnd = Double(end.uptimeNanoseconds) / 1_000_000_000
+            let nanoTimeStart = Double(start.uptimeNanoseconds) / 1_000_000_000
+            let timeInterval =  nanoTimeEnd - nanoTimeStart// Technically could overflow for long running tests
+#if DEBUG
+            print("filter type: \(filter).time interval \(timeInterval)")
+#endif
+            DispatchQueue.main.async {
+                self.photosColletionView.reloadData()
+            }
+        })
+    }
+    
     private func layout() {
         view.addSubview(photosColletionView)
         
@@ -61,7 +102,6 @@ class PhotosViewController: UIViewController {
             photosColletionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             ])
     }
-    
 }
 
 extension PhotosViewController: UICollectionViewDataSource {
@@ -71,7 +111,7 @@ extension PhotosViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let photoCell = photosColletionView.dequeueReusableCell(withReuseIdentifier: "PhotosCollectionViewCell", for: indexPath) as! PhotosCollectionViewCell
-        photoCell.setupCell(photoName: photoArray[indexPath.row])
+        photoCell.setupCell(photoImage: photoArray[indexPath.row])
         return photoCell
     }
     
@@ -102,3 +142,4 @@ extension PhotosViewController: UICollectionViewDelegateFlowLayout {
     }
     
 }
+

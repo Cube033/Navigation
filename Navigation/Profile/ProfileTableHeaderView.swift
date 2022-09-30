@@ -10,6 +10,10 @@ import UIKit
 
 class ProfileHeaderView: UIView {
     
+    enum StatusError: Error {
+        case emptyStatusText
+    }
+    
     private var statusText: String = ""
     
     var avatarImageView = UIImageView()
@@ -110,12 +114,10 @@ class ProfileHeaderView: UIView {
     }
     
     private func setAvatarImageView() -> UIImageView{
-        let avatarImage = UIImage(named: "myAvatarImage")
         let avatarImageView: UIImageView = {
             let imageView = UIImageView()
             imageView.isUserInteractionEnabled = true
             imageView.contentMode = .scaleAspectFill
-            imageView.image = avatarImage
             imageView.layer.cornerRadius = 50
             imageView.clipsToBounds = true
             imageView.layer.borderColor = UIColor.white.cgColor // цвет рамки
@@ -130,7 +132,6 @@ class ProfileHeaderView: UIView {
     private func setNameLabel() -> UILabel{
         let nameLabel: UILabel = {
             let label = UILabel()
-            label.text = "Dmitry Fedotov"
             let nameLabelFont = UIFont(name:"HelveticaNeue-Bold", size: 18.0)
             label.textColor = .black
             label.font = nameLabelFont
@@ -141,36 +142,15 @@ class ProfileHeaderView: UIView {
     }
     
     private func setStatusButton() -> UIButton{
-        let statusButton: UIButton = {
-            let button = UIButton()
-            button.backgroundColor = .blue
-            button.layer.cornerRadius = 4.0
-            button.setTitle("Show status", for: .normal)
-            button.setTitleColor(.white, for: .normal)
-            button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
-            
-            button.layer.shadowColor = UIColor.black.cgColor
-            button.layer.shadowOffset = .init(width: 4, height: 4)
-            button.layer.shadowOpacity = 0.7
-            button.layer.shadowRadius = 4
-            button.addAction(
-                UIAction { _ in
-                    let labels = self.subviews.compactMap { $0 as? UILabel }
-                    for label in labels {
-                        if label.textColor == .gray {
-                            let textViews = self.subviews.compactMap {$0 as? UITextField}
-                            if let firstTextView = textViews.first {
-                                label.text = firstTextView.text ?? "no text"
-                            }
-                        }
-                    }
-                }, for: .touchDown
-            )
-            button.translatesAutoresizingMaskIntoConstraints = false
-            return button
-        }()
-        return statusButton
+        return CustomButton(title: "Show status",
+                                  backgroundColor: nil,
+                                  tapAction: {
+            guard ((try? self.changeStatus()) != nil) else {
+                preconditionFailure("Text status must be filled")
+            }
+        })
     }
+    
     
     private func setStatusTextField() -> UITextField{
         let statusTextField: UITextField = {
@@ -192,13 +172,33 @@ class ProfileHeaderView: UIView {
     private func setStatusLabel() -> UILabel{
         let statusLabel: UILabel = {
             let label = UILabel()
-            label.text = "Waiting for something..."
             label.textColor = .gray
             label.font = .systemFont(ofSize: 14.0)
             label.translatesAutoresizingMaskIntoConstraints = false
             return label
         }()
         return statusLabel
+    }
+    
+    public func setUserInfo(user: User) {
+        nameLabel.text = user.fullName
+        avatarImageView.image = user.avatar
+        statusLabel.text = user.status
+    }
+    
+    private func changeStatus() throws {
+        let labels = self.subviews.compactMap { $0 as? UILabel }
+        for label in labels {
+            if label.textColor == .gray {
+                let textViews = self.subviews.compactMap {$0 as? UITextField}
+                if let firstTextView = textViews.first {
+                    if firstTextView.text! == "" {
+                        throw StatusError.emptyStatusText
+                    }
+                    label.text = firstTextView.text ?? "no text"
+                }
+            }
+        }
     }
 }
 

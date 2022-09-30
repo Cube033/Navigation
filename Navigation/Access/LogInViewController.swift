@@ -10,6 +10,7 @@ import UIKit
 
 class LogInViewController: UIViewController {
     
+    var loginDelegate: LoginViewControllerDelegate?
     let colorSet = UIColor(red: 0.28, green: 0.52, blue: 0.80, alpha: 1.00)
     let scrollView = UIScrollView()
     let contentView = UIView()
@@ -59,38 +60,31 @@ class LogInViewController: UIViewController {
         return passwordTextField
     }()
     private let nc = NotificationCenter.default
-    var logInButton: UIButton = {
-        let logInButton = UIButton()
-        var buttonConfiguration = UIButton.Configuration.filled()
-        buttonConfiguration.baseBackgroundColor = UIColor(patternImage: UIImage(named: "blue_pixel")!)
-        buttonConfiguration.title = "Log in"
-        buttonConfiguration.titleTextAttributesTransformer =
-        UIConfigurationTextAttributesTransformer { incoming in
-            var outgoing = incoming
-            outgoing.foregroundColor = UIColor.white
-            outgoing.font = UIFont.systemFont(ofSize: 14)
-            return outgoing
-          }
-        logInButton.layer.cornerRadius = 10.0
-        logInButton.translatesAutoresizingMaskIntoConstraints = false
-        logInButton.configuration = buttonConfiguration
-        logInButton.configurationUpdateHandler =  {logInButton in
-            switch logInButton.state {
-            case .normal:
-                logInButton.alpha = 1
-            case .selected:
-                logInButton.alpha = 0.8
-            case .highlighted:
-                logInButton.alpha = 0.8
-            case .disabled:
-                logInButton.alpha = 0.8
-            default:
-                logInButton.alpha = 1
-            }
-        }
-        return logInButton
-    }()
+    let mainCoordinator: MainCoordinator
+   
+    lazy var logInButton = CustomButton(title: "Log in",
+                                        backgroundColor: nil,
+                                        tapAction: {self.logIn()})
+    lazy var bruteForceButton = CustomButton(title: "Подобрать пароль",
+                                             backgroundColor: nil,
+                                             tapAction: {self.bruteForce()})
     
+    private let activityIndicator = UIActivityIndicatorView(style: .medium)
+    
+    private let queue = DispatchQueue(label: "com.Navigation.brute-force", qos:.default)
+    
+    private var hackerModeOn = false
+    
+    var loginReminderTimer: Timer?
+    
+    init (mainCoordinator:MainCoordinator) {
+        self.mainCoordinator = mainCoordinator
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -107,6 +101,7 @@ class LogInViewController: UIViewController {
         super.viewDidDisappear(animated)
         nc.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
         nc.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+        loginReminderTimer = nil
     }
     
     @objc private func kbdShow(notification: NSNotification){
@@ -121,21 +116,73 @@ class LogInViewController: UIViewController {
         scrollView.verticalScrollIndicatorInsets = .zero
     }
     
+    private func bruteForce(){
+        self.activityIndicator.startAnimating()
+        let bruteForce = BruteForce()
+        let randomPassword = bruteForce.getRandomPassword(lenght: 3)
+#if DEBUG
+        print(randomPassword)
+#endif
+        queue.async {
+            let stolenPassword = bruteForce.bruteForce(passwordToUnlock: randomPassword)
+            DispatchQueue.main.async {
+                self.activityIndicator.stopAnimating()
+                self.succesHacking(stolenPassword: stolenPassword)
+            }
+        }
+        
+    }
+    
+    private func succesHacking(stolenPassword: String){
+        self.passwordTextField.text = stolenPassword
+        self.passwordTextField.isSecureTextEntry = false
+        self.hackerModeOn = true
+    }
+    
+    private func logIn(){
+        var successLogIn = false
+        let currentUser: User?
+        let userSevice = CurrentUserService()
+        currentUser = userSevice.getUserByLogin(login: "cube033")
+#if DEBUG
+        successLogIn = true
+#else
+        if let loginDelegateExist = self.loginDelegate {
+            do{
+                successLogIn = try loginDelegateExist.check(login: self.logInTextField.text!, password: self.passwordTextField.text!)
+            } catch LoginError.emptyLoginField {
+                self.setAlert(errorMessage: "Не заполнен логин!")
+            } catch LoginError.emptyPasswordField {
+                self.setAlert(errorMessage: "Не заполнен пароль!")
+            } catch LoginError.loginFailed {
+                self.setAlert(errorMessage: "Не правильно указаны логин или пароль!")
+            } catch {
+                
+            }
+        }
+#endif
+        if successLogIn || hackerModeOn {
+            UserInfo.shared.setUser(user: currentUser!)
+            mainCoordinator.startApplication()
+        }
+    }
+    
     private func setView(){
         setElements()
         addElements()
         setConstraints()
+        loginReminderTimer = Timer.scheduledTimer(withTimeInterval: 30, repeats: true, block: {
+            timer in
+            self.setReminderAlert(timer: timer)
+        })
     }
     
     private func setElements(){
         view.backgroundColor = .white
         self.navigationController?.isNavigationBarHidden = true
         view.clipsToBounds = true
-        logInButton.addAction(
-          UIAction { _ in
-            self.navigationController?.pushViewController(ProfileViewController(), animated: true)
-          }, for: .touchDown
-        )
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.color = .blue
     }
     
     private func addElements(){
@@ -150,6 +197,8 @@ class LogInViewController: UIViewController {
     private func setConstraints(){
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         contentView.translatesAutoresizingMaskIntoConstraints = false
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        
         NSLayoutConstraint.activate([
             scrollView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
             scrollView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
@@ -181,8 +230,48 @@ class LogInViewController: UIViewController {
             logInButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 16),
             logInButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             logInButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            logInButton.heightAnchor.constraint(equalToConstant: 50)
-            ])
+            logInButton.heightAnchor.constraint(equalToConstant: 50),
+        ])
+    }
+    
+    private func setAlert(errorMessage: String) {
+        let alert = UIAlertController(title: "Ошибка", message: errorMessage, preferredStyle: .alert)
+        let actionDismiss = UIAlertAction(title: "Закрыть", style: .default) { (_) -> Void in
+            self.dismiss(animated: true, completion: nil)
+        }
+        alert.addAction(actionDismiss)
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    private func setReminderAlert(timer: Timer) {
+        //timer.invalidate() // если оставить это включенным, то Алерт не сработает ни разу
+        //Здесь была задумка - остановить таймер и запустить его снова, по нажатию кнопки "Ещё чуть-чуть..."
+        let alert = UIAlertController(title: "Забыли пароль?", message: "Не беда! Давайте взломаем приложение", preferredStyle: .alert)
+        let startHacking = UIAlertAction(title: "Хорошо, ломаем", style: .default) { (_) -> Void in
+            self.startHacking()
+            timer.invalidate()
+        }
+        let actionDismiss = UIAlertAction(title: "Ещё чуть-чуть и сам(а) вспомню", style: .default) { (_) -> Void in
+            
+        }
+        alert.addAction(startHacking)
+        alert.addAction(actionDismiss)
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    private func startHacking(){
+        contentView.addSubview(bruteForceButton)
+        contentView.addSubview(activityIndicator)
+        
+        NSLayoutConstraint.activate([
+        bruteForceButton.topAnchor.constraint(equalTo: self.logInButton.bottomAnchor, constant: 16),
+        bruteForceButton.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 16),
+        bruteForceButton.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -16),
+        bruteForceButton.heightAnchor.constraint(equalToConstant: 50),
+        
+        activityIndicator.centerYAnchor.constraint(equalTo: self.passwordTextField.centerYAnchor),
+        activityIndicator.trailingAnchor.constraint(equalTo: self.passwordTextField.trailingAnchor, constant: -16),
+        ])
     }
 }
 
@@ -192,5 +281,3 @@ extension LogInViewController: UITextFieldDelegate {
         return true
     }
 }
-
-
