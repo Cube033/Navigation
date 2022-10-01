@@ -12,7 +12,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow? = UIWindow()
     
+    let appConfiguration: AppConfiguration
+    
+    override init (){
+        let appConfigurationOpt = AppConfiguration.allCases.randomElement()
+        self.appConfiguration = appConfigurationOpt ?? AppConfiguration.link1
+    }
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        
         
         let mainCoordinator = MainCoordinator(window: window!)
         mainCoordinator.startApplication()

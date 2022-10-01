@@ -52,6 +52,7 @@
 		0AE9C17328D48B140034C6AA /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA9197128AA16CE0010930E /* Post.swift */; };
 		0AF62D6A28B462540083AD9B /* PhotosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF62D6828B462530083AD9B /* PhotosViewController.swift */; };
 		0AF62D6B28B462540083AD9B /* PhotosCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF62D6928B462540083AD9B /* PhotosCollectionViewCell.swift */; };
+		0AFA291B28E7609200B9F31F /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AFA291A28E7609200B9F31F /* NetworkService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -124,6 +125,7 @@
 		0AE9C16928D48A690034C6AA /* StorageService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StorageService.h; sourceTree = "<group>"; };
 		0AF62D6828B462530083AD9B /* PhotosViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotosViewController.swift; sourceTree = "<group>"; };
 		0AF62D6928B462540083AD9B /* PhotosCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotosCollectionViewCell.swift; sourceTree = "<group>"; };
+		0AFA291A28E7609200B9F31F /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -219,6 +221,7 @@
 		0A88007027DE2C3000C09A5C /* Navigation */ = {
 			isa = PBXGroup;
 			children = (
+				0AFA291928E7604A00B9F31F /* NetworkService */,
 				0A7C346528E5E5EE00463E03 /* Sources */,
 				0A7C346428E5E5CA00463E03 /* Media */,
 				0AB49B9C28DF418900D6BF4A /* Coordinators */,
@@ -315,6 +318,14 @@
 				0A88008527E7384800C09A5C /* FeedNavigationController.swift */,
 			);
 			path = Feed;
+			sourceTree = "<group>";
+		};
+		0AFA291928E7604A00B9F31F /* NetworkService */ = {
+			isa = PBXGroup;
+			children = (
+				0AFA291A28E7609200B9F31F /* NetworkService.swift */,
+			);
+			path = NetworkService;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -462,6 +473,7 @@
 				0A1498B72828BF6F0090BB87 /* LogInViewController.swift in Sources */,
 				0A88008E27E8BBC600C09A5C /* InfoViewController.swift in Sources */,
 				0A92408C27EFEB74008E7D38 /* ProfileViewController.swift in Sources */,
+				0AFA291B28E7609200B9F31F /* NetworkService.swift in Sources */,
 				0AB49BA228DF61E500D6BF4A /* FeedCoordinator.swift in Sources */,
 				0AF62D6B28B462540083AD9B /* PhotosCollectionViewCell.swift in Sources */,
 				0AB49B9B28DF410900D6BF4A /* ScreenFlow.swift in Sources */,
