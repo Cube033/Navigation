@@ -47,6 +47,8 @@ class FeedNavigationController: UIViewController {
     
     private lazy var videoPlayerButton = CustomButton(title: "Video Player", backgroundColor: .red , tapAction: {self.feedCoordinator.handleAction(actionType: FeedActionType.videoPlayer)})
     
+    private lazy var networkServiceButton = CustomButton(title: "Network Service", backgroundColor: .darkGray , tapAction: {self.networkAction()})
+    
     init(feedCoordinator: FeedCoordinator) {
         self.feedCoordinator = feedCoordinator
         super.init(nibName: nil, bundle: nil)
@@ -80,6 +82,13 @@ class FeedNavigationController: UIViewController {
         }
     }
     
+    private func networkAction() {
+        let appDelegat = UIApplication.shared.delegate as? AppDelegate
+        if let appDelegatExist = appDelegat {
+            NetworkService.request(for: appDelegatExist.appConfiguration)
+        }
+    }
+    
     @objc func feedModelHandler(_ notification: Notification) {
         let wordIsCorrect = notification.object as! Bool
         if wordIsCorrect {
@@ -110,6 +119,7 @@ class FeedNavigationController: UIViewController {
         self.view.addSubview(checkLabel)
         self.view.addSubview(playerButton)
         self.view.addSubview(videoPlayerButton)
+        self.view.addSubview(networkServiceButton)
         
         NSLayoutConstraint.activate([
             button1.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
@@ -145,6 +155,11 @@ class FeedNavigationController: UIViewController {
             videoPlayerButton.leadingAnchor.constraint(equalTo: checkGuessButton.leadingAnchor),
             videoPlayerButton.trailingAnchor.constraint(equalTo: checkGuessButton.trailingAnchor),
             videoPlayerButton.heightAnchor.constraint(equalToConstant: 30),
+            
+            networkServiceButton.topAnchor.constraint(equalTo: videoPlayerButton.bottomAnchor, constant: 16),
+            networkServiceButton.leadingAnchor.constraint(equalTo: checkGuessButton.leadingAnchor),
+            networkServiceButton.trailingAnchor.constraint(equalTo: checkGuessButton.trailingAnchor),
+            networkServiceButton.heightAnchor.constraint(equalToConstant: 30),
         ])
     }
     
