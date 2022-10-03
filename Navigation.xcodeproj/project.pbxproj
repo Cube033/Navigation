@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A01D51C28EAB41C0015B152 /* JSONModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A01D51B28EAB41C0015B152 /* JSONModel.swift */; };
 		0A1498B72828BF6F0090BB87 /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1498B62828BF6F0090BB87 /* LogInViewController.swift */; };
 		0A65CE2F28DA13E0001A3EC4 /* Checker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A65CE2C28DA13E0001A3EC4 /* Checker.swift */; };
 		0A65CE3028DA13E0001A3EC4 /* LoginInspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A65CE2D28DA13E0001A3EC4 /* LoginInspector.swift */; };
@@ -80,6 +81,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0A01D51B28EAB41C0015B152 /* JSONModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONModel.swift; sourceTree = "<group>"; };
 		0A1498B62828BF6F0090BB87 /* LogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		0A65CE2C28DA13E0001A3EC4 /* Checker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Checker.swift; sourceTree = "<group>"; };
 		0A65CE2D28DA13E0001A3EC4 /* LoginInspector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginInspector.swift; sourceTree = "<group>"; };
@@ -288,6 +290,7 @@
 			children = (
 				0AB49B9828DCFCDE00D6BF4A /* FeedModel.swift */,
 				0A7C346228E4BD5E00463E03 /* Errors.swift */,
+				0A01D51B28EAB41C0015B152 /* JSONModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -476,6 +479,7 @@
 				0AFA291B28E7609200B9F31F /* NetworkService.swift in Sources */,
 				0AB49BA228DF61E500D6BF4A /* FeedCoordinator.swift in Sources */,
 				0AF62D6B28B462540083AD9B /* PhotosCollectionViewCell.swift in Sources */,
+				0A01D51C28EAB41C0015B152 /* JSONModel.swift in Sources */,
 				0AB49B9B28DF410900D6BF4A /* ScreenFlow.swift in Sources */,
 				0AB49BB028E3065D00D6BF4A /* GalleryModel.swift in Sources */,
 				0AB49BA628DF624600D6BF4A /* CoordinatorProtocol.swift in Sources */,
