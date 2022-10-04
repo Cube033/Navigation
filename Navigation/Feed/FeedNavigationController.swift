@@ -47,7 +47,11 @@ class FeedNavigationController: UIViewController {
     
     private lazy var videoPlayerButton = CustomButton(title: "Video Player", backgroundColor: .red , tapAction: {self.feedCoordinator.handleAction(actionType: FeedActionType.videoPlayer)})
     
-    private lazy var networkServiceButton = CustomButton(title: "Network Service", backgroundColor: .darkGray , tapAction: {self.networkAction()})
+    private lazy var networkJSONSerializationButton = CustomButton(title: "JSON Serialization", backgroundColor: .darkGray , tapAction: {self.networkAction(appConfig: .link4)})
+    
+    private lazy var networkJSONDecoderButton = CustomButton(title: "JSON Decoder", backgroundColor: .darkGray , tapAction: {self.networkAction(appConfig: .link5)})
+    
+    private lazy var networkLabel = CustomLabel(fontSize: 14)
     
     init(feedCoordinator: FeedCoordinator) {
         self.feedCoordinator = feedCoordinator
@@ -82,12 +86,25 @@ class FeedNavigationController: UIViewController {
         }
     }
     
-    private func networkAction() {
-        let appDelegat = UIApplication.shared.delegate as? AppDelegate
-        if let appDelegatExist = appDelegat {
-            NetworkService.request(for: appDelegatExist.appConfiguration)
-        }
+    private func networkAction(appConfig: AppConfiguration) {
+        switch appConfig {
+        case .link4:
+            NetworkService.request(for: appConfig, completion: {(textAnswer)->Void in
+                self.networkLabel.text = textAnswer ?? "no result in answer"
+                                   })
+        case .link5:
+            NetworkService.request(for: appConfig, completion: {(textAnswer)->Void in
+                self.networkLabel.text = textAnswer ?? "no result in answer"
+                })
+        default:
+            let appDelegat = UIApplication.shared.delegate as? AppDelegate
+            if let appDelegatExist = appDelegat {
+                NetworkService.request(for: appDelegatExist.appConfiguration, completion: {(textAnswer) ->Void in print(textAnswer ?? "")})
+            }
+        }       
     }
+    
+    
     
     @objc func feedModelHandler(_ notification: Notification) {
         let wordIsCorrect = notification.object as! Bool
@@ -109,6 +126,7 @@ class FeedNavigationController: UIViewController {
     private func setupView() {
         view.backgroundColor = .white
         layout()
+        networkLabel.text = "Network service"
     }
     
     private func layout() {
@@ -119,7 +137,9 @@ class FeedNavigationController: UIViewController {
         self.view.addSubview(checkLabel)
         self.view.addSubview(playerButton)
         self.view.addSubview(videoPlayerButton)
-        self.view.addSubview(networkServiceButton)
+        self.view.addSubview(networkJSONSerializationButton)
+        self.view.addSubview(networkJSONDecoderButton)
+        self.view.addSubview(networkLabel)
         
         NSLayoutConstraint.activate([
             button1.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
@@ -156,10 +176,20 @@ class FeedNavigationController: UIViewController {
             videoPlayerButton.trailingAnchor.constraint(equalTo: checkGuessButton.trailingAnchor),
             videoPlayerButton.heightAnchor.constraint(equalToConstant: 30),
             
-            networkServiceButton.topAnchor.constraint(equalTo: videoPlayerButton.bottomAnchor, constant: 16),
-            networkServiceButton.leadingAnchor.constraint(equalTo: checkGuessButton.leadingAnchor),
-            networkServiceButton.trailingAnchor.constraint(equalTo: checkGuessButton.trailingAnchor),
-            networkServiceButton.heightAnchor.constraint(equalToConstant: 30),
+            networkJSONSerializationButton.topAnchor.constraint(equalTo: videoPlayerButton.bottomAnchor, constant: 16),
+            networkJSONSerializationButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
+            networkJSONSerializationButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor, constant: -5),
+            networkJSONSerializationButton.heightAnchor.constraint(equalToConstant: 30),
+            
+            networkJSONDecoderButton.topAnchor.constraint(equalTo: videoPlayerButton.bottomAnchor, constant: 16),
+            networkJSONDecoderButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor, constant: 5),
+            networkJSONDecoderButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
+            networkJSONDecoderButton.heightAnchor.constraint(equalToConstant: 30),
+            
+            networkLabel.topAnchor.constraint(equalTo: networkJSONSerializationButton.bottomAnchor, constant: 16),
+            networkLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
+            networkLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
+            networkLabel.heightAnchor.constraint(equalToConstant: 30),
         ])
     }
     
