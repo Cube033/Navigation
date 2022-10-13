@@ -8,5 +8,6 @@
 import Foundation
 
 protocol LoginViewControllerDelegate {
-    func check(login: String, password: String) throws -> Bool
+    func checkCredentials(login: String, password: String, completion:  @escaping (Result<User,LoginError>) -> Void)
+    func signUp(login: String, password: String, completion:  @escaping (User?) -> Void)
 }

@@ -8,15 +8,13 @@
 import Foundation
 
 struct LoginInspector: LoginViewControllerDelegate {
+    func checkCredentials(login: String, password: String, completion: @escaping (Result<User, LoginError>) -> Void) {
+        let checkerService = CheckerService()
+        checkerService.checkCredentials(login: login, password: password, completion: completion)
+    }
     
-    func check(login: String, password: String) throws -> Bool {
-        let checker = Checker.shared
-        let chekResult: Result<Bool, LoginError> = checker.check(login: login, password: password)
-        switch chekResult {
-        case .success(let checkIsSuccess):
-            return checkIsSuccess
-        case .failure(let loginError):
-            throw loginError
-        }
+    func signUp(login: String, password: String, completion: @escaping (User?) -> Void) {
+        let checkerService = CheckerService()
+        checkerService.signUp(login: login, password: password, completion: completion)
     }
 }
