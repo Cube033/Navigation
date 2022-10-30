@@ -8,7 +8,8 @@
 import Foundation
 
 enum LoginError: Error {
-    case emptyLoginField
-    case emptyPasswordField
     case loginFailed
+    case wrongPassword
+    case invalidEmail
+    case userNotFound
 }

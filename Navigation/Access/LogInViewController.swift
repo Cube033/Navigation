@@ -8,8 +8,15 @@
 import Foundation
 import UIKit
 
+fileprivate enum LoginState {
+    case login
+    case signUp
+    case disable
+}
+
 class LogInViewController: UIViewController {
     
+    fileprivate var loginButtonState: LoginState = .disable
     var loginDelegate: LoginViewControllerDelegate?
     let colorSet = UIColor(red: 0.28, green: 0.52, blue: 0.80, alpha: 1.00)
     let scrollView = UIScrollView()
@@ -35,10 +42,11 @@ class LogInViewController: UIViewController {
         logInTextField.layer.borderColor = UIColor.lightGray.cgColor
         logInTextField.layer.borderWidth = 0.5
         logInTextField.translatesAutoresizingMaskIntoConstraints = false
-        logInTextField.placeholder = "Email or phone"
+        logInTextField.placeholder = "Email"
         logInTextField.leftView = .init(frame: .init(x: 0, y: 0, width: 5, height: logInTextField.frame.height))
         logInTextField.leftViewMode = .always
         logInTextField.delegate = self
+        logInTextField.addTarget(self, action: #selector(textFieldDidChange), for: UIControl.Event.editingChanged)
         return logInTextField
     }()
     lazy var passwordTextField: UITextField = {
@@ -57,11 +65,12 @@ class LogInViewController: UIViewController {
         passwordTextField.leftView = .init(frame: .init(x: 0, y: 0, width: 5, height: passwordTextField.frame.height))
         passwordTextField.leftViewMode = .always
         passwordTextField.delegate = self
+        passwordTextField.addTarget(self, action: #selector(textFieldDidChange), for: UIControl.Event.editingChanged)
         return passwordTextField
     }()
     private let nc = NotificationCenter.default
     let mainCoordinator: MainCoordinator
-   
+    
     lazy var logInButton = CustomButton(title: "Log in",
                                         backgroundColor: nil,
                                         tapAction: {self.logIn()})
@@ -130,7 +139,6 @@ class LogInViewController: UIViewController {
                 self.succesHacking(stolenPassword: stolenPassword)
             }
         }
-        
     }
     
     private func succesHacking(stolenPassword: String){
@@ -140,41 +148,73 @@ class LogInViewController: UIViewController {
     }
     
     private func logIn(){
-        var successLogIn = false
-        let currentUser: User?
         let userSevice = CurrentUserService()
-        currentUser = userSevice.getUserByLogin(login: "cube033")
+        
+        if hackerModeOn {
+            startApplication(user: userSevice.getUserByLogin(login: "cube033")!)
+            return
+        }
 #if DEBUG
-        successLogIn = true
+        startApplication(user: userSevice.getUserByLogin(login: "cube033")!)
 #else
         if let loginDelegateExist = self.loginDelegate {
-            do{
-                successLogIn = try loginDelegateExist.check(login: self.logInTextField.text!, password: self.passwordTextField.text!)
-            } catch LoginError.emptyLoginField {
-                self.setAlert(errorMessage: "Не заполнен логин!")
-            } catch LoginError.emptyPasswordField {
-                self.setAlert(errorMessage: "Не заполнен пароль!")
-            } catch LoginError.loginFailed {
-                self.setAlert(errorMessage: "Не правильно указаны логин или пароль!")
-            } catch {
-                
-            }
+            loginDelegateExist.checkCredentials(login: self.logInTextField.text!, password: self.passwordTextField.text!, completion: {[weak self] (loginResult: Result<User, LoginError>) in
+                guard let strongSelf = self else { return }
+                switch loginResult {
+                case .success(let user):
+                    strongSelf.startApplication(user: user)
+                case .failure(let loginError):
+                    switch loginError {
+                    case .invalidEmail:
+                        strongSelf.setAlert(errorMessage: "Не верно указан Email")
+                    case .userNotFound:
+                        strongSelf.loginButtonState = .signUp
+                        strongSelf.setAlert(errorMessage: "Пользователь не найден")
+                    case .wrongPassword:
+                        strongSelf.setAlert(errorMessage: "Не верно указан пароль")
+                    default:
+                        strongSelf.setAlert(errorMessage: "Ошибка авторизации")
+                    }
+                }
+            })
         }
 #endif
-        if successLogIn || hackerModeOn {
-            UserInfo.shared.setUser(user: currentUser!)
-            mainCoordinator.startApplication()
-        }
+    }
+    
+    private func startApplication(user: User) {
+        UserInfo.shared.setUser(user: user)
+        mainCoordinator.startApplication()
     }
     
     private func setView(){
         setElements()
         addElements()
         setConstraints()
-        loginReminderTimer = Timer.scheduledTimer(withTimeInterval: 30, repeats: true, block: {
+        setLoginButtonState()
+        loginReminderTimer = Timer.scheduledTimer(withTimeInterval: 180, repeats: true, block: {
             timer in
             self.setReminderAlert(timer: timer)
         })
+    }
+    
+    private func setLoginButtonState(){
+        if logInTextField.text ?? "" != "" && passwordTextField.text ?? "" != "" {
+            loginButtonState = .login
+        } else {
+            loginButtonState = .disable
+        }
+        switch loginButtonState {
+        case .disable:
+            logInButton.isEnabled = false
+            logInButton.configuration?.title = "Введите email и пароль"
+        case .login:
+            logInButton.isEnabled = true
+            logInButton.configuration?.title = "Вход"
+        case .signUp:
+            logInButton.isEnabled = true
+            logInButton.configuration?.title = "Зарегистрироваться"
+        }
+        
     }
     
     private func setElements(){
@@ -237,15 +277,33 @@ class LogInViewController: UIViewController {
     private func setAlert(errorMessage: String) {
         let alert = UIAlertController(title: "Ошибка", message: errorMessage, preferredStyle: .alert)
         let actionDismiss = UIAlertAction(title: "Закрыть", style: .default) { (_) -> Void in
-            self.dismiss(animated: true, completion: nil)
+            
+        }
+        if loginButtonState == .signUp {
+            if let loginDelegateExist = self.loginDelegate {
+                let actionSignUp =  UIAlertAction(title: "Зарегистрироваться", style: .default) { (_) -> Void in
+                    loginDelegateExist.signUp(login: self.logInTextField.text!, password: self.passwordTextField.text!, completion: {[weak self] (user:User?) in
+                        guard let strongSelf = self else { return }
+                        if let userExist = user {
+                            strongSelf.startApplication(user: userExist)
+                        } else {
+                            strongSelf.setLoginButtonState()
+                            strongSelf.setAlert(errorMessage: "Не удалось создать пользователя. Убедитесь, что длина пароля не менее 6 символов")
+                        }
+                    })
+                }
+                alert.addAction(actionSignUp)
+            }
         }
         alert.addAction(actionDismiss)
         self.present(alert, animated: true, completion: nil)
     }
     
+    @objc private func textFieldDidChange(textField: UITextField) {
+        setLoginButtonState()
+    }
+    
     private func setReminderAlert(timer: Timer) {
-        //timer.invalidate() // если оставить это включенным, то Алерт не сработает ни разу
-        //Здесь была задумка - остановить таймер и запустить его снова, по нажатию кнопки "Ещё чуть-чуть..."
         let alert = UIAlertController(title: "Забыли пароль?", message: "Не беда! Давайте взломаем приложение", preferredStyle: .alert)
         let startHacking = UIAlertAction(title: "Хорошо, ломаем", style: .default) { (_) -> Void in
             self.startHacking()
@@ -264,13 +322,13 @@ class LogInViewController: UIViewController {
         contentView.addSubview(activityIndicator)
         
         NSLayoutConstraint.activate([
-        bruteForceButton.topAnchor.constraint(equalTo: self.logInButton.bottomAnchor, constant: 16),
-        bruteForceButton.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 16),
-        bruteForceButton.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -16),
-        bruteForceButton.heightAnchor.constraint(equalToConstant: 50),
-        
-        activityIndicator.centerYAnchor.constraint(equalTo: self.passwordTextField.centerYAnchor),
-        activityIndicator.trailingAnchor.constraint(equalTo: self.passwordTextField.trailingAnchor, constant: -16),
+            bruteForceButton.topAnchor.constraint(equalTo: self.logInButton.bottomAnchor, constant: 16),
+            bruteForceButton.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 16),
+            bruteForceButton.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -16),
+            bruteForceButton.heightAnchor.constraint(equalToConstant: 50),
+            
+            activityIndicator.centerYAnchor.constraint(equalTo: self.passwordTextField.centerYAnchor),
+            activityIndicator.trailingAnchor.constraint(equalTo: self.passwordTextField.trailingAnchor, constant: -16),
         ])
     }
 }
