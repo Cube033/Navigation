@@ -22,7 +22,8 @@ class ProfileCoordinator: CoordinatorProtocol {
     }
     
     func getStartViewController() -> UIViewController {
-        let user = UserInfo.shared.user!
+        let userSevice = CurrentUserService()
+        let user = UserInfo.shared.user ?? userSevice.getUserByLogin(login: "cube033")!
         let profileViewModel = ProfileViewModel(coordinator: self, user: user)
         let viewController = ProfileViewController(viewModel: profileViewModel)
         return viewController

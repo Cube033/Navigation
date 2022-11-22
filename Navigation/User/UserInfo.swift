@@ -12,7 +12,12 @@ class UserInfo {
     static let shared: UserInfo = {
         let userInfo = UserInfo()
         userInfo.user = nil
+#if DEBUG
+        let userOpt = RealmLoginManager.shared.getFirstAuthorized()
+        userInfo.loggedIn = userOpt !== nil
+#else
         userInfo.loggedIn = false
+#endif
         return userInfo
     }()
     

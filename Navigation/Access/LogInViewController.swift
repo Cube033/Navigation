@@ -145,6 +145,7 @@ class LogInViewController: UIViewController {
         let userSevice = CurrentUserService()
         currentUser = userSevice.getUserByLogin(login: "cube033")
 #if DEBUG
+        RealmLoginManager.shared.authrization(login: self.logInTextField.text!, password: self.passwordTextField.text!)
         successLogIn = true
 #else
         if let loginDelegateExist = self.loginDelegate {
