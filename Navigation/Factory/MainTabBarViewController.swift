@@ -11,6 +11,7 @@ class MainTabBarViewController: UITabBarController {
     
     private let feedScreen = ScreenFlow(flow: .feed)
     private let profileScreen = ScreenFlow(flow: .profile)
+    private let savedPostsScreen = ScreenFlow(flow: .savedPosts)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,6 +21,7 @@ class MainTabBarViewController: UITabBarController {
     
     private func setControllers() {
         viewControllers = [feedScreen.navigationController,
+                           savedPostsScreen.navigationController,
                            profileScreen.navigationController]
     }
 }
