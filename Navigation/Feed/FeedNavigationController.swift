@@ -12,7 +12,7 @@ class FeedNavigationController: UIViewController {
     
     let feedCoordinator: FeedCoordinator
 
-    let post = Post(title: "Моя статья", description: "", image: "")
+    let post = Post(id: 0, title: "Моя статья", description: "", image: "", author: "")
     lazy var checkGuessTextField: UITextField = {
         let checkGuessTextField = UITextField()
         checkGuessTextField.font = .systemFont(ofSize: 16)
