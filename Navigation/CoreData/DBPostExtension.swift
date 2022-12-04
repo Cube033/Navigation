@@ -11,9 +11,11 @@ import StorageService
 extension DBPost {
     
     func convertToPost() -> Post {
-        var post = Post(title: title ?? "",
+        var post = Post(id: Int(postId), title: title ?? "",
                         description: postDescription ?? "",
-                        image: image ?? "")
+                        image: image ?? "",
+                        author: ""
+        )
         post.author = author ?? ""
         post.likes = Int(likes)
         post.views = Int(views)

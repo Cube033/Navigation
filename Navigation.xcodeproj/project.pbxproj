@@ -54,6 +54,7 @@
 		0AE9C16D28D48A690034C6AA /* StorageService.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AE9C16728D48A690034C6AA /* StorageService.framework */; };
 		0AE9C16E28D48A690034C6AA /* StorageService.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0AE9C16728D48A690034C6AA /* StorageService.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0AE9C17328D48B140034C6AA /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA9197128AA16CE0010930E /* Post.swift */; };
+		0AEEA4542938A5CC00799FC3 /* TextPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEEA4532938A5CC00799FC3 /* TextPicker.swift */; };
 		0AF62D6A28B462540083AD9B /* PhotosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF62D6828B462530083AD9B /* PhotosViewController.swift */; };
 		0AF62D6B28B462540083AD9B /* PhotosCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF62D6928B462540083AD9B /* PhotosCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
@@ -130,6 +131,7 @@
 		0AB49BB228E352B900D6BF4A /* BruteForce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BruteForce.swift; sourceTree = "<group>"; };
 		0AE9C16728D48A690034C6AA /* StorageService.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = StorageService.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0AE9C16928D48A690034C6AA /* StorageService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StorageService.h; sourceTree = "<group>"; };
+		0AEEA4532938A5CC00799FC3 /* TextPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextPicker.swift; sourceTree = "<group>"; };
 		0AF62D6828B462530083AD9B /* PhotosViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotosViewController.swift; sourceTree = "<group>"; };
 		0AF62D6928B462540083AD9B /* PhotosCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotosCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -304,6 +306,7 @@
 				0AB49B9A28DF410900D6BF4A /* ScreenFlow.swift */,
 				0AB49B9F28DF476400D6BF4A /* MainTabBarViewController.swift */,
 				0A7C347528E602F500463E03 /* CustomLabel.swift */,
+				0AEEA4532938A5CC00799FC3 /* TextPicker.swift */,
 			);
 			path = Factory;
 			sourceTree = "<group>";
@@ -490,6 +493,7 @@
 				0A65CE3128DA13E0001A3EC4 /* LoginViewControllerDelegate.swift in Sources */,
 				0A7C347828E6182E00463E03 /* VideoPlayerViewController.swift in Sources */,
 				0A1498B72828BF6F0090BB87 /* LogInViewController.swift in Sources */,
+				0AEEA4542938A5CC00799FC3 /* TextPicker.swift in Sources */,
 				0A550300292E3E00009E5EF6 /* SavedPostsTableViewController.swift in Sources */,
 				0A88008E27E8BBC600C09A5C /* InfoViewController.swift in Sources */,
 				0A92408C27EFEB74008E7D38 /* ProfileViewController.swift in Sources */,

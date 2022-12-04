@@ -56,8 +56,13 @@ class ProfileViewController: UIViewController {
         if let indexPathTapped = profileTableView.indexPathForRow(at: point) {
             if indexPathTapped.section == 1 {
                 let currentPost = viewModel.postArray[indexPathTapped.row]
-                CoreDataManager.shared.addPost(post: currentPost)
-                setAlert(textMessage: "Запись сохранена")
+                let addingResult = CoreDataManager.shared.addPost(post: currentPost)
+                switch addingResult {
+                case .success(let resultText):
+                    setAlert(textMessage: resultText)
+                case .failure(let resultText):
+                    setAlert(textMessage: resultText)
+                }
             }
         }
     }
