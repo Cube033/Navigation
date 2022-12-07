@@ -14,9 +14,13 @@ class RealmLoginModel: Object {
     @Persisted var authorized: Bool = false
     
     func authorize(isAuthorized: Bool) {
-        let realm = try! Realm()
-        try! realm.write {
-            authorized = isAuthorized
+        do{
+            guard let realm = RealmManager.shared.getRealmObject() else { return }
+            try realm.write {
+                authorized = isAuthorized
+            }
+        } catch {
+            return
         }
     }
 }
