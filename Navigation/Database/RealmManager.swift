@@ -20,29 +20,43 @@ class RealmManager {
     
     
     private func refreshDatabase() {
-        let realm = try! Realm()
-        authorizationArray = Array(realm.objects(RealmLoginModel.self))
+        do {
+            let realm = try Realm()
+            authorizationArray = Array(realm.objects(RealmLoginModel.self))
+        } catch {
+            authorizationArray = []
+        }
+        
     }
 
 
     func addAuthorization(login: String, password: String, authorized: Bool) {
-        let realm = try! Realm()
-        try! realm.write {
-            let authorization = RealmLoginModel()
-            authorization.login = login
-            authorization.password = password
-            authorization.authorized = authorized
-            realm.add(authorization)
+        do {
+            let realm = try Realm()
+            try realm.write {
+                let authorization = RealmLoginModel()
+                authorization.login = login
+                authorization.password = password
+                authorization.authorized = authorized
+                realm.add(authorization)
+            }
+            refreshDatabase()
+        } catch {
+            return
         }
-        refreshDatabase()
+        
     }
-
+    
     func deleteAuthorization(authorization: RealmLoginModel) {
-        let realm = try! Realm()
-        try! realm.write{
-            realm.delete(authorization)
+        do {
+            let realm = try Realm()
+            try realm.write{
+                realm.delete(authorization)
+            }
+            refreshDatabase()
+        } catch {
+            return
         }
-        refreshDatabase()
     }
     
     private func migrate() {
