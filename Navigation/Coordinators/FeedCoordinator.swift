@@ -13,6 +13,7 @@ enum FeedActionType: CoordinatorActionProtocol {
     case post
     case alert
     case videoPlayer
+    case mapViewController
 }
 
 class FeedCoordinator: CoordinatorProtocol {
@@ -45,6 +46,10 @@ class FeedCoordinator: CoordinatorProtocol {
         case .videoPlayer:
             let videoPlayerViewController = VideoPlayerViewController()
             navigationController.present(videoPlayerViewController, animated: true, completion: nil)
+        case .mapViewController:
+            let mapViewController = MapViewController()
+            navigationController.pushViewController(mapViewController, animated: true)
         }
     }
 }
+ 

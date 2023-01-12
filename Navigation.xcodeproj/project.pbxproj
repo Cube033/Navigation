@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A116ED0296FD85500F70E6B /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A116ECF296FD85500F70E6B /* MapViewController.swift */; };
 		0A1498B72828BF6F0090BB87 /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1498B62828BF6F0090BB87 /* LogInViewController.swift */; };
 		0A5502FB292E3769009E5EF6 /* VKData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0A5502F9292E3769009E5EF6 /* VKData.xcdatamodeld */; };
 		0A5502FD292E3DAC009E5EF6 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5502FC292E3DAC009E5EF6 /* CoreDataManager.swift */; };
@@ -84,6 +85,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0A116ECF296FD85500F70E6B /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		0A1498B62828BF6F0090BB87 /* LogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		0A5502FA292E3769009E5EF6 /* VKData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = VKData.xcdatamodel; sourceTree = "<group>"; };
 		0A5502FC292E3DAC009E5EF6 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
@@ -156,6 +158,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0A116ECE296FD82400F70E6B /* MapKit */ = {
+			isa = PBXGroup;
+			children = (
+				0A116ECF296FD85500F70E6B /* MapViewController.swift */,
+			);
+			path = MapKit;
+			sourceTree = "<group>";
+		};
 		0A5502F8292E3720009E5EF6 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
@@ -247,6 +257,7 @@
 		0A88007027DE2C3000C09A5C /* Navigation */ = {
 			isa = PBXGroup;
 			children = (
+				0A116ECE296FD82400F70E6B /* MapKit */,
 				0A5502FE292E3DC2009E5EF6 /* SavedPosts */,
 				0A5502F8292E3720009E5EF6 /* CoreData */,
 				0A7C346528E5E5EE00463E03 /* Sources */,
@@ -490,6 +501,7 @@
 				0AB423BE28AE205600E8A648 /* PhotosTableViewCell.swift in Sources */,
 				0A946DE629337C27007C17F1 /* DBPostExtension.swift in Sources */,
 				0A92408A27EFEB38008E7D38 /* ProfileTableHeaderView.swift in Sources */,
+				0A116ED0296FD85500F70E6B /* MapViewController.swift in Sources */,
 				0A65CE3128DA13E0001A3EC4 /* LoginViewControllerDelegate.swift in Sources */,
 				0A7C347828E6182E00463E03 /* VideoPlayerViewController.swift in Sources */,
 				0A1498B72828BF6F0090BB87 /* LogInViewController.swift in Sources */,
@@ -669,6 +681,7 @@
 				DEVELOPMENT_TEAM = 76ZWQT2P26;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Navigation/Info.plist;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Get there fast";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -698,6 +711,7 @@
 				DEVELOPMENT_TEAM = 76ZWQT2P26;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Navigation/Info.plist;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Get there fast";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
