@@ -13,6 +13,7 @@ class ScreenFlow {
     enum Flow {
         case feed
         case profile
+        case savedPosts
     }
     
     var flow: Flow
@@ -42,6 +43,13 @@ class ScreenFlow {
             navigationController.tabBarItem = tabBarItemProfile
             tabBarItemProfile.title = "Профиль"
             tabBarItemProfile.image = UIImage(systemName: "person.circle")
+        case .savedPosts:
+            let viewController = SavedPostsTableViewController()
+            navigationController.setViewControllers([viewController], animated: true)
+            let tabBarItemProfile = UITabBarItem()
+            navigationController.tabBarItem = tabBarItemProfile
+            tabBarItemProfile.title = "Сохранено"
+            tabBarItemProfile.image = UIImage(systemName: "tray.full")
         }
     }
     

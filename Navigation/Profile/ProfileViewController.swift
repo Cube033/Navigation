@@ -46,6 +46,25 @@ class ProfileViewController: UIViewController {
         super.viewDidLoad()
         bindViewModel()
         viewModel.changeState(action: .viewReady)
+        let tap = UITapGestureRecognizer(target: self, action: #selector(doubleTapped))
+            tap.numberOfTapsRequired = 2
+            view.addGestureRecognizer(tap)
+    }
+    
+    @objc func doubleTapped(tap: UITapGestureRecognizer) {
+        let point = tap.location(in: profileTableView)
+        if let indexPathTapped = profileTableView.indexPathForRow(at: point) {
+            if indexPathTapped.section == 1 {
+                let currentPost = viewModel.postArray[indexPathTapped.row]
+                let addingResult = CoreDataManager.shared.addPost(post: currentPost)
+                switch addingResult {
+                case .success(let resultText):
+                    setAlert(textMessage: resultText)
+                case .failure(let resultText):
+                    setAlert(textMessage: resultText)
+                }
+            }
+        }
     }
     
     private func bindViewModel() {
@@ -172,7 +191,18 @@ class ProfileViewController: UIViewController {
         
         profileTableView.isUserInteractionEnabled = true
     }
+    
+    private func setAlert(textMessage: String) {
+        let alert = UIAlertController(title: "Внимание", message: textMessage, preferredStyle: .alert)
+        let actionDismiss = UIAlertAction(title: "Закрыть", style: .default) { (_) -> Void in
+            self.dismiss(animated: true, completion: nil)
+        }
+        alert.addAction(actionDismiss)
+        self.present(alert, animated: true, completion: nil)
+    }
 }
+
+// MARK: Extensions
 
 extension ProfileViewController: CAAnimationDelegate {
     func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {

@@ -8,6 +8,7 @@
 import Foundation
 
 public struct Post {
+    public var id: Int
     public var title: String
     public var author: String = ""
     public var description: String
@@ -17,24 +18,34 @@ public struct Post {
     
     public static func getPostArray() -> [Post] {
         var postArray = [Post]()
-        postArray.append(Post(title: "Сидухи Astra J OPC",
+        postArray.append(Post(id: 0,
+                              title: "Сидухи Astra J OPC",
                               description: "Ребят кому сидухи? От Atra J OPC. Перед и Зад. 150.000р",
-                              image: "post1"))
-        postArray.append(Post(title: "Чехол ручки КПП",
+                              image: "post1",
+                              author: "Opel"))
+        postArray.append(Post(id: 1,
+                              title: "Чехол ручки КПП",
                               description: "Истрепался и облез чехол ручки КПП. Искал где заказать новый. Нашёл только статью о том как человек заказал в Ателье новый и заодно хорошую инструкцию по разбору.",
-                              image: "post2"))
-        postArray.append(Post(title: "Новая машина в семье — Palisade",
+                              image: "post2",
+                              author: "Citroen"))
+        postArray.append(Post(id: 2,
+                              title: "Новая машина в семье — Palisade",
                               description: "Появилась новая машина в нашей большой семье, Hyundai Palisade. Это авто зятя, предыдущий Мерседес GLK, про 2 поездки на котором всей семьёй с внучкой в горнолыжный отпуск из Тулы в Сочи Красную Поляну я писал в его БЖ.",
-                              image: "post3"))
-        postArray.append(Post(title: "Мойка фар Astra j gtc 1.4 turbo",
+                              image: "post3",
+                              author: "Hyundai"))
+        postArray.append(Post(id: 3,
+                              title: "Мойка фар Astra j gtc 1.4 turbo",
                               description: "Всем салам .Решил в свободный денёчек снять фары и помыть их изнутри, уж больно хотелось чтобы были в идеале.После полировки фар пол года назад, заметил, что как будто плохо отполировали, но нет, там была грязь внутри стекла, и вот в жаркий летний день +32 в тени и 1000 на солнце, снимал я фары.",
-                              image: "post4"))
+                              image: "post4",
+                              author: "Opel"))
         return postArray
     }
     
-    public init(title: String, description: String, image: String){
+    public init(id: Int, title: String, description: String, image: String, author: String){
+        self.id = id
         self.title = title
         self.description = description
         self.image = image
+        self.author = author
     }
 }
