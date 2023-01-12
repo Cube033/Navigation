@@ -22,6 +22,7 @@ class CoreDataManager {
     lazy var contextMain: NSManagedObjectContext = {
         let context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         context.persistentStoreCoordinator = persistentContainer.persistentStoreCoordinator
+        context.automaticallyMergesChangesFromParent = true
         return context
     }()
 
@@ -87,7 +88,6 @@ class CoreDataManager {
     
     func deletePost(dbPost: DBPost) {
         contextMain.delete(dbPost)
-//        contextBackground.delete(dbPost)
         saveContext(isMainContext: true)
         fetchPosts()
     }
