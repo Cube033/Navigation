@@ -39,7 +39,7 @@ class SavedPostsTableViewController: UITableViewController {
     
     func setView() {
         view.backgroundColor = .white
-        self.navigationItem.title = "Сохраненные записи"
+        self.navigationItem.title = "saved_posts".localize
         tableView.register(PostTableViewCell.self, forCellReuseIdentifier: "PostTableViewCell")
         setBarButtons()
         initFetchResultsController()
@@ -60,8 +60,8 @@ class SavedPostsTableViewController: UITableViewController {
     
     @objc private func searchBarButtonTapped() {
         TextPicker.defaultPicker.getText(showIn: self,
-                                         title: "фильтр по автору",
-                                         placeholder: "Введите автора",
+                                         title: "filter_by_author".localize,
+                                         placeholder: "enter_author".localize,
                                          completion: {(authorName) in
             self.searchText = authorName
             self.initFetchResultsController()

@@ -1,0 +1,48 @@
+/* 
+  Localizable.strings
+  Navigation
+
+  Created by Дмитрий Федотов on 17.01.2023.
+  
+*/
+
+"get_route" = "Маршрут";
+"saved_posts" = "Сохраненные записи";
+"filter_by_author" = "фильтр по автору";
+"enter_author" = "Введите автора";
+"added_to_favorites" = "Добавлено в Избранное";
+"already_in_favorites" = "Запись уже в Избранном";
+"available_actions" = "Доступные действия";
+"actions" = "Действия";
+"select_an_action" = "Выберите действие";
+"output_text_to_console" = "Вывести текст в консоль";
+"close_window" = "Закрыть окно";
+"feed" = "Лента";
+"profile" = "Профиль";
+"saved" = "Сохранено";
+"enter_text" = "Введите текст";
+"cancel" = "Отмена";
+"email_or_phone" = "Email или телефон";
+"log_in" = "Войти";
+"choose_password" = "Подобрать пароль";
+"login_not_filled" = "Не заполнен логин!";
+"password_not_filled" = "Не заполнен пароль!";
+"username_password_incorrect" = "Не правильно указаны логин или пароль!";
+"error" = "Ошибка";
+"close" = "Закрыть";
+"forgot_password" = "Забыли пароль?";
+"hack_app" = "Не беда! Давайте взломаем приложение";
+"lets_hack" = "Хорошо, ломаем";
+"need_more_time" = "Ещё чуть-чуть и сам(а) вспомню";
+"photogallery" = "Фотогалерея";
+"article_title" = "Заголовок статьи";
+"author" = "Автор";
+"likes" = "Лайки";
+"views" = "Просм.";
+"photos" = "Фото";
+"show_status" = "Статус";
+"enter_word" = "Введите слово";
+"check_word" = "Проверить слово";
+"go_to_post" = "Перейти на пост";
+"enter_verification_word" = "Введите проверочное слово";
+"attention" = "Внимание";

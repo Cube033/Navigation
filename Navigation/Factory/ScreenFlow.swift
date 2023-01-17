@@ -33,7 +33,7 @@ class ScreenFlow {
             navigationController.setViewControllers([viewController], animated: true)
             let tabBarItemFeed = UITabBarItem()
             navigationController.tabBarItem = tabBarItemFeed
-            tabBarItemFeed.title = "Лента"
+            tabBarItemFeed.title = "feed".localize
             tabBarItemFeed.image = UIImage(systemName: "doc.richtext")
         case .profile:
             self.coordinator = ProfileCoordinator(navigationController: self.navigationController)
@@ -41,14 +41,14 @@ class ScreenFlow {
             navigationController.setViewControllers([viewController], animated: true)
             let tabBarItemProfile = UITabBarItem()
             navigationController.tabBarItem = tabBarItemProfile
-            tabBarItemProfile.title = "Профиль"
+            tabBarItemProfile.title = "profile".localize
             tabBarItemProfile.image = UIImage(systemName: "person.circle")
         case .savedPosts:
             let viewController = SavedPostsTableViewController()
             navigationController.setViewControllers([viewController], animated: true)
             let tabBarItemProfile = UITabBarItem()
             navigationController.tabBarItem = tabBarItemProfile
-            tabBarItemProfile.title = "Сохранено"
+            tabBarItemProfile.title = "saved".localize
             tabBarItemProfile.image = UIImage(systemName: "tray.full")
         }
     }

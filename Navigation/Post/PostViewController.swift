@@ -9,7 +9,7 @@ import UIKit
 
 class PostViewController: UIViewController {
     
-    var titlePost: String = "Заголовок статьи"
+    var titlePost: String = "article_title".localize
     
     let feedCoordinator: FeedCoordinator
     

@@ -35,7 +35,7 @@ class LogInViewController: UIViewController {
         logInTextField.layer.borderColor = UIColor.lightGray.cgColor
         logInTextField.layer.borderWidth = 0.5
         logInTextField.translatesAutoresizingMaskIntoConstraints = false
-        logInTextField.placeholder = "Email or phone"
+        logInTextField.placeholder = "email_or_phone".localize
         logInTextField.leftView = .init(frame: .init(x: 0, y: 0, width: 5, height: logInTextField.frame.height))
         logInTextField.leftViewMode = .always
         logInTextField.delegate = self
@@ -62,10 +62,10 @@ class LogInViewController: UIViewController {
     private let nc = NotificationCenter.default
     let mainCoordinator: MainCoordinator
    
-    lazy var logInButton = CustomButton(title: "Log in",
+    lazy var logInButton = CustomButton(title: "log_in".localize,
                                         backgroundColor: nil,
                                         tapAction: {self.logIn()})
-    lazy var bruteForceButton = CustomButton(title: "Подобрать пароль",
+    lazy var bruteForceButton = CustomButton(title: "choose_password".localize,
                                              backgroundColor: nil,
                                              tapAction: {self.bruteForce()})
     
@@ -151,11 +151,11 @@ class LogInViewController: UIViewController {
             do{
                 successLogIn = try loginDelegateExist.check(login: self.logInTextField.text!, password: self.passwordTextField.text!)
             } catch LoginError.emptyLoginField {
-                self.setAlert(errorMessage: "Не заполнен логин!")
+                self.setAlert(errorMessage: "login_not_filled".localize)
             } catch LoginError.emptyPasswordField {
-                self.setAlert(errorMessage: "Не заполнен пароль!")
+                self.setAlert(errorMessage: "password_not_filled".localize)
             } catch LoginError.loginFailed {
-                self.setAlert(errorMessage: "Не правильно указаны логин или пароль!")
+                self.setAlert(errorMessage: "username_password_incorrect".localize)
             } catch {
                 
             }
@@ -235,8 +235,8 @@ class LogInViewController: UIViewController {
     }
     
     private func setAlert(errorMessage: String) {
-        let alert = UIAlertController(title: "Ошибка", message: errorMessage, preferredStyle: .alert)
-        let actionDismiss = UIAlertAction(title: "Закрыть", style: .default) { (_) -> Void in
+        let alert = UIAlertController(title: "error".localize, message: errorMessage, preferredStyle: .alert)
+        let actionDismiss = UIAlertAction(title: "close".localize, style: .default) { (_) -> Void in
             self.dismiss(animated: true, completion: nil)
         }
         alert.addAction(actionDismiss)
@@ -246,12 +246,12 @@ class LogInViewController: UIViewController {
     private func setReminderAlert(timer: Timer) {
         //timer.invalidate() // если оставить это включенным, то Алерт не сработает ни разу
         //Здесь была задумка - остановить таймер и запустить его снова, по нажатию кнопки "Ещё чуть-чуть..."
-        let alert = UIAlertController(title: "Забыли пароль?", message: "Не беда! Давайте взломаем приложение", preferredStyle: .alert)
-        let startHacking = UIAlertAction(title: "Хорошо, ломаем", style: .default) { (_) -> Void in
+        let alert = UIAlertController(title: "forgot_password".localize, message: "hack_app".localize, preferredStyle: .alert)
+        let startHacking = UIAlertAction(title: "lets_hack".localize, style: .default) { (_) -> Void in
             self.startHacking()
             timer.invalidate()
         }
-        let actionDismiss = UIAlertAction(title: "Ещё чуть-чуть и сам(а) вспомню", style: .default) { (_) -> Void in
+        let actionDismiss = UIAlertAction(title: "need_more_time".localize, style: .default) { (_) -> Void in
             
         }
         alert.addAction(startHacking)

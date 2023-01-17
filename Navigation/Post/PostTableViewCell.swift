@@ -66,8 +66,8 @@ class PostTableViewCell: UITableViewCell {
         postImageView.image = UIImage()
         postTitleLabel.text = ""
         postDescriptionLabel.text = ""
-        likesCountLabel.text = "Likes: 0"
-        viewsCountLabel.text = "Views: 0"
+        likesCountLabel.text = "likes".localize + ": 0"
+        viewsCountLabel.text = "views".localize + ": 0"
     }
     
     required init?(coder: NSCoder){
@@ -77,10 +77,10 @@ class PostTableViewCell: UITableViewCell {
     func setupCell(model: Post) {
         postImageView.image = UIImage(named: model.image)
         postTitleLabel.text = model.title
-        let postDescriptionLabelText = "Автор: \(model.author). \(model.description)"
+        let postDescriptionLabelText = "author".localize + ": \(model.author). \(model.description)"
         postDescriptionLabel.text = postDescriptionLabelText
-        likesCountLabel.text = "Likes: \(model.likes)"
-        viewsCountLabel.text = "Views: \(model.views)"
+        likesCountLabel.text = "likes".localize + ": \(model.likes)"
+        viewsCountLabel.text = "views".localize + ": \(model.views)"
     }
     
     private func layout() {

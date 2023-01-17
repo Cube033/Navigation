@@ -24,12 +24,12 @@ class FeedNavigationController: UIViewController {
         checkGuessTextField.layer.borderColor = UIColor.lightGray.cgColor
         checkGuessTextField.layer.borderWidth = 0.5
         checkGuessTextField.translatesAutoresizingMaskIntoConstraints = false
-        checkGuessTextField.placeholder = "Введите слово"
+        checkGuessTextField.placeholder = "enter_word".localize
         checkGuessTextField.leftView = .init(frame: .init(x: 0, y: 0, width: 5, height: checkGuessTextField.frame.height))
         checkGuessTextField.leftViewMode = .always
         return checkGuessTextField
     }()
-    lazy var checkGuessButton = CustomButton(title: "Проверить слово", backgroundColor: nil, tapAction: {self.checkGuess()})
+    lazy var checkGuessButton = CustomButton(title: "check_word".localize, backgroundColor: nil, tapAction: {self.checkGuess()})
     lazy var button1 = getNewFeedButton()
     lazy var button2 = getNewFeedButton()
     let checkLabel: UILabel = {
@@ -92,7 +92,7 @@ class FeedNavigationController: UIViewController {
     }
     
     private func getNewFeedButton()->UIButton{
-        return CustomButton(title: "Перейти на пост",
+        return CustomButton(title: "go_to_post".localize,
                                   backgroundColor: .blue,
                                   tapAction: {
             self.feedCoordinator.handleAction(actionType: FeedActionType.post)
@@ -157,7 +157,7 @@ class FeedNavigationController: UIViewController {
     }
     
     private func setAlert() {
-        let alert = UIAlertController(title: "Ошибка", message: "Введите проверочное слово", preferredStyle: .alert)
+        let alert = UIAlertController(title: "error".localize, message: "enter_verification_word".localize, preferredStyle: .alert)
         let actionDismiss = UIAlertAction(title: "Ok", style: .default) { (_) -> Void in
             self.dismiss(animated: true, completion: nil)
         }
