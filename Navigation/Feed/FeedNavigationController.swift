@@ -47,6 +47,8 @@ class FeedNavigationController: UIViewController {
     
     private lazy var videoPlayerButton = CustomButton(title: "Video Player", backgroundColor: .red , tapAction: {self.feedCoordinator.handleAction(actionType: FeedActionType.videoPlayer)})
     
+    private lazy var mapButton = CustomButton(title: "Open Map", backgroundColor: .green , tapAction: {self.feedCoordinator.handleAction(actionType: FeedActionType.mapViewController)})
+    
     init(feedCoordinator: FeedCoordinator) {
         self.feedCoordinator = feedCoordinator
         super.init(nibName: nil, bundle: nil)
@@ -110,6 +112,7 @@ class FeedNavigationController: UIViewController {
         self.view.addSubview(checkLabel)
         self.view.addSubview(playerButton)
         self.view.addSubview(videoPlayerButton)
+        self.view.addSubview(mapButton)
         
         NSLayoutConstraint.activate([
             button1.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
@@ -145,6 +148,11 @@ class FeedNavigationController: UIViewController {
             videoPlayerButton.leadingAnchor.constraint(equalTo: checkGuessButton.leadingAnchor),
             videoPlayerButton.trailingAnchor.constraint(equalTo: checkGuessButton.trailingAnchor),
             videoPlayerButton.heightAnchor.constraint(equalToConstant: 30),
+            
+            mapButton.topAnchor.constraint(equalTo: videoPlayerButton.bottomAnchor, constant: 16),
+            mapButton.leadingAnchor.constraint(equalTo: videoPlayerButton.leadingAnchor),
+            mapButton.trailingAnchor.constraint(equalTo: videoPlayerButton.trailingAnchor),
+            mapButton.heightAnchor.constraint(equalToConstant: 30),
         ])
     }
     
