@@ -142,7 +142,7 @@ class ProfileHeaderView: UIView {
     }
     
     private func setStatusButton() -> UIButton{
-        return CustomButton(title: "Show status",
+        return CustomButton(title: "show_status".localize,
                                   backgroundColor: nil,
                                   tapAction: {
             guard ((try? self.changeStatus()) != nil) else {

@@ -1,0 +1,48 @@
+/* 
+  Localizable.strings
+  Navigation
+
+  Created by Дмитрий Федотов on 17.01.2023.
+  
+*/
+
+"get_route" = "Get route";
+"saved_posts" = "Saved posts";
+"filter_by_author" = "filter by author";
+"enter_author" = "Enter Author";
+"added_to_favorites" = "Added to Favorites";
+"already_in_favorites" = "Already in Favorites";
+"available_actions" = "Available actions";
+"actions" = "Actions";
+"select_an_action" = "Select an action";
+"output_text_to_console" = "Output text to console";
+"close_window" = "Close a window";
+"feed" = "Feed";
+"profile" = "Profile";
+"saved" = "Saved";
+"enter_text" = "Enter text";
+"cancel" = "Cancel";
+"email_or_phone" = "Email or phone";
+"log_in" = "Log in";
+"choose_password" = "Choose password";
+"login_not_filled" = "Login not filled!";
+"password_not_filled" = "Password not filled!";
+"username_password_incorrect" = "Your username or password is incorrect!";
+"error" = "Error";
+"close" = "Close";
+"forgot_password" = "Forgot your password?";
+"hack_app" = "Don't worry! Let's hack the app";
+"lets_hack" = "OK, let's break it down";
+"need_more_time" = "A little more and I myself will remember";
+"photogallery" = "Photogallery";
+"article_title" = "Article Title";
+"author" = "Author";
+"likes" = "Likes";
+"views" = "views";
+"photos" = "Photos";
+"show_status" = "Show status";
+"enter_word" = "Enter word";
+"check_word" = "Check word";
+"go_to_post" = "Go to post";
+"enter_verification_word" = "Enter a verification word";
+"attention" = "Attention";

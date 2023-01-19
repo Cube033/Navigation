@@ -193,8 +193,8 @@ class ProfileViewController: UIViewController {
     }
     
     private func setAlert(textMessage: String) {
-        let alert = UIAlertController(title: "Внимание", message: textMessage, preferredStyle: .alert)
-        let actionDismiss = UIAlertAction(title: "Закрыть", style: .default) { (_) -> Void in
+        let alert = UIAlertController(title: "attention".localize, message: textMessage, preferredStyle: .alert)
+        let actionDismiss = UIAlertAction(title: "close".localize, style: .default) { (_) -> Void in
             self.dismiss(animated: true, completion: nil)
         }
         alert.addAction(actionDismiss)

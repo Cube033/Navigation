@@ -32,7 +32,7 @@ class PhotosViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationItem.title = "Photo gallery"
+        self.navigationItem.title = "photogallery".localize
         view.backgroundColor = .white
         
         layout()
