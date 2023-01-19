@@ -20,7 +20,7 @@ class PostTableViewCell: UITableViewCell {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
-        imageView.backgroundColor = .black
+        imageView.backgroundColor = Palette.viewControllerBackgroundColor
         imageView.clipsToBounds = true
         return imageView
     }()
@@ -66,8 +66,8 @@ class PostTableViewCell: UITableViewCell {
         postImageView.image = UIImage()
         postTitleLabel.text = ""
         postDescriptionLabel.text = ""
-        likesCountLabel.text = "likes".localize + ": 0"
-        viewsCountLabel.text = "views".localize + ": 0"
+        likesCountLabel.text = "likes".localized + ": 0"
+        viewsCountLabel.text = "views".localized + ": 0"
     }
     
     required init?(coder: NSCoder){
@@ -77,10 +77,10 @@ class PostTableViewCell: UITableViewCell {
     func setupCell(model: Post) {
         postImageView.image = UIImage(named: model.image)
         postTitleLabel.text = model.title
-        let postDescriptionLabelText = "author".localize + ": \(model.author). \(model.description)"
+        let postDescriptionLabelText = "author".localized + ": \(model.author). \(model.description)"
         postDescriptionLabel.text = postDescriptionLabelText
-        likesCountLabel.text = "likes".localize + ": \(model.likes)"
-        viewsCountLabel.text = "views".localize + ": \(model.views)"
+        likesCountLabel.text = "likes".localized + ": \(model.likes)"
+        viewsCountLabel.text = "views".localized + ": \(model.views)"
     }
     
     private func layout() {

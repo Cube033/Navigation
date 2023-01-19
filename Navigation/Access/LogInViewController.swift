@@ -28,14 +28,13 @@ class LogInViewController: UIViewController {
         logInTextField.font = .systemFont(ofSize: 16)
         logInTextField.tintColor = UIColor.tintColor
         logInTextField.autocapitalizationType = .none
-        logInTextField.backgroundColor = .systemGray6
+        logInTextField.backgroundColor = Palette.textFieldBackgroundColor
         logInTextField.layer.cornerRadius = 10
-        logInTextField.layer.borderColor = UIColor.lightGray.cgColor
+        logInTextField.layer.borderColor = Palette.textFieldBorderColor
         logInTextField.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        logInTextField.layer.borderColor = UIColor.lightGray.cgColor
         logInTextField.layer.borderWidth = 0.5
         logInTextField.translatesAutoresizingMaskIntoConstraints = false
-        logInTextField.placeholder = "email_or_phone".localize
+        logInTextField.attributedPlaceholder = "email_or_phone".localized.attributedPlaceholder
         logInTextField.leftView = .init(frame: .init(x: 0, y: 0, width: 5, height: logInTextField.frame.height))
         logInTextField.leftViewMode = .always
         logInTextField.delegate = self
@@ -45,14 +44,13 @@ class LogInViewController: UIViewController {
         let passwordTextField = UITextField()
         passwordTextField.font = .systemFont(ofSize: 15)
         passwordTextField.autocapitalizationType = .none
-        passwordTextField.backgroundColor = .systemGray6
+        passwordTextField.backgroundColor = Palette.textFieldBackgroundColor
         passwordTextField.layer.cornerRadius = 10
-        passwordTextField.layer.borderColor = UIColor.lightGray.cgColor
+        passwordTextField.layer.borderColor = Palette.textFieldBorderColor
         passwordTextField.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
-        passwordTextField.layer.borderColor = UIColor.lightGray.cgColor
         passwordTextField.layer.borderWidth = 0.5
         passwordTextField.translatesAutoresizingMaskIntoConstraints = false
-        passwordTextField.placeholder = "Password"
+        passwordTextField.attributedPlaceholder = "Password".attributedPlaceholder
         passwordTextField.isSecureTextEntry = true
         passwordTextField.leftView = .init(frame: .init(x: 0, y: 0, width: 5, height: passwordTextField.frame.height))
         passwordTextField.leftViewMode = .always
@@ -62,10 +60,10 @@ class LogInViewController: UIViewController {
     private let nc = NotificationCenter.default
     let mainCoordinator: MainCoordinator
    
-    lazy var logInButton = CustomButton(title: "log_in".localize,
+    lazy var logInButton = CustomButton(title: "log_in".localized,
                                         backgroundColor: nil,
                                         tapAction: {self.logIn()})
-    lazy var bruteForceButton = CustomButton(title: "choose_password".localize,
+    lazy var bruteForceButton = CustomButton(title: "choose_password".localized,
                                              backgroundColor: nil,
                                              tapAction: {self.bruteForce()})
     
@@ -151,11 +149,11 @@ class LogInViewController: UIViewController {
             do{
                 successLogIn = try loginDelegateExist.check(login: self.logInTextField.text!, password: self.passwordTextField.text!)
             } catch LoginError.emptyLoginField {
-                self.setAlert(errorMessage: "login_not_filled".localize)
+                self.setAlert(errorMessage: "login_not_filled".localized)
             } catch LoginError.emptyPasswordField {
-                self.setAlert(errorMessage: "password_not_filled".localize)
+                self.setAlert(errorMessage: "password_not_filled".localized)
             } catch LoginError.loginFailed {
-                self.setAlert(errorMessage: "username_password_incorrect".localize)
+                self.setAlert(errorMessage: "username_password_incorrect".localized)
             } catch {
                 
             }
@@ -178,7 +176,7 @@ class LogInViewController: UIViewController {
     }
     
     private func setElements(){
-        view.backgroundColor = .white
+        view.backgroundColor = Palette.viewControllerBackgroundColor
         self.navigationController?.isNavigationBarHidden = true
         view.clipsToBounds = true
         activityIndicator.hidesWhenStopped = true
@@ -235,8 +233,8 @@ class LogInViewController: UIViewController {
     }
     
     private func setAlert(errorMessage: String) {
-        let alert = UIAlertController(title: "error".localize, message: errorMessage, preferredStyle: .alert)
-        let actionDismiss = UIAlertAction(title: "close".localize, style: .default) { (_) -> Void in
+        let alert = UIAlertController(title: "error".localized, message: errorMessage, preferredStyle: .alert)
+        let actionDismiss = UIAlertAction(title: "close".localized, style: .default) { (_) -> Void in
             self.dismiss(animated: true, completion: nil)
         }
         alert.addAction(actionDismiss)
@@ -246,12 +244,12 @@ class LogInViewController: UIViewController {
     private func setReminderAlert(timer: Timer) {
         //timer.invalidate() // если оставить это включенным, то Алерт не сработает ни разу
         //Здесь была задумка - остановить таймер и запустить его снова, по нажатию кнопки "Ещё чуть-чуть..."
-        let alert = UIAlertController(title: "forgot_password".localize, message: "hack_app".localize, preferredStyle: .alert)
-        let startHacking = UIAlertAction(title: "lets_hack".localize, style: .default) { (_) -> Void in
+        let alert = UIAlertController(title: "forgot_password".localized, message: "hack_app".localized, preferredStyle: .alert)
+        let startHacking = UIAlertAction(title: "lets_hack".localized, style: .default) { (_) -> Void in
             self.startHacking()
             timer.invalidate()
         }
-        let actionDismiss = UIAlertAction(title: "need_more_time".localize, style: .default) { (_) -> Void in
+        let actionDismiss = UIAlertAction(title: "need_more_time".localized, style: .default) { (_) -> Void in
             
         }
         alert.addAction(startHacking)

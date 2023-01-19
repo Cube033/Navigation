@@ -24,7 +24,7 @@ class CustomButton: UIButton {
         buttonConfiguration.titleTextAttributesTransformer =
         UIConfigurationTextAttributesTransformer { incoming in
             var outgoing = incoming
-            outgoing.foregroundColor = UIColor.white
+            outgoing.foregroundColor =  .createColor(lightMode: UIColor.white, darkMode: .black)   
             outgoing.font = UIFont.systemFont(ofSize: 14)
             return outgoing
           }

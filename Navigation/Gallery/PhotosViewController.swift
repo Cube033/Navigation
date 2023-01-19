@@ -20,7 +20,7 @@ class PhotosViewController: UIViewController {
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.backgroundColor = .systemGray5
+        collectionView.backgroundColor = Palette.collectionViewBackgroundColor
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.register(PhotosCollectionViewCell.self, forCellWithReuseIdentifier: "PhotosCollectionViewCell")
@@ -32,8 +32,8 @@ class PhotosViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationItem.title = "photogallery".localize
-        view.backgroundColor = .white
+        self.navigationItem.title = "photogallery".localized
+        view.backgroundColor = Palette.viewControllerBackgroundColor
         
         layout()
         addImages()

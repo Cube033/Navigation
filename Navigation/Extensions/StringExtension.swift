@@ -8,7 +8,12 @@
 import Foundation
 
 extension String {
-    var localize: String {
+    var localized: String {
         return NSLocalizedString(self, comment: "")
+    }
+    
+    var attributedPlaceholder: NSAttributedString {
+        return NSAttributedString(string: self,
+                                  attributes: [NSAttributedString.Key.foregroundColor: Palette.placeholderColor])
     }
 }

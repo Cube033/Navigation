@@ -11,6 +11,8 @@
 		0A116ED32976968600F70E6B /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A116ED22976968600F70E6B /* StringExtension.swift */; };
 		0A116ED929769C4C00F70E6B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0A116EDB29769C4C00F70E6B /* Localizable.strings */; };
 		0A116EDC29769C5500F70E6B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0A116EDE29769C5500F70E6B /* InfoPlist.strings */; };
+		0A116EE22979261400F70E6B /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A116EE12979261400F70E6B /* UIColorExtension.swift */; };
+		0A116EE429792BED00F70E6B /* Palette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A116EE329792BED00F70E6B /* Palette.swift */; };
 		0A1498B72828BF6F0090BB87 /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1498B62828BF6F0090BB87 /* LogInViewController.swift */; };
 		0A5502FB292E3769009E5EF6 /* VKData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0A5502F9292E3769009E5EF6 /* VKData.xcdatamodeld */; };
 		0A5502FD292E3DAC009E5EF6 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5502FC292E3DAC009E5EF6 /* CoreDataManager.swift */; };
@@ -94,6 +96,8 @@
 		0A116EDD29769C5500F70E6B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		0A116EDF29769C7000F70E6B /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		0A116EE029769C7000F70E6B /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		0A116EE12979261400F70E6B /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
+		0A116EE329792BED00F70E6B /* Palette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Palette.swift; sourceTree = "<group>"; };
 		0A1498B62828BF6F0090BB87 /* LogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		0A5502FA292E3769009E5EF6 /* VKData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = VKData.xcdatamodel; sourceTree = "<group>"; };
 		0A5502FC292E3DAC009E5EF6 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
@@ -178,6 +182,7 @@
 			isa = PBXGroup;
 			children = (
 				0A116ED22976968600F70E6B /* StringExtension.swift */,
+				0A116EE12979261400F70E6B /* UIColorExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -303,6 +308,7 @@
 				0A88007C27DE2C3300C09A5C /* LaunchScreen.storyboard */,
 				0A88007F27DE2C3300C09A5C /* Info.plist */,
 				0AA9197528AA33E40010930E /* UIView+Extension.swift */,
+				0A116EE329792BED00F70E6B /* Palette.swift */,
 			);
 			path = Navigation;
 			sourceTree = "<group>";
@@ -537,7 +543,9 @@
 				0A7C347828E6182E00463E03 /* VideoPlayerViewController.swift in Sources */,
 				0A1498B72828BF6F0090BB87 /* LogInViewController.swift in Sources */,
 				0AEEA4542938A5CC00799FC3 /* TextPicker.swift in Sources */,
+				0A116EE22979261400F70E6B /* UIColorExtension.swift in Sources */,
 				0A550300292E3E00009E5EF6 /* SavedPostsTableViewController.swift in Sources */,
+				0A116EE429792BED00F70E6B /* Palette.swift in Sources */,
 				0A88008E27E8BBC600C09A5C /* InfoViewController.swift in Sources */,
 				0A92408C27EFEB74008E7D38 /* ProfileViewController.swift in Sources */,
 				0AB49BA228DF61E500D6BF4A /* FeedCoordinator.swift in Sources */,

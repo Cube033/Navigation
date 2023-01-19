@@ -80,9 +80,9 @@ class CoreDataManager {
             dbPost.views = Int32(post.views)
             saveContext(isMainContext: false)
             fetchPosts()
-            return .success("added_to_favorites".localize)
+            return .success("added_to_favorites".localized)
         } else {
-            return .failure("already_in_favorites".localize)
+            return .failure("already_in_favorites".localized)
         }
     }
     
