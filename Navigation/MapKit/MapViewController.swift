@@ -28,7 +28,7 @@ class MapViewController: UIViewController {
     
     let locationManager = CLLocationManager()
     
-    lazy var routeButton = CustomButton(title: "get_route".localize, backgroundColor: nil, tapAction: {
+    lazy var routeButton = CustomButton(title: "get_route".localized, backgroundColor: nil, tapAction: {
         self.addRouteOverLay()
     })
     

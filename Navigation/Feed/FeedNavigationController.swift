@@ -18,18 +18,17 @@ class FeedNavigationController: UIViewController {
         checkGuessTextField.font = .systemFont(ofSize: 16)
         checkGuessTextField.tintColor = UIColor.tintColor
         checkGuessTextField.autocapitalizationType = .none
-        checkGuessTextField.backgroundColor = .systemGray6
+        checkGuessTextField.backgroundColor = Palette.textFieldBackgroundColor
         checkGuessTextField.layer.cornerRadius = 10
-        checkGuessTextField.layer.borderColor = UIColor.lightGray.cgColor
-        checkGuessTextField.layer.borderColor = UIColor.lightGray.cgColor
+        checkGuessTextField.layer.borderColor = Palette.textFieldBorderColor
         checkGuessTextField.layer.borderWidth = 0.5
         checkGuessTextField.translatesAutoresizingMaskIntoConstraints = false
-        checkGuessTextField.placeholder = "enter_word".localize
+        checkGuessTextField.attributedPlaceholder = "enter_word".localized.attributedPlaceholder
         checkGuessTextField.leftView = .init(frame: .init(x: 0, y: 0, width: 5, height: checkGuessTextField.frame.height))
         checkGuessTextField.leftViewMode = .always
         return checkGuessTextField
     }()
-    lazy var checkGuessButton = CustomButton(title: "check_word".localize, backgroundColor: nil, tapAction: {self.checkGuess()})
+    lazy var checkGuessButton = CustomButton(title: "check_word".localized, backgroundColor: nil, tapAction: {self.checkGuess()})
     lazy var button1 = getNewFeedButton()
     lazy var button2 = getNewFeedButton()
     let checkLabel: UILabel = {
@@ -92,7 +91,7 @@ class FeedNavigationController: UIViewController {
     }
     
     private func getNewFeedButton()->UIButton{
-        return CustomButton(title: "go_to_post".localize,
+        return CustomButton(title: "go_to_post".localized,
                                   backgroundColor: .blue,
                                   tapAction: {
             self.feedCoordinator.handleAction(actionType: FeedActionType.post)
@@ -100,7 +99,7 @@ class FeedNavigationController: UIViewController {
     }
     
     private func setupView() {
-        view.backgroundColor = .white
+        view.backgroundColor = Palette.viewControllerBackgroundColor
         layout()
     }
     
@@ -157,7 +156,7 @@ class FeedNavigationController: UIViewController {
     }
     
     private func setAlert() {
-        let alert = UIAlertController(title: "error".localize, message: "enter_verification_word".localize, preferredStyle: .alert)
+        let alert = UIAlertController(title: "error".localized, message: "enter_verification_word".localized, preferredStyle: .alert)
         let actionDismiss = UIAlertAction(title: "Ok", style: .default) { (_) -> Void in
             self.dismiss(animated: true, completion: nil)
         }

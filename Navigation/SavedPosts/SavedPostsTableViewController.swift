@@ -38,8 +38,8 @@ class SavedPostsTableViewController: UITableViewController {
     // MARK: - Functions
     
     func setView() {
-        view.backgroundColor = .white
-        self.navigationItem.title = "saved_posts".localize
+        view.backgroundColor = Palette.viewControllerBackgroundColor
+        self.navigationItem.title = "saved_posts".localized
         tableView.register(PostTableViewCell.self, forCellReuseIdentifier: "PostTableViewCell")
         setBarButtons()
         initFetchResultsController()
@@ -60,8 +60,8 @@ class SavedPostsTableViewController: UITableViewController {
     
     @objc private func searchBarButtonTapped() {
         TextPicker.defaultPicker.getText(showIn: self,
-                                         title: "filter_by_author".localize,
-                                         placeholder: "enter_author".localize,
+                                         title: "filter_by_author".localized,
+                                         placeholder: "enter_author".localized,
                                          completion: {(authorName) in
             self.searchText = authorName
             self.initFetchResultsController()
@@ -103,6 +103,7 @@ class SavedPostsTableViewController: UITableViewController {
         let postCell = tableView.dequeueReusableCell(withIdentifier: "PostTableViewCell", for: indexPath) as! PostTableViewCell
         let dbPost = fetchedResultsController.object(at: indexPath)
         postCell.setupCell(model: dbPost.convertToPost())
+        postCell.backgroundColor = Palette.viewControllerBackgroundColor
         return postCell
     }
 

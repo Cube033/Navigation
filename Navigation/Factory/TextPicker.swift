@@ -13,8 +13,8 @@ class TextPicker {
     static let defaultPicker = TextPicker()
     
     func getText(showIn viewController: UIViewController, title: String?, placeholder: String?, completion: ((_ text: String)->Void)?) {
-        let titleText = title ?? "enter_text".localize
-        let placeholderText = placeholder ?? "enter_text".localize
+        let titleText = title ?? "enter_text".localized
+        let placeholderText = placeholder ?? "enter_text".localized
         let alertController = UIAlertController(title: titleText, message: nil, preferredStyle: .alert)
         alertController.addTextField { textField in
             textField.placeholder = placeholderText
@@ -26,7 +26,7 @@ class TextPicker {
                 completion?(text)
             }
         }
-        let actionCancel = UIAlertAction(title: "cancel".localize, style: .cancel)
+        let actionCancel = UIAlertAction(title: "cancel".localized, style: .cancel)
         
         alertController.addAction(actionAdd)
         alertController.addAction(actionCancel)

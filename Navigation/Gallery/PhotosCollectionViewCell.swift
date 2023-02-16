@@ -11,7 +11,7 @@ class PhotosCollectionViewCell: UICollectionViewCell {
     
     private let photoImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.backgroundColor = .green
+        imageView.backgroundColor = Palette.viewControllerBackgroundColor
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
