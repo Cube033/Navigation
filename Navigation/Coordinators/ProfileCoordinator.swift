@@ -16,13 +16,15 @@ enum ProfileActionType: CoordinatorActionProtocol {
 class ProfileCoordinator: CoordinatorProtocol {
     
     var navigationController: UINavigationController
+    var currentViewController = UIViewController()
     
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
     }
     
     func getStartViewController() -> UIViewController {
-        let user = UserInfo.shared.user!
+        let userOptional = UserInfo.shared.user
+        guard let user = userOptional else { return UIViewController()}
         let profileViewModel = ProfileViewModel(coordinator: self, user: user)
         let viewController = ProfileViewController(viewModel: profileViewModel)
         return viewController
@@ -35,11 +37,11 @@ class ProfileCoordinator: CoordinatorProtocol {
             // искуственная конструкция, оправдывающая применение координатора в таком маленьком модуле
             let user = UserInfo.shared.user!
             let profileViewModel = ProfileViewModel(coordinator: self, user: user)
-            let viewController = ProfileViewController(viewModel: profileViewModel)
-            navigationController.pushViewController(viewController, animated: true)
+            currentViewController = ProfileViewController(viewModel: profileViewModel)
+            navigationController.pushViewController(currentViewController, animated: true)
         case .gallery:
-            let postViewController = PhotosViewController()
-            navigationController.pushViewController(postViewController, animated: true)
+            currentViewController = PhotosViewController()
+            navigationController.pushViewController(currentViewController, animated: true)
         }
     }
 }
