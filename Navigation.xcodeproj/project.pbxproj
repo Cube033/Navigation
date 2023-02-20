@@ -17,6 +17,7 @@
 		0A5502FB292E3769009E5EF6 /* VKData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0A5502F9292E3769009E5EF6 /* VKData.xcdatamodeld */; };
 		0A5502FD292E3DAC009E5EF6 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5502FC292E3DAC009E5EF6 /* CoreDataManager.swift */; };
 		0A550300292E3E00009E5EF6 /* SavedPostsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5502FF292E3E00009E5EF6 /* SavedPostsTableViewController.swift */; };
+		0A590E1F29A37309003746F3 /* LocalAuthorizationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A590E1E29A37309003746F3 /* LocalAuthorizationService.swift */; };
 		0A65CE2F28DA13E0001A3EC4 /* Checker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A65CE2C28DA13E0001A3EC4 /* Checker.swift */; };
 		0A65CE3028DA13E0001A3EC4 /* LoginInspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A65CE2D28DA13E0001A3EC4 /* LoginInspector.swift */; };
 		0A65CE3128DA13E0001A3EC4 /* LoginViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A65CE2E28DA13E0001A3EC4 /* LoginViewControllerDelegate.swift */; };
@@ -113,6 +114,7 @@
 		0A5502FA292E3769009E5EF6 /* VKData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = VKData.xcdatamodel; sourceTree = "<group>"; };
 		0A5502FC292E3DAC009E5EF6 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		0A5502FF292E3E00009E5EF6 /* SavedPostsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedPostsTableViewController.swift; sourceTree = "<group>"; };
+		0A590E1E29A37309003746F3 /* LocalAuthorizationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAuthorizationService.swift; sourceTree = "<group>"; };
 		0A65CE2C28DA13E0001A3EC4 /* Checker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Checker.swift; sourceTree = "<group>"; };
 		0A65CE2D28DA13E0001A3EC4 /* LoginInspector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginInspector.swift; sourceTree = "<group>"; };
 		0A65CE2E28DA13E0001A3EC4 /* LoginViewControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewControllerDelegate.swift; sourceTree = "<group>"; };
@@ -246,6 +248,7 @@
 				0A65CE2E28DA13E0001A3EC4 /* LoginViewControllerDelegate.swift */,
 				0A1498B62828BF6F0090BB87 /* LogInViewController.swift */,
 				0AB49BB228E352B900D6BF4A /* BruteForce.swift */,
+				0A590E1E29A37309003746F3 /* LocalAuthorizationService.swift */,
 			);
 			path = Access;
 			sourceTree = "<group>";
@@ -616,6 +619,7 @@
 				0A92408C27EFEB74008E7D38 /* ProfileViewController.swift in Sources */,
 				0AB49BA228DF61E500D6BF4A /* FeedCoordinator.swift in Sources */,
 				0AF62D6B28B462540083AD9B /* PhotosCollectionViewCell.swift in Sources */,
+				0A590E1F29A37309003746F3 /* LocalAuthorizationService.swift in Sources */,
 				0AB49B9B28DF410900D6BF4A /* ScreenFlow.swift in Sources */,
 				0AB49BB028E3065D00D6BF4A /* GalleryModel.swift in Sources */,
 				0AB49BA628DF624600D6BF4A /* CoordinatorProtocol.swift in Sources */,
@@ -822,6 +826,7 @@
 				DEVELOPMENT_TEAM = 76ZWQT2P26;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Navigation/Info.plist;
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "We need your Face";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Get there fast";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -852,6 +857,7 @@
 				DEVELOPMENT_TEAM = 76ZWQT2P26;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Navigation/Info.plist;
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "We need your Face";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Get there fast";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;

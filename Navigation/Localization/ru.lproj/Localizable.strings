@@ -46,3 +46,6 @@
 "go_to_post" = "Перейти на пост";
 "enter_verification_word" = "Введите проверочное слово";
 "attention" = "Внимание";
+"biometric_entry_button" = "Биометрическая авторизация";
+"biometric_authorization_denied" = "Биометрическая авторезация запрещена";
+"biometric_authorization_reason" = "Авторизация с помощью биометрических данных";

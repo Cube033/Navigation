@@ -7,3 +7,4 @@
 */
 
 "NSLocationWhenInUseUsageDescription" = "Ты где?";
+"NSFaceIDUsageDescription" = "Для вашего комфорты мы используем Face-ID";

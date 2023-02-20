@@ -46,3 +46,6 @@
 "go_to_post" = "Go to post";
 "enter_verification_word" = "Enter a verification word";
 "attention" = "Attention";
+"biometric_entry_button" = "Biometric authorization";
+"biometric_authorization_denied" = "Biometric authorization denied";
+"biometric_authorization_reason" = "Biometric authorization";

@@ -10,6 +10,9 @@ import UIKit
 
 class LogInViewController: UIViewController {
     
+    
+    // MARK: - Variables
+    
     var loginDelegate: LoginViewControllerDelegate?
     let colorSet = UIColor(red: 0.28, green: 0.52, blue: 0.80, alpha: 1.00)
     let scrollView = UIScrollView()
@@ -66,14 +69,20 @@ class LogInViewController: UIViewController {
     lazy var bruteForceButton = CustomButton(title: "choose_password".localized,
                                              backgroundColor: nil,
                                              tapAction: {self.bruteForce()})
+    lazy var authorizeWithBiometricButton = CustomButton(title: "biometric_entry_button".localized,
+                                                         backgroundColor: nil,
+                                                         tapAction: {self.authorizeWithBiometric()}) //Позже кнопка настраивается дополнительно
     
     private let activityIndicator = UIActivityIndicatorView(style: .medium)
     
     private let queue = DispatchQueue(label: "com.Navigation.brute-force", qos:.default)
     
     private var hackerModeOn = false
+    private var successBiometricAuthorization = false
     
     var loginReminderTimer: Timer?
+    
+    // MARK: - Life cycle
     
     init (mainCoordinator:MainCoordinator) {
         self.mainCoordinator = mainCoordinator
@@ -102,6 +111,8 @@ class LogInViewController: UIViewController {
         loginReminderTimer = nil
     }
     
+    // MARK: - functions
+    
     @objc private func kbdShow(notification: NSNotification){
         if let kbdSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             scrollView.contentInset.bottom = kbdSize.height
@@ -128,7 +139,6 @@ class LogInViewController: UIViewController {
                 self.succesHacking(stolenPassword: stolenPassword)
             }
         }
-        
     }
     
     private func succesHacking(stolenPassword: String){
@@ -159,7 +169,7 @@ class LogInViewController: UIViewController {
             }
         }
 #endif
-        if successLogIn || hackerModeOn {
+        if successLogIn || hackerModeOn || successBiometricAuthorization {
             UserInfo.shared.setUser(user: currentUser!)
             mainCoordinator.startApplication()
         }
@@ -181,55 +191,31 @@ class LogInViewController: UIViewController {
         view.clipsToBounds = true
         activityIndicator.hidesWhenStopped = true
         activityIndicator.color = .blue
-    }
-    
-    private func addElements(){
-        self.view.addSubview(scrollView)
-        scrollView.addSubview(contentView)
-        contentView.addSubview(logoImageView)
-        contentView.addSubview(logInTextField)
-        contentView.addSubview(passwordTextField)
-        contentView.addSubview(logInButton)
-    }
-    
-    private func setConstraints(){
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.translatesAutoresizingMaskIntoConstraints = false
-        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
         
-        NSLayoutConstraint.activate([
-            scrollView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
-            scrollView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
-            
-            contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-            contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-            contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
-            contentView.heightAnchor.constraint(equalTo: scrollView.heightAnchor),
-            
-            logoImageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            logoImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 120),
-            logoImageView.widthAnchor.constraint(equalToConstant: 100),
-            logoImageView.heightAnchor.constraint(equalToConstant: 100),
-            
-            logInTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            logInTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            logInTextField.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: 120),
-            logInTextField.heightAnchor.constraint(equalToConstant: 50),
-            
-            passwordTextField.topAnchor.constraint(equalTo: logInTextField.bottomAnchor),
-            passwordTextField.heightAnchor.constraint(equalToConstant: 50),
-            passwordTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            passwordTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            
-            logInButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 16),
-            logInButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            logInButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            logInButton.heightAnchor.constraint(equalToConstant: 50),
-        ])
+        setAuthorizeWithBiometricButton()
+    }
+    
+    private func setAuthorizeWithBiometricButton() {
+        let localAuthorizationService = LocalAuthorizationService()
+        let typeOfBiometricOpt = localAuthorizationService.getTypeOfBiometric()
+        guard let typeOfBiometric = typeOfBiometricOpt
+        else {
+            authorizeWithBiometricButton.isHidden = true
+            return
+        }
+        var biometricImageOpt: UIImage?
+        switch typeOfBiometric {
+        case .FaceID:
+            biometricImageOpt = UIImage(systemName: "faceid")
+        case .TouchID:
+            biometricImageOpt = UIImage(systemName: "touchid")
+        }
+        
+        if let biometricImage = biometricImageOpt {
+            authorizeWithBiometricButton.setImage(biometricImage, for: .normal)
+        } else {
+            authorizeWithBiometricButton.isHidden = true
+        }
     }
     
     private func setAlert(errorMessage: String) {
@@ -271,7 +257,79 @@ class LogInViewController: UIViewController {
         activityIndicator.trailingAnchor.constraint(equalTo: self.passwordTextField.trailingAnchor, constant: -16),
         ])
     }
+    
+    private func authorizeWithBiometric() {
+        let localAuthorizationService = LocalAuthorizationService()
+        localAuthorizationService.authorizeIfPossible() {authorizationResult in
+            switch authorizationResult {
+            case .success:
+                self.successBiometricAuthorization = true
+                self.logIn()
+            case .failure(let errorString):
+                self.setAlert(errorMessage: errorString)
+            }
+        }
+    }
+    
+    // MARK: - constraints
+    
+    private func addElements(){
+        self.view.addSubview(scrollView)
+        scrollView.addSubview(contentView)
+        contentView.addSubview(logoImageView)
+        contentView.addSubview(logInTextField)
+        contentView.addSubview(passwordTextField)
+        contentView.addSubview(logInButton)
+        contentView.addSubview(authorizeWithBiometricButton)
+    }
+    
+    private func setConstraints(){
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            scrollView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
+            scrollView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
+            
+            contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            contentView.heightAnchor.constraint(equalTo: scrollView.heightAnchor),
+            
+            logoImageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            logoImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 120),
+            logoImageView.widthAnchor.constraint(equalToConstant: 100),
+            logoImageView.heightAnchor.constraint(equalToConstant: 100),
+            
+            logInTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            logInTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            logInTextField.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: 120),
+            logInTextField.heightAnchor.constraint(equalToConstant: 50),
+            
+            passwordTextField.topAnchor.constraint(equalTo: logInTextField.bottomAnchor),
+            passwordTextField.heightAnchor.constraint(equalToConstant: 50),
+            passwordTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            passwordTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            
+            logInButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 16),
+            logInButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            logInButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            logInButton.heightAnchor.constraint(equalToConstant: 50),
+            
+            authorizeWithBiometricButton.topAnchor.constraint(equalTo: logInButton.bottomAnchor, constant: 16),
+            authorizeWithBiometricButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            authorizeWithBiometricButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            authorizeWithBiometricButton.heightAnchor.constraint(equalToConstant: 50),
+        ])
+    }
 }
+
+// MARK: - extension
 
 extension LogInViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

@@ -7,3 +7,4 @@
 */
 
 "NSLocationWhenInUseUsageDescription" = "Where you are?";
+"NSFaceIDUsageDescription" = "We need your Face for your comfort";
