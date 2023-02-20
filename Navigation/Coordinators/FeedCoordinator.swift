@@ -19,6 +19,7 @@ enum FeedActionType: CoordinatorActionProtocol {
 class FeedCoordinator: CoordinatorProtocol {
     
     var navigationController: UINavigationController
+    var currentViewController = UIViewController()
     
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
@@ -34,21 +35,21 @@ class FeedCoordinator: CoordinatorProtocol {
         switch feedActionType {
         case .feed:
             // искуственная конструкция, оправдывающая применение координатора в таком маленьком модуле
-            let viewController = FeedNavigationController(feedCoordinator: self)
-            navigationController.pushViewController(viewController, animated: true)
+            currentViewController = FeedNavigationController(feedCoordinator: self)
+            navigationController.pushViewController(currentViewController, animated: true)
         case .post:
-            let postViewController = PostViewController(feedCoordinator: self)
-            navigationController.pushViewController(postViewController, animated: true)
+            currentViewController = PostViewController(feedCoordinator: self)
+            navigationController.pushViewController(currentViewController, animated: true)
         case .alert:
-            let infoViewController = InfoViewController()
-            infoViewController.modalPresentationStyle = .automatic
-            navigationController.present(infoViewController, animated: true, completion: nil)
+            currentViewController = InfoViewController()
+            currentViewController.modalPresentationStyle = .automatic
+            navigationController.present(currentViewController, animated: true, completion: nil)
         case .videoPlayer:
-            let videoPlayerViewController = VideoPlayerViewController()
-            navigationController.present(videoPlayerViewController, animated: true, completion: nil)
+            currentViewController = VideoPlayerViewController()
+            navigationController.present(currentViewController, animated: true, completion: nil)
         case .mapViewController:
-            let mapViewController = MapViewController()
-            navigationController.pushViewController(mapViewController, animated: true)
+            currentViewController = MapViewController()
+            navigationController.pushViewController(currentViewController, animated: true)
         }
     }
 }
