@@ -24,6 +24,9 @@ class MainCoordinator: MainCoordinatorProtokol {
     }
     
     func startApplication(){
+        let localNotificationService = LocalNotificationsService()
+        localNotificationService.registeForLatestUpdatesIfPossible()
+        
         var currentViewController: UIViewController
         if UserInfo.shared.loggedIn {
             let viewController = MainTabBarViewController()
