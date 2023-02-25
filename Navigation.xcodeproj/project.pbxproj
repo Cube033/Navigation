@@ -18,6 +18,7 @@
 		0A5502FD292E3DAC009E5EF6 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5502FC292E3DAC009E5EF6 /* CoreDataManager.swift */; };
 		0A550300292E3E00009E5EF6 /* SavedPostsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5502FF292E3E00009E5EF6 /* SavedPostsTableViewController.swift */; };
 		0A590E1F29A37309003746F3 /* LocalAuthorizationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A590E1E29A37309003746F3 /* LocalAuthorizationService.swift */; };
+		0A590E2229A4DFB6003746F3 /* LocalNotificationsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A590E2129A4DFB6003746F3 /* LocalNotificationsService.swift */; };
 		0A65CE2F28DA13E0001A3EC4 /* Checker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A65CE2C28DA13E0001A3EC4 /* Checker.swift */; };
 		0A65CE3028DA13E0001A3EC4 /* LoginInspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A65CE2D28DA13E0001A3EC4 /* LoginInspector.swift */; };
 		0A65CE3128DA13E0001A3EC4 /* LoginViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A65CE2E28DA13E0001A3EC4 /* LoginViewControllerDelegate.swift */; };
@@ -115,6 +116,7 @@
 		0A5502FC292E3DAC009E5EF6 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		0A5502FF292E3E00009E5EF6 /* SavedPostsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedPostsTableViewController.swift; sourceTree = "<group>"; };
 		0A590E1E29A37309003746F3 /* LocalAuthorizationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAuthorizationService.swift; sourceTree = "<group>"; };
+		0A590E2129A4DFB6003746F3 /* LocalNotificationsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalNotificationsService.swift; sourceTree = "<group>"; };
 		0A65CE2C28DA13E0001A3EC4 /* Checker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Checker.swift; sourceTree = "<group>"; };
 		0A65CE2D28DA13E0001A3EC4 /* LoginInspector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginInspector.swift; sourceTree = "<group>"; };
 		0A65CE2E28DA13E0001A3EC4 /* LoginViewControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewControllerDelegate.swift; sourceTree = "<group>"; };
@@ -239,6 +241,14 @@
 			path = SavedPosts;
 			sourceTree = "<group>";
 		};
+		0A590E2029A4DFA3003746F3 /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				0A590E2129A4DFB6003746F3 /* LocalNotificationsService.swift */,
+			);
+			path = Notifications;
+			sourceTree = "<group>";
+		};
 		0A65CE2B28DA13E0001A3EC4 /* Access */ = {
 			isa = PBXGroup;
 			children = (
@@ -315,6 +325,7 @@
 		0A88007027DE2C3000C09A5C /* Navigation */ = {
 			isa = PBXGroup;
 			children = (
+				0A590E2029A4DFA3003746F3 /* Notifications */,
 				0A116ED429769A8100F70E6B /* Localization */,
 				0A116ED12976964B00F70E6B /* Extensions */,
 				0A116ECE296FD82400F70E6B /* MapKit */,
@@ -587,6 +598,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0A590E2229A4DFB6003746F3 /* LocalNotificationsService.swift in Sources */,
 				0A67B1E828D861B4006D4694 /* UserService.swift in Sources */,
 				0AB49B9628DCC0A200D6BF4A /* CustomButton.swift in Sources */,
 				0A5502FB292E3769009E5EF6 /* VKData.xcdatamodeld in Sources */,
