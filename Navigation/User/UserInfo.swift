@@ -6,29 +6,34 @@
 //
 
 import Foundation
+import Firebase
 
 class UserInfo {
     
-    static let shared: UserInfo = {
-        let userInfo = UserInfo()
-        userInfo.user = nil
-        userInfo.loggedIn = false
-        return userInfo
-    }()
+    static let shared = UserInfo()
     
-    var user: User?
-    var loggedIn = false
+    var user: User
+//    var loggedIn = {
+//        AccessManager.shared.userLoggedIn()
+//    }
     
-    private init() {}
+    private init() {
+        self.user = User(uid: "", email: "")
+//        Auth.auth().addStateDidChangeListener { auth, user in
+//            if user == nil {
+//                loggedIn = false
+//            }
+//        }
+    }
     
     func setUser(user: User){
         UserInfo.shared.user = user
-        UserInfo.shared.loggedIn = true
+//        UserInfo.shared.loggedIn = true
     }
     
-    func clearUserInfo() {
-        UserInfo.shared.user = nil
-        UserInfo.shared.loggedIn = false
-    }
+//    func clearUserInfo() {
+//        UserInfo.shared.user = nil
+////        UserInfo.shared.loggedIn = false
+//    }
     
 }

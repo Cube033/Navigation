@@ -11,9 +11,10 @@ import UIKit
 class LogInViewController: UIViewController {
     
     
+    
     // MARK: - Variables
     
-    var loginDelegate: LoginViewControllerDelegate?
+    //    var loginDelegate: LoginViewControllerDelegate?
     let colorSet = UIColor(red: 0.28, green: 0.52, blue: 0.80, alpha: 1.00)
     let scrollView = UIScrollView()
     let contentView = UIView()
@@ -62,7 +63,7 @@ class LogInViewController: UIViewController {
     }()
     private let nc = NotificationCenter.default
     let mainCoordinator: MainCoordinator
-   
+    
     lazy var logInButton = CustomButton(title: "log_in".localized,
                                         backgroundColor: nil,
                                         tapAction: {self.logIn()})
@@ -129,9 +130,9 @@ class LogInViewController: UIViewController {
         self.activityIndicator.startAnimating()
         let bruteForce = BruteForce()
         let randomPassword = bruteForce.getRandomPassword(lenght: 3)
-#if DEBUG
-        print(randomPassword)
-#endif
+        //#if DEBUG
+        //        print(randomPassword)
+        //#endif
         queue.async {
             let stolenPassword = bruteForce.bruteForce(passwordToUnlock: randomPassword)
             DispatchQueue.main.async {
@@ -148,31 +149,14 @@ class LogInViewController: UIViewController {
     }
     
     private func logIn(){
-        var successLogIn = false
-        let currentUser: User?
-        let userSevice = CurrentUserService()
-        currentUser = userSevice.getUserByLogin(login: "cube033")
-#if DEBUG
-        successLogIn = true
-#else
-        if let loginDelegateExist = self.loginDelegate {
-            do{
-                successLogIn = try loginDelegateExist.check(login: self.logInTextField.text!, password: self.passwordTextField.text!)
-            } catch LoginError.emptyLoginField {
-                self.setAlert(errorMessage: "login_not_filled".localized)
-            } catch LoginError.emptyPasswordField {
-                self.setAlert(errorMessage: "password_not_filled".localized)
-            } catch LoginError.loginFailed {
-                self.setAlert(errorMessage: "username_password_incorrect".localized)
-            } catch {
-                
-            }
-        }
-#endif
-        if successLogIn || hackerModeOn || successBiometricAuthorization {
-            UserInfo.shared.setUser(user: currentUser!)
+        let loginText = self.logInTextField.text!
+        let passwordText = self.passwordTextField.text!
+        if  hackerModeOn || successBiometricAuthorization {
+//            UserInfo.shared.setUser(user: currentUser!)
             mainCoordinator.startApplication()
         }
+        AccessManager.shared.check(login: loginText, password: passwordText)
+        
     }
     
     private func setView(){
@@ -191,7 +175,7 @@ class LogInViewController: UIViewController {
         view.clipsToBounds = true
         activityIndicator.hidesWhenStopped = true
         activityIndicator.color = .blue
-        
+        AccessManager.shared.delegate = self
         setAuthorizeWithBiometricButton()
     }
     
@@ -248,13 +232,13 @@ class LogInViewController: UIViewController {
         contentView.addSubview(activityIndicator)
         
         NSLayoutConstraint.activate([
-        bruteForceButton.topAnchor.constraint(equalTo: self.logInButton.bottomAnchor, constant: 16),
-        bruteForceButton.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 16),
-        bruteForceButton.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -16),
-        bruteForceButton.heightAnchor.constraint(equalToConstant: 50),
-        
-        activityIndicator.centerYAnchor.constraint(equalTo: self.passwordTextField.centerYAnchor),
-        activityIndicator.trailingAnchor.constraint(equalTo: self.passwordTextField.trailingAnchor, constant: -16),
+            bruteForceButton.topAnchor.constraint(equalTo: self.logInButton.bottomAnchor, constant: 16),
+            bruteForceButton.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 16),
+            bruteForceButton.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -16),
+            bruteForceButton.heightAnchor.constraint(equalToConstant: 50),
+            
+            activityIndicator.centerYAnchor.constraint(equalTo: self.passwordTextField.centerYAnchor),
+            activityIndicator.trailingAnchor.constraint(equalTo: self.passwordTextField.trailingAnchor, constant: -16),
         ])
     }
     
@@ -270,6 +254,8 @@ class LogInViewController: UIViewController {
             }
         }
     }
+    
+    
     
     // MARK: - constraints
     
@@ -336,4 +322,68 @@ extension LogInViewController: UITextFieldDelegate {
         view.endEditing(true)
         return true
     }
+}
+
+extension LogInViewController: LoginViewControllerDelegate {
+    func successLogin() {
+        print("auth. done")
+        mainCoordinator.startApplication()
+    }
+    
+    func loginFailed(result: Result<Bool, LoginError>) {
+        print("Sign in failed: \(result)")
+        switch result {
+        case .success:
+            successLogin()
+        case .failure(let error):
+            handleLoginError(error)
+        }
+    }
+    
+    func handleLoginError(_ error: LoginError) {
+        switch error {
+        case .emptyLoginField:
+            self.setAlert(errorMessage: "login_not_filled".localized)
+        case .emptyPasswordField:
+            self.setAlert(errorMessage: "password_not_filled".localized)
+        case .loginFailed:
+            self.setAlert(errorMessage: "username_password_incorrect".localized)
+        case .userNotExist:
+            createUser()
+        case .errorNotDefined:
+            self.setAlert(errorMessage: "error_not_defined".localized)
+        case .emailFormatError:
+            self.setAlert(errorMessage: "email_format_error".localized)
+        case .weakPassword:
+            self.setAlert(errorMessage: "weak_password".localized)
+        }
+    }
+    
+    func createUser() {
+        let loginText = self.logInTextField.text!
+        let passwordText = self.passwordTextField.text!
+        var titleForAlert: String
+        var textForAlert: String
+        titleForAlert = "user_not_found".localized
+        textForAlert = "register_q".localized
+        let tupleArray = [("register_yes".localized, {
+            AccessManager.shared.createUser(userLogin: loginText, userPassword: passwordText)
+        })]
+        CustomAlert.setAlert(showIn: self,
+                             textTitle: titleForAlert,
+                             textMessage: textForAlert,
+                             exitButtonTitle: "cancel".localized,
+                             tuplesArray: tupleArray)
+    }
+    
+    func userNameRequest(uid: String) {
+        TextPicker.shared.getText(showIn: self,
+                                  title: "name_request_title".localized,
+                                  placeholder: "name_request_placeholder".localized,
+                                  completion: {(newUserName) in
+            AccessManager.shared.updateUsername(uid: uid, newUsername: newUserName)
+            self.successLogin()
+        })
+    }
+    
 }

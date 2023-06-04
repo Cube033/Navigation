@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-protocol MainCoordinatorProtokol {
+protocol MainCoordinatorProtokol: AnyObject {
     
     var window: UIWindow? {get set}
     
@@ -21,6 +21,7 @@ class MainCoordinator: MainCoordinatorProtokol {
     
     init(window: UIWindow) {
         self.window = window
+        AccessManager.shared.mainCoordinatorDelegate = self
     }
     
     func startApplication(){
@@ -28,13 +29,12 @@ class MainCoordinator: MainCoordinatorProtokol {
         localNotificationService.registeForLatestUpdatesIfPossible()
         
         var currentViewController: UIViewController
-        if UserInfo.shared.loggedIn {
+        if AccessManager.shared.userLoggedIn() {
             let viewController = MainTabBarViewController()
             currentViewController = viewController
             
         }  else {
             let viewController = LogInViewController(mainCoordinator: self)
-            viewController.loginDelegate = MyLoginFactory.makeLoginInspector()
             currentViewController = viewController //костыль - так как не удается указать свойство loginDelegate напрямую
         }
         self.window?.rootViewController = currentViewController

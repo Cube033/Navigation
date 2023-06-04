@@ -23,7 +23,7 @@
 "enter_text" = "Введите текст";
 "cancel" = "Отмена";
 "email_or_phone" = "Email или телефон";
-"log_in" = "Войти";
+"log_in" = "Войти или зарегистрироваться";
 "choose_password" = "Подобрать пароль";
 "login_not_filled" = "Не заполнен логин!";
 "password_not_filled" = "Не заполнен пароль!";
@@ -49,3 +49,12 @@
 "biometric_entry_button" = "Биометрическая авторизация";
 "biometric_authorization_denied" = "Биометрическая авторезация запрещена";
 "biometric_authorization_reason" = "Авторизация с помощью биометрических данных";
+"user_not_found" = "Пользователь не найден";
+"register_q" = "Создать нового пользователя?";
+"register_yes" = "Создать пользователя";
+"email_format_error" = "Ошибка формата электронной почты";
+"error_not_defined" = "Неизвестная ошибка";
+"weak_password" = "Пароль должен быть 6 сивмолов или более";
+"name_request_title" = "Ваше имя:";
+"name_request_placeholder" = "Введите имя";
+"logout" = "Выйти из профиля";

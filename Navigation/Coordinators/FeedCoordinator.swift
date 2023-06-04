@@ -26,7 +26,7 @@ class FeedCoordinator: CoordinatorProtocol {
     }
     
     func getStartViewController() -> UIViewController {
-        let viewController = FeedNavigationController(feedCoordinator: self)
+        let viewController = FeedNavigationController()
         return viewController
     }
     
@@ -35,7 +35,7 @@ class FeedCoordinator: CoordinatorProtocol {
         switch feedActionType {
         case .feed:
             // искуственная конструкция, оправдывающая применение координатора в таком маленьком модуле
-            currentViewController = FeedNavigationController(feedCoordinator: self)
+            currentViewController = FeedNavigationController()
             navigationController.pushViewController(currentViewController, animated: true)
         case .post:
             currentViewController = PostViewController(feedCoordinator: self)
@@ -48,8 +48,17 @@ class FeedCoordinator: CoordinatorProtocol {
             currentViewController = VideoPlayerViewController()
             navigationController.present(currentViewController, animated: true, completion: nil)
         case .mapViewController:
-            currentViewController = MapViewController()
-            navigationController.pushViewController(currentViewController, animated: true)
+            //            currentViewController = MapViewController()
+            //            navigationController.pushViewController(currentViewController, animated: true)
+            AccessManager.shared.signOut { (result) in
+                switch result {
+                case .success():
+                    print("Signed out successfully.")
+                case .failure(let error):
+                    print("Error signing out: \(error)")
+                }
+            }
+            
         }
     }
 }

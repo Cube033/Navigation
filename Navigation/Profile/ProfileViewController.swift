@@ -86,7 +86,7 @@ class ProfileViewController: UIViewController {
     
     private func setView() {
         view.backgroundColor = Palette.viewControllerBackgroundColor
-        tableHeader.setUserInfo(user: viewModel.user)
+        tableHeader.setUserInfo()
         navigationController?.isNavigationBarHidden = true
         view.clipsToBounds = true
         view.addSubview(profileTableView)

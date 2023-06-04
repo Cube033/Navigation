@@ -23,7 +23,7 @@
 "enter_text" = "Enter text";
 "cancel" = "Cancel";
 "email_or_phone" = "Email or phone";
-"log_in" = "Log in";
+"log_in" = "Login or register";
 "choose_password" = "Choose password";
 "login_not_filled" = "Login not filled!";
 "password_not_filled" = "Password not filled!";
@@ -49,3 +49,12 @@
 "biometric_entry_button" = "Biometric authorization";
 "biometric_authorization_denied" = "Biometric authorization denied";
 "biometric_authorization_reason" = "Biometric authorization";
+"user_not_found" = "User not found";
+"register_q" = "Register new user?";
+"register_yes" = "Register";
+"email_format_error" = "The email address is badly formatted";
+"error_not_defined" = "Error not defined";
+"weak_password" = "The password must be 6 characters long or more";
+"name_request_title" = "Your name";
+"name_request_placeholder" = "Enter name";
+"logout" = "Logout";

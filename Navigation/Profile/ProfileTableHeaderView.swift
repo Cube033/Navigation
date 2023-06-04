@@ -143,13 +143,22 @@ class ProfileHeaderView: UIView {
         return nameLabel
     }
     
-    private func setStatusButton() -> UIButton{
-        return CustomButton(title: "show_status".localized,
-                                  backgroundColor: nil,
-                                  tapAction: {
-            guard ((try? self.changeStatus()) != nil) else {
-                preconditionFailure("Text status must be filled")
+    private func setStatusButton() -> UIButton {
+        return CustomButton(title: "logout".localized,
+                            backgroundColor: nil,
+                            tapAction: {
+            
+            //            guard ((try? self.changeStatus()) != nil) else {
+            //                preconditionFailure("Text status must be filled")
+            AccessManager.shared.signOut { (result) in
+                switch result {
+                case .success():
+                    print("Signed out successfully.")
+                case .failure(let error):
+                    print("Error signing out: \(error)")
+                }
             }
+            
         })
     }
     
@@ -182,10 +191,11 @@ class ProfileHeaderView: UIView {
         return statusLabel
     }
     
-    public func setUserInfo(user: User) {
-        nameLabel.text = user.fullName
-        avatarImageView.image = user.avatar
-        statusLabel.text = user.status
+    public func setUserInfo() {
+        let user = UserInfo.shared.user
+        nameLabel.text = user.username
+        avatarImageView.image = UIImage(named: user.profilePictureUrl ?? "") ?? (UIImage(named: "myAvatarImage") ?? UIImage())
+        statusLabel.text = user.email
     }
     
     private func changeStatus() throws {

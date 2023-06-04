@@ -59,7 +59,7 @@ class SavedPostsTableViewController: UITableViewController {
     }
     
     @objc private func searchBarButtonTapped() {
-        TextPicker.defaultPicker.getText(showIn: self,
+        TextPicker.shared.getText(showIn: self,
                                          title: "filter_by_author".localized,
                                          placeholder: "enter_author".localized,
                                          completion: {(authorName) in

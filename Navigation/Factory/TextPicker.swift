@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 class TextPicker {
-    static let defaultPicker = TextPicker()
+    static let shared = TextPicker()
     
     func getText(showIn viewController: UIViewController, title: String?, placeholder: String?, completion: ((_ text: String)->Void)?) {
         let titleText = title ?? "enter_text".localized

@@ -7,6 +7,8 @@
 
 import Foundation
 
-protocol LoginViewControllerDelegate {
-    func check(login: String, password: String) throws -> Bool
+protocol LoginViewControllerDelegate: AnyObject {
+    func successLogin()
+    func loginFailed(result: Result<Bool, LoginError>)
+    func userNameRequest(uid: String)
 }
