@@ -45,7 +45,7 @@ class InfoViewController: UIViewController {
     
     
     
-    private lazy var button: UIButton = CustomButton(title: "Доступные действия", backgroundColor: nil, tapAction: {self.setAlert()})
+    private lazy var button: UIButton = CustomButton(title: "available_actions".localized, backgroundColor: nil, tapAction: {self.setAlert()})
     
     private func setupView(){
         view.backgroundColor = .systemPink
@@ -116,11 +116,11 @@ class InfoViewController: UIViewController {
     }
     
     private func setAlert() {
-        let alert = UIAlertController(title: "Действия", message: "Выберите действие", preferredStyle: .alert)
-        let actionPrint = UIAlertAction(title: "Вывести текст в консоль", style: .default) { (_) -> Void in
-            print("Вывести текст")
+        let alert = UIAlertController(title: "actions".localized, message: "select_an_action".localized, preferredStyle: .alert)
+        let actionPrint = UIAlertAction(title: "output_text_to_console".localized, style: .default) { (_) -> Void in
+            //print("Вывести текст")
         }
-        let actionDismiss = UIAlertAction(title: "Закрыть окно", style: .default) { (_) -> Void in
+        let actionDismiss = UIAlertAction(title: "close_window".localized, style: .default) { (_) -> Void in
             self.dismiss(animated: true, completion: nil)
         }
         

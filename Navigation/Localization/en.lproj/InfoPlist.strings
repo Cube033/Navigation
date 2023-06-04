@@ -1,0 +1,10 @@
+/* 
+  InfoPlist.strings
+  Navigation
+
+  Created by Дмитрий Федотов on 17.01.2023.
+  
+*/
+
+"NSLocationWhenInUseUsageDescription" = "Where you are?";
+"NSFaceIDUsageDescription" = "We need your Face for your comfort";

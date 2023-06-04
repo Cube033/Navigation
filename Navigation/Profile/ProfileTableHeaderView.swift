@@ -16,6 +16,8 @@ class ProfileHeaderView: UIView {
     
     private var statusText: String = ""
     
+    let statusLabelColor = UIColor.createColor(lightMode: .systemGray2, darkMode: .white)
+    
     var avatarImageView = UIImageView()
     var nameLabel = UILabel()
     var statusButton = UIButton()
@@ -25,7 +27,7 @@ class ProfileHeaderView: UIView {
     let coverView: UIView = {
         let view = UIView()
         view.alpha = 0
-        view.backgroundColor = .black
+        view.backgroundColor = Palette.viewControllerBackgroundColor
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -58,6 +60,7 @@ class ProfileHeaderView: UIView {
     }
     
     private func setElements(){
+        backgroundColor = Palette.viewControllerBackgroundColor
         avatarImageView = setAvatarImageView()
         nameLabel = setNameLabel()
         statusButton = setStatusButton()
@@ -120,7 +123,7 @@ class ProfileHeaderView: UIView {
             imageView.contentMode = .scaleAspectFill
             imageView.layer.cornerRadius = 50
             imageView.clipsToBounds = true
-            imageView.layer.borderColor = UIColor.white.cgColor // цвет рамки
+            imageView.layer.borderColor = Palette.textFieldBorderColor
             imageView.layer.borderWidth = 3
             imageView.layer.masksToBounds = true
             imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -133,7 +136,6 @@ class ProfileHeaderView: UIView {
         let nameLabel: UILabel = {
             let label = UILabel()
             let nameLabelFont = UIFont(name:"HelveticaNeue-Bold", size: 18.0)
-            label.textColor = .black
             label.font = nameLabelFont
             label.translatesAutoresizingMaskIntoConstraints = false
             return label
@@ -141,13 +143,22 @@ class ProfileHeaderView: UIView {
         return nameLabel
     }
     
-    private func setStatusButton() -> UIButton{
-        return CustomButton(title: "Show status",
-                                  backgroundColor: nil,
-                                  tapAction: {
-            guard ((try? self.changeStatus()) != nil) else {
-                preconditionFailure("Text status must be filled")
+    private func setStatusButton() -> UIButton {
+        return CustomButton(title: "logout".localized,
+                            backgroundColor: nil,
+                            tapAction: {
+            
+            //            guard ((try? self.changeStatus()) != nil) else {
+            //                preconditionFailure("Text status must be filled")
+            AccessManager.shared.signOut { (result) in
+                switch result {
+                case .success():
+                    print("Signed out successfully.")
+                case .failure(let error):
+                    print("Error signing out: \(error)")
+                }
             }
+            
         })
     }
     
@@ -156,10 +167,10 @@ class ProfileHeaderView: UIView {
         let statusTextField: UITextField = {
             let textField = UITextField()
             textField.font = .systemFont(ofSize: 15)
-            textField.backgroundColor = .white
+            textField.backgroundColor = Palette.textFieldBackgroundColor
             textField.layer.cornerRadius = 12
             textField.clipsToBounds = true
-            textField.layer.borderColor = UIColor.black.cgColor
+            textField.layer.borderColor = Palette.textFieldBorderColor
             textField.layer.borderWidth = 1
             textField.layer.masksToBounds = true
             textField.addTarget(self, action: #selector(statusTextChanged), for: .editingChanged)
@@ -172,7 +183,7 @@ class ProfileHeaderView: UIView {
     private func setStatusLabel() -> UILabel{
         let statusLabel: UILabel = {
             let label = UILabel()
-            label.textColor = .gray
+            label.textColor = statusLabelColor
             label.font = .systemFont(ofSize: 14.0)
             label.translatesAutoresizingMaskIntoConstraints = false
             return label
@@ -180,16 +191,17 @@ class ProfileHeaderView: UIView {
         return statusLabel
     }
     
-    public func setUserInfo(user: User) {
-        nameLabel.text = user.fullName
-        avatarImageView.image = user.avatar
-        statusLabel.text = user.status
+    public func setUserInfo() {
+        let user = UserInfo.shared.user
+        nameLabel.text = user.username
+        avatarImageView.image = UIImage(named: user.profilePictureUrl ?? "") ?? (UIImage(named: "myAvatarImage") ?? UIImage())
+        statusLabel.text = user.email
     }
     
     private func changeStatus() throws {
         let labels = self.subviews.compactMap { $0 as? UILabel }
         for label in labels {
-            if label.textColor == .gray {
+            if label.textColor == statusLabelColor {
                 let textViews = self.subviews.compactMap {$0 as? UITextField}
                 if let firstTextView = textViews.first {
                     if firstTextView.text! == "" {

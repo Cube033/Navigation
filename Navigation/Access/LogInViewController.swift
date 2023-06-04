@@ -10,7 +10,11 @@ import UIKit
 
 class LogInViewController: UIViewController {
     
-    var loginDelegate: LoginViewControllerDelegate?
+    
+    
+    // MARK: - Variables
+    
+    //    var loginDelegate: LoginViewControllerDelegate?
     let colorSet = UIColor(red: 0.28, green: 0.52, blue: 0.80, alpha: 1.00)
     let scrollView = UIScrollView()
     let contentView = UIView()
@@ -28,14 +32,13 @@ class LogInViewController: UIViewController {
         logInTextField.font = .systemFont(ofSize: 16)
         logInTextField.tintColor = UIColor.tintColor
         logInTextField.autocapitalizationType = .none
-        logInTextField.backgroundColor = .systemGray6
+        logInTextField.backgroundColor = Palette.textFieldBackgroundColor
         logInTextField.layer.cornerRadius = 10
-        logInTextField.layer.borderColor = UIColor.lightGray.cgColor
+        logInTextField.layer.borderColor = Palette.textFieldBorderColor
         logInTextField.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        logInTextField.layer.borderColor = UIColor.lightGray.cgColor
         logInTextField.layer.borderWidth = 0.5
         logInTextField.translatesAutoresizingMaskIntoConstraints = false
-        logInTextField.placeholder = "Email or phone"
+        logInTextField.attributedPlaceholder = "email_or_phone".localized.attributedPlaceholder
         logInTextField.leftView = .init(frame: .init(x: 0, y: 0, width: 5, height: logInTextField.frame.height))
         logInTextField.leftViewMode = .always
         logInTextField.delegate = self
@@ -45,14 +48,13 @@ class LogInViewController: UIViewController {
         let passwordTextField = UITextField()
         passwordTextField.font = .systemFont(ofSize: 15)
         passwordTextField.autocapitalizationType = .none
-        passwordTextField.backgroundColor = .systemGray6
+        passwordTextField.backgroundColor = Palette.textFieldBackgroundColor
         passwordTextField.layer.cornerRadius = 10
-        passwordTextField.layer.borderColor = UIColor.lightGray.cgColor
+        passwordTextField.layer.borderColor = Palette.textFieldBorderColor
         passwordTextField.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
-        passwordTextField.layer.borderColor = UIColor.lightGray.cgColor
         passwordTextField.layer.borderWidth = 0.5
         passwordTextField.translatesAutoresizingMaskIntoConstraints = false
-        passwordTextField.placeholder = "Password"
+        passwordTextField.attributedPlaceholder = "Password".attributedPlaceholder
         passwordTextField.isSecureTextEntry = true
         passwordTextField.leftView = .init(frame: .init(x: 0, y: 0, width: 5, height: passwordTextField.frame.height))
         passwordTextField.leftViewMode = .always
@@ -61,21 +63,27 @@ class LogInViewController: UIViewController {
     }()
     private let nc = NotificationCenter.default
     let mainCoordinator: MainCoordinator
-   
-    lazy var logInButton = CustomButton(title: "Log in",
+    
+    lazy var logInButton = CustomButton(title: "log_in".localized,
                                         backgroundColor: nil,
                                         tapAction: {self.logIn()})
-    lazy var bruteForceButton = CustomButton(title: "Подобрать пароль",
+    lazy var bruteForceButton = CustomButton(title: "choose_password".localized,
                                              backgroundColor: nil,
                                              tapAction: {self.bruteForce()})
+    lazy var authorizeWithBiometricButton = CustomButton(title: "biometric_entry_button".localized,
+                                                         backgroundColor: nil,
+                                                         tapAction: {self.authorizeWithBiometric()}) //Позже кнопка настраивается дополнительно
     
     private let activityIndicator = UIActivityIndicatorView(style: .medium)
     
     private let queue = DispatchQueue(label: "com.Navigation.brute-force", qos:.default)
     
     private var hackerModeOn = false
+    private var successBiometricAuthorization = false
     
     var loginReminderTimer: Timer?
+    
+    // MARK: - Life cycle
     
     init (mainCoordinator:MainCoordinator) {
         self.mainCoordinator = mainCoordinator
@@ -104,6 +112,8 @@ class LogInViewController: UIViewController {
         loginReminderTimer = nil
     }
     
+    // MARK: - functions
+    
     @objc private func kbdShow(notification: NSNotification){
         if let kbdSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             scrollView.contentInset.bottom = kbdSize.height
@@ -120,9 +130,9 @@ class LogInViewController: UIViewController {
         self.activityIndicator.startAnimating()
         let bruteForce = BruteForce()
         let randomPassword = bruteForce.getRandomPassword(lenght: 3)
-#if DEBUG
-        print(randomPassword)
-#endif
+        //#if DEBUG
+        //        print(randomPassword)
+        //#endif
         queue.async {
             let stolenPassword = bruteForce.bruteForce(passwordToUnlock: randomPassword)
             DispatchQueue.main.async {
@@ -130,7 +140,6 @@ class LogInViewController: UIViewController {
                 self.succesHacking(stolenPassword: stolenPassword)
             }
         }
-        
     }
     
     private func succesHacking(stolenPassword: String){
@@ -140,31 +149,14 @@ class LogInViewController: UIViewController {
     }
     
     private func logIn(){
-        var successLogIn = false
-        let currentUser: User?
-        let userSevice = CurrentUserService()
-        currentUser = userSevice.getUserByLogin(login: "cube033")
-#if DEBUG
-        successLogIn = true
-#else
-        if let loginDelegateExist = self.loginDelegate {
-            do{
-                successLogIn = try loginDelegateExist.check(login: self.logInTextField.text!, password: self.passwordTextField.text!)
-            } catch LoginError.emptyLoginField {
-                self.setAlert(errorMessage: "Не заполнен логин!")
-            } catch LoginError.emptyPasswordField {
-                self.setAlert(errorMessage: "Не заполнен пароль!")
-            } catch LoginError.loginFailed {
-                self.setAlert(errorMessage: "Не правильно указаны логин или пароль!")
-            } catch {
-                
-            }
-        }
-#endif
-        if successLogIn || hackerModeOn {
-            UserInfo.shared.setUser(user: currentUser!)
+        let loginText = self.logInTextField.text!
+        let passwordText = self.passwordTextField.text!
+        if  hackerModeOn || successBiometricAuthorization {
+//            UserInfo.shared.setUser(user: currentUser!)
             mainCoordinator.startApplication()
         }
+        AccessManager.shared.check(login: loginText, password: passwordText)
+        
     }
     
     private func setView(){
@@ -178,12 +170,94 @@ class LogInViewController: UIViewController {
     }
     
     private func setElements(){
-        view.backgroundColor = .white
+        view.backgroundColor = Palette.viewControllerBackgroundColor
         self.navigationController?.isNavigationBarHidden = true
         view.clipsToBounds = true
         activityIndicator.hidesWhenStopped = true
         activityIndicator.color = .blue
+        AccessManager.shared.delegate = self
+        setAuthorizeWithBiometricButton()
     }
+    
+    private func setAuthorizeWithBiometricButton() {
+        let localAuthorizationService = LocalAuthorizationService()
+        let typeOfBiometricOpt = localAuthorizationService.getTypeOfBiometric()
+        guard let typeOfBiometric = typeOfBiometricOpt
+        else {
+            authorizeWithBiometricButton.isHidden = true
+            return
+        }
+        var biometricImageOpt: UIImage?
+        switch typeOfBiometric {
+        case .FaceID:
+            biometricImageOpt = UIImage(systemName: "faceid")
+        case .TouchID:
+            biometricImageOpt = UIImage(systemName: "touchid")
+        }
+        
+        if let biometricImage = biometricImageOpt {
+            authorizeWithBiometricButton.setImage(biometricImage, for: .normal)
+        } else {
+            authorizeWithBiometricButton.isHidden = true
+        }
+    }
+    
+    private func setAlert(errorMessage: String) {
+        let alert = UIAlertController(title: "error".localized, message: errorMessage, preferredStyle: .alert)
+        let actionDismiss = UIAlertAction(title: "close".localized, style: .default) { (_) -> Void in
+            self.dismiss(animated: true, completion: nil)
+        }
+        alert.addAction(actionDismiss)
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    private func setReminderAlert(timer: Timer) {
+        //timer.invalidate() // если оставить это включенным, то Алерт не сработает ни разу
+        //Здесь была задумка - остановить таймер и запустить его снова, по нажатию кнопки "Ещё чуть-чуть..."
+        let alert = UIAlertController(title: "forgot_password".localized, message: "hack_app".localized, preferredStyle: .alert)
+        let startHacking = UIAlertAction(title: "lets_hack".localized, style: .default) { (_) -> Void in
+            self.startHacking()
+            timer.invalidate()
+        }
+        let actionDismiss = UIAlertAction(title: "need_more_time".localized, style: .default) { (_) -> Void in
+            
+        }
+        alert.addAction(startHacking)
+        alert.addAction(actionDismiss)
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    private func startHacking(){
+        contentView.addSubview(bruteForceButton)
+        contentView.addSubview(activityIndicator)
+        
+        NSLayoutConstraint.activate([
+            bruteForceButton.topAnchor.constraint(equalTo: self.logInButton.bottomAnchor, constant: 16),
+            bruteForceButton.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 16),
+            bruteForceButton.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -16),
+            bruteForceButton.heightAnchor.constraint(equalToConstant: 50),
+            
+            activityIndicator.centerYAnchor.constraint(equalTo: self.passwordTextField.centerYAnchor),
+            activityIndicator.trailingAnchor.constraint(equalTo: self.passwordTextField.trailingAnchor, constant: -16),
+        ])
+    }
+    
+    private func authorizeWithBiometric() {
+        let localAuthorizationService = LocalAuthorizationService()
+        localAuthorizationService.authorizeIfPossible() {authorizationResult in
+            switch authorizationResult {
+            case .success:
+                self.successBiometricAuthorization = true
+                self.logIn()
+            case .failure(let errorString):
+                self.setAlert(errorMessage: errorString)
+            }
+        }
+    }
+    
+    
+    
+    // MARK: - constraints
     
     private func addElements(){
         self.view.addSubview(scrollView)
@@ -192,6 +266,7 @@ class LogInViewController: UIViewController {
         contentView.addSubview(logInTextField)
         contentView.addSubview(passwordTextField)
         contentView.addSubview(logInButton)
+        contentView.addSubview(authorizeWithBiometricButton)
     }
     
     private func setConstraints(){
@@ -231,53 +306,84 @@ class LogInViewController: UIViewController {
             logInButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             logInButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             logInButton.heightAnchor.constraint(equalToConstant: 50),
-        ])
-    }
-    
-    private func setAlert(errorMessage: String) {
-        let alert = UIAlertController(title: "Ошибка", message: errorMessage, preferredStyle: .alert)
-        let actionDismiss = UIAlertAction(title: "Закрыть", style: .default) { (_) -> Void in
-            self.dismiss(animated: true, completion: nil)
-        }
-        alert.addAction(actionDismiss)
-        self.present(alert, animated: true, completion: nil)
-    }
-    
-    private func setReminderAlert(timer: Timer) {
-        //timer.invalidate() // если оставить это включенным, то Алерт не сработает ни разу
-        //Здесь была задумка - остановить таймер и запустить его снова, по нажатию кнопки "Ещё чуть-чуть..."
-        let alert = UIAlertController(title: "Забыли пароль?", message: "Не беда! Давайте взломаем приложение", preferredStyle: .alert)
-        let startHacking = UIAlertAction(title: "Хорошо, ломаем", style: .default) { (_) -> Void in
-            self.startHacking()
-            timer.invalidate()
-        }
-        let actionDismiss = UIAlertAction(title: "Ещё чуть-чуть и сам(а) вспомню", style: .default) { (_) -> Void in
             
-        }
-        alert.addAction(startHacking)
-        alert.addAction(actionDismiss)
-        self.present(alert, animated: true, completion: nil)
-    }
-    
-    private func startHacking(){
-        contentView.addSubview(bruteForceButton)
-        contentView.addSubview(activityIndicator)
-        
-        NSLayoutConstraint.activate([
-        bruteForceButton.topAnchor.constraint(equalTo: self.logInButton.bottomAnchor, constant: 16),
-        bruteForceButton.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 16),
-        bruteForceButton.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -16),
-        bruteForceButton.heightAnchor.constraint(equalToConstant: 50),
-        
-        activityIndicator.centerYAnchor.constraint(equalTo: self.passwordTextField.centerYAnchor),
-        activityIndicator.trailingAnchor.constraint(equalTo: self.passwordTextField.trailingAnchor, constant: -16),
+            authorizeWithBiometricButton.topAnchor.constraint(equalTo: logInButton.bottomAnchor, constant: 16),
+            authorizeWithBiometricButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            authorizeWithBiometricButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            authorizeWithBiometricButton.heightAnchor.constraint(equalToConstant: 50),
         ])
     }
 }
+
+// MARK: - extension
 
 extension LogInViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         view.endEditing(true)
         return true
     }
+}
+
+extension LogInViewController: LoginViewControllerDelegate {
+    func successLogin() {
+        print("auth. done")
+        mainCoordinator.startApplication()
+    }
+    
+    func loginFailed(result: Result<Bool, LoginError>) {
+        print("Sign in failed: \(result)")
+        switch result {
+        case .success:
+            successLogin()
+        case .failure(let error):
+            handleLoginError(error)
+        }
+    }
+    
+    func handleLoginError(_ error: LoginError) {
+        switch error {
+        case .emptyLoginField:
+            self.setAlert(errorMessage: "login_not_filled".localized)
+        case .emptyPasswordField:
+            self.setAlert(errorMessage: "password_not_filled".localized)
+        case .loginFailed:
+            self.setAlert(errorMessage: "username_password_incorrect".localized)
+        case .userNotExist:
+            createUser()
+        case .errorNotDefined:
+            self.setAlert(errorMessage: "error_not_defined".localized)
+        case .emailFormatError:
+            self.setAlert(errorMessage: "email_format_error".localized)
+        case .weakPassword:
+            self.setAlert(errorMessage: "weak_password".localized)
+        }
+    }
+    
+    func createUser() {
+        let loginText = self.logInTextField.text!
+        let passwordText = self.passwordTextField.text!
+        var titleForAlert: String
+        var textForAlert: String
+        titleForAlert = "user_not_found".localized
+        textForAlert = "register_q".localized
+        let tupleArray = [("register_yes".localized, {
+            AccessManager.shared.createUser(userLogin: loginText, userPassword: passwordText)
+        })]
+        CustomAlert.setAlert(showIn: self,
+                             textTitle: titleForAlert,
+                             textMessage: textForAlert,
+                             exitButtonTitle: "cancel".localized,
+                             tuplesArray: tupleArray)
+    }
+    
+    func userNameRequest(uid: String) {
+        TextPicker.shared.getText(showIn: self,
+                                  title: "name_request_title".localized,
+                                  placeholder: "name_request_placeholder".localized,
+                                  completion: {(newUserName) in
+            AccessManager.shared.updateUsername(uid: uid, newUsername: newUserName)
+            self.successLogin()
+        })
+    }
+    
 }

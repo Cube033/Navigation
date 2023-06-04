@@ -85,12 +85,8 @@ class ProfileViewController: UIViewController {
         }
     
     private func setView() {
-        #if DEBUG
-            view.backgroundColor = .yellow
-        #else
-            view.backgroundColor = .white
-        #endif
-        tableHeader.setUserInfo(user: viewModel.user)
+        view.backgroundColor = Palette.viewControllerBackgroundColor
+        tableHeader.setUserInfo()
         navigationController?.isNavigationBarHidden = true
         view.clipsToBounds = true
         view.addSubview(profileTableView)
@@ -193,8 +189,8 @@ class ProfileViewController: UIViewController {
     }
     
     private func setAlert(textMessage: String) {
-        let alert = UIAlertController(title: "Внимание", message: textMessage, preferredStyle: .alert)
-        let actionDismiss = UIAlertAction(title: "Закрыть", style: .default) { (_) -> Void in
+        let alert = UIAlertController(title: "attention".localized, message: textMessage, preferredStyle: .alert)
+        let actionDismiss = UIAlertAction(title: "close".localized, style: .default) { (_) -> Void in
             self.dismiss(animated: true, completion: nil)
         }
         alert.addAction(actionDismiss)
@@ -284,10 +280,12 @@ extension ProfileViewController: UITableViewDataSource {
         if section == 0 {
             let photoCell = tableView.dequeueReusableCell(withIdentifier: "PhotosTableViewCell", for: indexPath) as! PhotosTableViewCell
             photoCell.layout(screenWidth: view.bounds.width)
+            photoCell.backgroundColor = Palette.viewControllerBackgroundColor
             return photoCell
         } else {
             let postCell = tableView.dequeueReusableCell(withIdentifier: "PostTableViewCell", for: indexPath) as! PostTableViewCell
             postCell.setupCell(model: viewModel.postArray[indexPath.row])
+            postCell.backgroundColor = Palette.viewControllerBackgroundColor
             return postCell
         }
     }

@@ -1,0 +1,10 @@
+/* 
+  InfoPlist.strings
+  Navigation
+
+  Created by Дмитрий Федотов on 17.01.2023.
+  
+*/
+
+"NSLocationWhenInUseUsageDescription" = "Ты где?";
+"NSFaceIDUsageDescription" = "Для вашего комфорты мы используем Face-ID";

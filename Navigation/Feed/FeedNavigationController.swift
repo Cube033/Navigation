@@ -2,162 +2,51 @@
 //  FeedNavigationController.swift
 //  Navigation
 //
-//  Created by Дмитрий on 20.03.2022.
+//  Created by Дмитрий Федотов on 04.06.2023.
 //
 
 import UIKit
 import StorageService
 
-class FeedNavigationController: UIViewController {
-    
-    let feedCoordinator: FeedCoordinator
+class FeedNavigationController: UITableViewController {
 
-    let post = Post(id: 0, title: "Моя статья", description: "", image: "", author: "")
-    lazy var checkGuessTextField: UITextField = {
-        let checkGuessTextField = UITextField()
-        checkGuessTextField.font = .systemFont(ofSize: 16)
-        checkGuessTextField.tintColor = UIColor.tintColor
-        checkGuessTextField.autocapitalizationType = .none
-        checkGuessTextField.backgroundColor = .systemGray6
-        checkGuessTextField.layer.cornerRadius = 10
-        checkGuessTextField.layer.borderColor = UIColor.lightGray.cgColor
-        checkGuessTextField.layer.borderColor = UIColor.lightGray.cgColor
-        checkGuessTextField.layer.borderWidth = 0.5
-        checkGuessTextField.translatesAutoresizingMaskIntoConstraints = false
-        checkGuessTextField.placeholder = "Введите слово"
-        checkGuessTextField.leftView = .init(frame: .init(x: 0, y: 0, width: 5, height: checkGuessTextField.frame.height))
-        checkGuessTextField.leftViewMode = .always
-        return checkGuessTextField
-    }()
-    lazy var checkGuessButton = CustomButton(title: "Проверить слово", backgroundColor: nil, tapAction: {self.checkGuess()})
-    lazy var button1 = getNewFeedButton()
-    lazy var button2 = getNewFeedButton()
-    let checkLabel: UILabel = {
-        let label = UILabel()
-        let nameLabelFont = UIFont(name:"HelveticaNeue-Bold", size: 18.0)
-        label.textColor = .black
-        label.font = nameLabelFont
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.layer.cornerRadius = 10
-        return label
-    }()
-    private let nc = NotificationCenter.default
+    let feedCoordinator: FeedCoordinator? = nil
     
-    private lazy var playerButton = CustomButton(title: "Player", backgroundColor: nil, tapAction: {self.feedCoordinator.handleAction(actionType: FeedActionType.alert)})
-    
-    private lazy var videoPlayerButton = CustomButton(title: "Video Player", backgroundColor: .red , tapAction: {self.feedCoordinator.handleAction(actionType: FeedActionType.videoPlayer)})
-    
-    init(feedCoordinator: FeedCoordinator) {
-        self.feedCoordinator = feedCoordinator
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    let postArray: [Post] = Post.getPostArray()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupView()
+        
+        tableView.register(PostTableViewCell.self, forCellReuseIdentifier: "PostTableViewCell")
+        tableView.register(FeedHeaderTableViewCell.self, forCellReuseIdentifier: "FeedHeaderTableViewCell")
     }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        nc.removeObserver(self, name: NSNotification.Name("feedModelHandler"), object: nil)
+
+    // MARK: - Table view data source
+
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        nc.addObserver(self, selector: #selector(feedModelHandler(_:)), name: NSNotification.Name("feedModelHandler"), object: nil)
-    }
-    
-    private func checkGuess() {
-        let labelText = self.checkGuessTextField.text ?? ""
-        if labelText == "" {
-            setAlert()
+
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if section == 0 {
+            return 1
         } else {
-            let feedModel = FeedModel()
-            feedModel.check(word: labelText)
+            return postArray.count
         }
     }
+
     
-    @objc func feedModelHandler(_ notification: Notification) {
-        let wordIsCorrect = notification.object as! Bool
-        if wordIsCorrect {
-            checkLabel.backgroundColor = .green
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let section = indexPath.section
+        if section == 0 {
+            
+            let feedHeaderCell = tableView.dequeueReusableCell(withIdentifier: "FeedHeaderTableViewCell", for: indexPath) as! FeedHeaderTableViewCell
+            return feedHeaderCell
         } else {
-            checkLabel.backgroundColor = .red
+            let postCell = tableView.dequeueReusableCell(withIdentifier: "PostTableViewCell", for: indexPath) as! PostTableViewCell
+            postCell.setupCell(model: postArray[indexPath.row])
+            postCell.backgroundColor = Palette.viewControllerBackgroundColor
+            return postCell
         }
-    }
-    
-    private func getNewFeedButton()->UIButton{
-        return CustomButton(title: "Перейти на пост",
-                                  backgroundColor: .blue,
-                                  tapAction: {
-            self.feedCoordinator.handleAction(actionType: FeedActionType.post)
-        })
-    }
-    
-    private func setupView() {
-        view.backgroundColor = .white
-        layout()
-    }
-    
-    private func layout() {
-        self.view.addSubview(button1)
-        self.view.addSubview(button2)
-        self.view.addSubview(checkGuessTextField)
-        self.view.addSubview(checkGuessButton)
-        self.view.addSubview(checkLabel)
-        self.view.addSubview(playerButton)
-        self.view.addSubview(videoPlayerButton)
-        
-        NSLayoutConstraint.activate([
-            button1.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
-            button1.heightAnchor.constraint(equalToConstant: 30),
-            button1.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-            
-            button2.topAnchor.constraint(equalTo: button1.bottomAnchor, constant: 20),
-            button2.leadingAnchor.constraint(equalTo: button1.leadingAnchor),
-            button2.trailingAnchor.constraint(equalTo: button1.trailingAnchor),
-            button2.heightAnchor.constraint(equalToConstant: 30),
-            
-            checkGuessTextField.topAnchor.constraint(equalTo: button2.bottomAnchor, constant: 20),
-            checkGuessTextField.leadingAnchor.constraint(equalTo: button2.leadingAnchor),
-            checkGuessTextField.trailingAnchor.constraint(equalTo: button2.trailingAnchor),
-            checkGuessTextField.heightAnchor.constraint(equalToConstant: 20),
-            
-            checkGuessButton.topAnchor.constraint(equalTo: checkGuessTextField.bottomAnchor, constant: 16),
-            checkGuessButton.leadingAnchor.constraint(equalTo: checkGuessTextField.leadingAnchor),
-            checkGuessButton.trailingAnchor.constraint(equalTo: checkGuessTextField.trailingAnchor),
-            checkGuessButton.heightAnchor.constraint(equalToConstant: 30),
-            
-            checkLabel.topAnchor.constraint(equalTo: checkGuessButton.bottomAnchor, constant: 16),
-            checkLabel.leadingAnchor.constraint(equalTo: checkGuessButton.leadingAnchor),
-            checkLabel.trailingAnchor.constraint(equalTo: checkGuessButton.trailingAnchor),
-            checkLabel.heightAnchor.constraint(equalToConstant: 30),
-            
-            playerButton.topAnchor.constraint(equalTo: checkLabel.bottomAnchor, constant: 16),
-            playerButton.leadingAnchor.constraint(equalTo: checkGuessButton.leadingAnchor),
-            playerButton.trailingAnchor.constraint(equalTo: checkGuessButton.trailingAnchor),
-            playerButton.heightAnchor.constraint(equalToConstant: 30),
-            
-            videoPlayerButton.topAnchor.constraint(equalTo: playerButton.bottomAnchor, constant: 16),
-            videoPlayerButton.leadingAnchor.constraint(equalTo: checkGuessButton.leadingAnchor),
-            videoPlayerButton.trailingAnchor.constraint(equalTo: checkGuessButton.trailingAnchor),
-            videoPlayerButton.heightAnchor.constraint(equalToConstant: 30),
-        ])
-    }
-    
-    private func setAlert() {
-        let alert = UIAlertController(title: "Ошибка", message: "Введите проверочное слово", preferredStyle: .alert)
-        let actionDismiss = UIAlertAction(title: "Ok", style: .default) { (_) -> Void in
-            self.dismiss(animated: true, completion: nil)
-        }
-        
-        alert.addAction(actionDismiss)
-        
-        self.present(alert, animated: true, completion: nil)
     }
 }
-
-

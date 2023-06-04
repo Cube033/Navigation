@@ -13,18 +13,20 @@ enum FeedActionType: CoordinatorActionProtocol {
     case post
     case alert
     case videoPlayer
+    case mapViewController
 }
 
 class FeedCoordinator: CoordinatorProtocol {
     
     var navigationController: UINavigationController
+    var currentViewController = UIViewController()
     
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
     }
     
     func getStartViewController() -> UIViewController {
-        let viewController = FeedNavigationController(feedCoordinator: self)
+        let viewController = FeedNavigationController()
         return viewController
     }
     
@@ -33,18 +35,31 @@ class FeedCoordinator: CoordinatorProtocol {
         switch feedActionType {
         case .feed:
             // искуственная конструкция, оправдывающая применение координатора в таком маленьком модуле
-            let viewController = FeedNavigationController(feedCoordinator: self)
-            navigationController.pushViewController(viewController, animated: true)
+            currentViewController = FeedNavigationController()
+            navigationController.pushViewController(currentViewController, animated: true)
         case .post:
-            let postViewController = PostViewController(feedCoordinator: self)
-            navigationController.pushViewController(postViewController, animated: true)
+            currentViewController = PostViewController(feedCoordinator: self)
+            navigationController.pushViewController(currentViewController, animated: true)
         case .alert:
-            let infoViewController = InfoViewController()
-            infoViewController.modalPresentationStyle = .automatic
-            navigationController.present(infoViewController, animated: true, completion: nil)
+            currentViewController = InfoViewController()
+            currentViewController.modalPresentationStyle = .automatic
+            navigationController.present(currentViewController, animated: true, completion: nil)
         case .videoPlayer:
-            let videoPlayerViewController = VideoPlayerViewController()
-            navigationController.present(videoPlayerViewController, animated: true, completion: nil)
+            currentViewController = VideoPlayerViewController()
+            navigationController.present(currentViewController, animated: true, completion: nil)
+        case .mapViewController:
+            //            currentViewController = MapViewController()
+            //            navigationController.pushViewController(currentViewController, animated: true)
+            AccessManager.shared.signOut { (result) in
+                switch result {
+                case .success():
+                    print("Signed out successfully.")
+                case .failure(let error):
+                    print("Error signing out: \(error)")
+                }
+            }
+            
         }
     }
 }
+ 
